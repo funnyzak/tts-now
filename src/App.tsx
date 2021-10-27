@@ -1,8 +1,7 @@
-import Index from './layout'
-const Index = () => (
+import Index from './layout';
+
+export default () => (
   <div>
-    <Index>
+    <Index />
   </div>
 );
-
-export default Index

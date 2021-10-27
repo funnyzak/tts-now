@@ -1,7 +1,3 @@
-const Index = () => (
-  <div>
-    内容..
-  </div>
-);
+const Index = () => <div>头像显示</div>;
 
-export default Index
+export default Index;
