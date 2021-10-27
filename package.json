@@ -1,7 +1,7 @@
 {
-  "name": "electron-react-quick-start",
+  "name": "aliyun-tts-assastant",
   "version": "1.0.0",
-  "description": "electron-react-quick-start",
+  "description": "aliyun-tts-assastant",
   "main": "dist/main.js",
   "scripts": {
     "nodev": "nvm install 14.17.0",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/funnyzak/electron-react-quick-start.git"
+    "url": "git+https://github.com/funnyzak/aliyun-tts-assastant.git"
   },
   "keywords": [
     "electron",
@@ -30,9 +30,9 @@
   "author": "funnyzak <silenceace@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/funnyzak/electron-react-quick-start/issues"
+    "url": "https://github.com/funnyzak/aliyun-tts-assastant/issues"
   },
-  "homepage": "https://github.com/funnyzak/electron-react-quick-start#readme",
+  "homepage": "https://github.com/funnyzak/aliyun-tts-assastant#readme",
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",

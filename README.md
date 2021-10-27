@@ -1,21 +1,8 @@
-# Electron React Quick Start
+# TTS Asstants Base AliYun
 
 ## 说明
 
-基于 React Typescript Webpack 构建 Electron 应用脚手架。
-
-- babel 转换支持
-- typescript 支持
-- react 支持
-- sass 支持
-- less 支持
-- hbs 文件 模板支持
-- png|svg|jpg|jpeg|gif 引入支持
-- git commit hooks, no 💩
-
-### 运行
-
-![run](public/_docs/assets/img/run-demo.jpg)
+基于阿里云语音合成 API 的语音合成助手。应用基于 React Typescript Webpack 构建。
 
 ## 环境
 
@@ -61,7 +48,7 @@
 
 ## 其他
 
-点击这里访问 [基于 typescript 和 webapck 的 React 脚手架应用](https://github.com/funnyzak/react-typescript-quick-start)。
+此工具 [基于 typescript 和 React 的 Electron 脚手架应用](https://github.com/funnyzak/electron-react-quick-start) 构建。
 
 ## 参考
 
