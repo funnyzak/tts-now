@@ -1,0 +1,80 @@
+{
+  "compilerOptions": {
+    // 允许从没有设置默认导出的模块中默认导入。这并不影响代码的输出，仅为了类型检查。
+    // 如： import React from "react";
+    "allowSyntheticDefaultImports": true,
+    // 用来指定编译时是否生成.map文件
+    "sourceMap": true,
+    // 允许编译JS
+    "allowJs": true,
+    /* 是否检测JS的语法 */
+    "checkJs": false,
+    // 指定 ECMAScript 目标版本: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'
+    "target": "esnext",
+    // null类型检测,const teacher: string = null;会报错
+    "strictNullChecks": true,
+    // 对函数参数进行严格逆变比较
+    "strictFunctionTypes": true,
+    // 严格检查bind call apply
+    "strictBindCallApply": true,
+    // 此规则将验证构造函数内部初始化前后已定义的属性。
+    "strictPropertyInitialization": true,
+    // 不允许对同一个文件使用不一致格式的引用
+    "forceConsistentCasingInFileNames": true,
+    // 生成相应的.d.ts文件
+    "declaration": false,
+    // 只编译修改过的文件,这个时候会生成tsconfig.tsbuildinfo,下次编译的时候会进行对比只编译修改过的文件
+    "incremental": true,
+    // 指定 jsx 代码的生成: 'preserve', 'react-native', or 'react'  react-jsx
+    "jsx": "react-jsx",
+    // Turning on noImplicitAny however TypeScript will issue an error whenever it would have inferred any:
+    "noImplicitAny": false,
+    // 检测this是否隐式指定
+    "noImplicitThis": true,
+    // 默认false,是否检测定义了但是没使用的变量
+    "noUnusedLocals": true,
+    // 用于检查是否有在函数体中没有使用的参数
+    "noUnusedParameters": true,
+    // 用于检查函数是否有返回值，设为true后，如果函数没有返回值则会提示
+    "noImplicitReturns": true,
+    // 用于检查switch中是否有case没有使用break跳出switch
+    "noFallthroughCasesInSwitch": true,
+    // 使用js的严格模式,在每一个文件上部声明 use strict
+    "alwaysStrict": true,
+    // 不删除枚举声明 https://www.typescriptlang.org/tsconfig#preserveConstEnums
+    "preserveConstEnums": true,
+    // Strips all comments from TypeScript files when converting into JavaScript.
+    "removeComments": true,
+    // 指定使用模块: 'commonjs', 'amd', 'system', 'umd' or 'es2015'
+    "module": "es2015",
+    /* Module Resolution Options */
+    // 用于选择模块解析策略，有'node'和'classic'两种类型
+    "moduleResolution": "node",
+    // 允许使用 .json 扩展名导入的模块
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "rootDir": ".",
+    // outDir 编译后的文件存到到哪个目录下,默认是每一个ts文件的当前目录,,下面的配置就是把ts编译到dist目录下
+    "outDir": "./dist/",
+    /*如果未指定--lib，则会注入默认的librares列表。注入的默认库为：
+       对于 --target ES5: DOM,ES5,ScriptHost
+       对于 --target ES6: DOM,ES6,DOM.Iterable,ScriptHost
+       TS 绝不会在您的代码中注入polyfill,所以需要你自己制定编译lib */
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/package": ["./package.json"]
+    }
+  },
+  "exclude": [
+    "__tests__",
+    "node_modules",
+    "dist",
+    "tests",
+    "jest",
+    "lib",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ],
+  "compileOnSave": false
+}

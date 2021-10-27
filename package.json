@@ -1,0 +1,127 @@
+{
+  "name": "electron-react-quick-start",
+  "version": "1.0.0",
+  "description": "electron-react-quick-start",
+  "main": "dist/main.js",
+  "scripts": {
+    "nodev": "nvm install 14.17.0",
+    "format": "npx prettier --write . && npx eslint --fix --cache .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "cross-env NODE_ENV=development node ./config/dev.js",
+    "dist": "cross-env NODE_ENV=production node ./config/build.js",
+    "build:now": "cross-env electron-builder",
+    "build": "npm run dist && electron-builder",
+    "build:windows": "npm run dist && electron-builder --win",
+    "build:mac": "npm run dist && electron-builder --mac",
+    "build:linux": "npm run dist && electron-builder --linux",
+    "lint": "eslint --fix .",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/funnyzak/electron-react-quick-start.git"
+  },
+  "keywords": [
+    "electron",
+    "react",
+    "typescript",
+    "webpack"
+  ],
+  "author": "funnyzak <silenceace@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/funnyzak/electron-react-quick-start/issues"
+  },
+  "homepage": "https://github.com/funnyzak/electron-react-quick-start#readme",
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@types/react": "^17.0.31",
+    "@types/react-dom": "^17.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "babel-loader": "^8.2.3",
+    "copy-webpack-plugin": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.4.0",
+    "electron": "^15.3.0",
+    "electron-builder": "^22.13.1",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-html": "^6.2.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "git-revision-webpack-plugin": "^5.0.0",
+    "handlebars": "^4.7.7",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.4.0",
+    "husky": "^7.0.4",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "lint-staged": "^11.2.3",
+    "micromatch": "^4.0.4",
+    "node-sass": "^6.0.1",
+    "prettier": "2.4.1",
+    "sass-loader": "^12.2.0",
+    "source-map-loader": "^3.0.0",
+    "style-loader": "^3.3.1",
+    "stylelint": "^13.13.1",
+    "ts-loader": "^9.2.6",
+    "tsconfig-paths-webpack-plugin": "^3.5.1",
+    "webpack": "^5.59.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.3.1"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^4.4.4",
+    "core-js": "^3.18.3"
+  },
+  "build": {
+    "appId": "github.funnyzak.electron",
+    "productName": "electron app",
+    "copyright": "copyright © 2021 eric ",
+    "asar": true,
+    "files": [
+      "dist/**/*"
+    ],
+    "directories": {
+      "output": "build"
+    },
+    "mac": {
+      "icon": "public/icon/128x128.icns",
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "public/icon/256x256.ico",
+      "uninstallerIcon": "public/icon/256x256.ico",
+      "installerHeaderIcon": "public/icon/256x256.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "electron quick start"
+    },
+    "win": {
+      "icon": "public/icon/256x256.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "target": "zip",
+      "category": "Utility",
+      "icon": "public/icon/128x128.ico"
+    }
+  }
+}
