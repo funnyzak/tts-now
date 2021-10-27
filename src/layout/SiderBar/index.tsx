@@ -12,16 +12,25 @@ const Wrapper = styled.div`
   overflow-y: auto;
 `;
 
+const Wrapper2 = styled.div`
+  width: 240px;
+  height: calc(100% - 80px);
+  margin-left: 20px;
+  overflow-y: auto;
+`;
+
 const Index = () => {
   const size = 'large';
   return (
     <Wrapper>
       <Header />
-      <Avatar />
-      <AudioSet />
-      <Button type="primary" icon={<SettingOutlined />} size={size}>
-        配置密钥
-      </Button>
+      <Wrapper2>
+        <Avatar />
+        <AudioSet />
+        <Button type="primary" icon={<SettingOutlined />} size={size}>
+          配置密钥
+        </Button>
+      </Wrapper2>
     </Wrapper>
   );
 };

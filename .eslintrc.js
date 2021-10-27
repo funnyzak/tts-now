@@ -73,6 +73,10 @@ module.exports = {
     "no-duplicate-case": 2,//switch中的case标签不能重复
     "no-else-return": 2,//如果if语句里面有return,后面不能跟else语句
     'quote-props': ['warn', 'consistent'],
+    // 定义未使用
+    'no-unused-vars': 0,
+    // image元素必须有alt标签
+    'jsx-a11y/alt-text': 0,
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     'react-hooks/rules-of-hooks': 'error',

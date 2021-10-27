@@ -3,7 +3,7 @@ import { appName } from '@/config/app';
 
 const Header = styled.div`
   width: 280px;
-  height: 83px;
+  height: 80px;
   background-color: #748bad;
   display: flex;
   align-items: center;
