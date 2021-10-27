@@ -21,6 +21,12 @@
 - webpack: ^5.59.1
 - prettier: 2.4.1
 
+### UI/组件：
+
+- antd
+- @ant-design/icons
+- normalize.css
+
 ## 目录
 
 - `public`：静态资源文件夹

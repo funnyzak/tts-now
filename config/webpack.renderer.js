@@ -49,7 +49,7 @@ module.exports = {
   mode: process.env.NODE_ENV || 'production',
   context: path.join(__dirname, '../'),
   entry: {
-    main: path.resolve(__dirname, '../src/index.tsx')
+    main: path.resolve(__dirname, '../src/Index.tsx')
   },
   devtool: 'source-map',
   // https://webpack.js.org/configuration/stats/

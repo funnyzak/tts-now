@@ -1,7 +1,6 @@
-import Index from './layout'
 const Index = () => (
   <div>
-    <Index>
+    批量合成
   </div>
 );
 
