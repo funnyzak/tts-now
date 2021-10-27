@@ -1,7 +1,6 @@
 import Header from './Header'
 import Avatar from './Avatar'
 import AudioSet from './AudioSet'
-import SetttingKeyDialog from '../Dialog/SetttingKeyDialog'
 import { Button } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 
