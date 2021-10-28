@@ -75,7 +75,7 @@ const SliderComponent: React.FC<SilderInterface> = (props) => {
     <div
       css={css`
         width: 100%;
-        margin-top: 20px;
+        margin-top: 15px;
       `}
     >
       <div

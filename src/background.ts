@@ -14,7 +14,7 @@ function createWindow() {
   // https://www.electronjs.org/zh/docs/latest/api/browser-window
   win = new BrowserWindow({
     width: 1024,
-    height: 768,
+    height: 800,
     fullscreenable: false,
     maximizable: false,
     movable: true,

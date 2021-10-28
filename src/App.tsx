@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ConfigProvider } from 'antd';
 import Index from './layout';
 import { AppSetting } from '@/config/define';
 import { AppContext, appSetting, appSettingCacheKey } from '@/config';
@@ -18,10 +19,12 @@ export default () => {
   }, [setting]);
 
   return (
-    <AppContext.Provider
-      value={{ appSetting: setting, setAppSetting: updateConfig }}
-    >
-      <Index />
-    </AppContext.Provider>
+    <ConfigProvider direction="ltr">
+      <AppContext.Provider
+        value={{ appSetting: setting, setAppSetting: updateConfig }}
+      >
+        <Index />
+      </AppContext.Provider>
+    </ConfigProvider>
   );
 };
