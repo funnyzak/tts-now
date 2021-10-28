@@ -40,10 +40,10 @@ const SelectFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
   return (
     <MainWrapper
       css={css`
-          align-items: center;
-          justify-content: center;
-          background-color: #f4f6fa;
-        `}
+        align-items: center;
+        justify-content: center;
+        background-color: #f4f6fa;
+      `}
     >
       <Button
         type="primary"
