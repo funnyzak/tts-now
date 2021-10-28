@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Header from './Header';
 import Avatar from './Avatar';
 import AudioSet from './Audio';
+import { SetttingKeyDialog } from '../Dialog';
 
 const Wrapper = styled.div`
   width: 280px;
@@ -25,7 +26,7 @@ const Wrapper2 = styled.div`
 
 const Index = () => {
   const [btnBottom] = useState(0);
-
+  const [showSetting, setShowSetting] = useState(false);
   return (
     <Wrapper>
       <Affix offsetTop={0}>
@@ -49,11 +50,23 @@ const Index = () => {
             type="primary"
             icon={<SettingOutlined />}
             size="large"
+            onClick={() => {
+              setShowSetting(true);
+            }}
           >
             配置密钥
           </Button>
         </div>
       </Affix>
+      {showSetting ? (
+        <SetttingKeyDialog
+          closeCallBack={() => {
+            setShowSetting(false);
+          }}
+        />
+      ) : (
+        <div />
+      )}
     </Wrapper>
   );
 };
