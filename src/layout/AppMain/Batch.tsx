@@ -1,13 +1,10 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Input, Button } from 'antd';
-import { ReloadOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
+import { Button } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { RedoOutlined, DeleteOutlined } from '@ant-design/icons';
 import useAppSetting from '@/hook/appHook';
 import { voiceTypeList } from '@/config';
-
-const { TextArea } = Input;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -20,6 +17,7 @@ const Wrapper = styled.div`
 const MainWrapper = styled.div`
   height: calc(100vh - 56px - 75px - 80px) !important;
   border: 1px solid #f4f6fa;
+  display: flex;
 `;
 
 interface FileInfoProp {
@@ -31,16 +29,36 @@ interface FileInfoProp {
 }
 
 interface FileListProp {
-  fileList: Array<FileInfoProp>;
+  fileList?: Array<FileInfoProp>;
 }
 
-// const FileConvertComponent: React.FC<FileListProp> = ({ fileList }) => {
-
-// }
+const SelectFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
+  console.log(!fileList, fileList !== null);
+  if (fileList !== undefined && fileList !== null && fileList.length > 0) {
+    return <MainWrapper>这是列表</MainWrapper>;
+  }
+  return (
+    <MainWrapper
+      css={css`
+          align-items: center;
+          justify-content: center;
+          background-color: #f4f6fa;
+        `}
+    >
+      <Button
+        type="primary"
+        css={{ width: '145px;', borderRadius: '5px' }}
+        size="large"
+      >
+        选择文件夹
+      </Button>
+    </MainWrapper>
+  );
+};
 
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
-  const [fileList, setFileList] = useState<FileListProp>();
+  const [fileList, setFileList] = useState<Array<FileInfoProp>>();
   const [singleTxt, setSingleTxt] = useState(
     !appSetting.singleTxt
       ? voiceTypeList[appSetting.voiceSetIndex].text
@@ -90,7 +108,7 @@ const Index = () => {
           </Button>
         </div>
       </div>
-      {/* <FileConvertComponent fileList={fileList}> */}
+      <SelectFilesComponent fileList={fileList} />
     </Wrapper>
   );
 };
