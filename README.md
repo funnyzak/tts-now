@@ -46,7 +46,7 @@
 - 基于 dist 输出，根据当前系统构建：`npm run build:now`
 - 构建 Windows 二进制：`npm run build:windows`
 - 构建 Mac 二进制：`npm run build:mac`
-- 构建 Linux 二进制：`npm run build:mac`
+- 构建 Linux 二进制：`npm run build:linux`
 
 ## 打包
 

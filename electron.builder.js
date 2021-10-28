@@ -1,5 +1,7 @@
 const packageInfo = require('./package.json');
 
+// 和electron-builder保持一致
+// 更多请看这里：https://www.electron.build/configuration/configuration
 module.exports = {
   appId: 'github.funnyzak.electron',
   productName: packageInfo.name,
