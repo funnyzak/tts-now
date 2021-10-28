@@ -20,7 +20,8 @@ module.exports = {
     'import',
     'jsx-a11y',
     '@typescript-eslint',
-    'html', '@emotion'
+    'html',
+    '@emotion'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -75,6 +76,8 @@ module.exports = {
     'quote-props': ['warn', 'consistent'],
     // 定义未使用
     'no-unused-vars': 0,
+    // 导入多次
+    "import/no-duplicates": 0,
     // image元素必须有alt标签
     'jsx-a11y/alt-text': 0,
     "@emotion/jsx-import": "warn",
