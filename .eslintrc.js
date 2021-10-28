@@ -88,6 +88,7 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'react/require-default-props': 'off',
     '@typescript-eslint/no-use-before-define': ['warn'],
     'react/jsx-filename-extension': [
       'warn',
