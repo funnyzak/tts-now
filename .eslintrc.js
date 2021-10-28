@@ -80,9 +80,9 @@ module.exports = {
     "import/no-duplicates": 0,
     // image元素必须有alt标签
     'jsx-a11y/alt-text': 0,
-    "@emotion/jsx-import": "warn",
+    "@emotion/jsx-import": "off",
     "@emotion/no-vanilla": "warn",
-    "@emotion/import-from-emotion": "warn",
+    "@emotion/import-from-emotion": "off",
     "@emotion/styled-import": "warn",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
