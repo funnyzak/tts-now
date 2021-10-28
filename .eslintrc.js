@@ -78,6 +78,7 @@ module.exports = {
     'no-unused-vars': 0,
     // 导入多次
     "import/no-duplicates": 0,
+    "import/prefer-default-export": 0,
     // image元素必须有alt标签
     'jsx-a11y/alt-text': 0,
     "@emotion/jsx-import": "off",
