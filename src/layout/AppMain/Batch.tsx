@@ -22,8 +22,9 @@ const MainWrapper = styled.div`
 
 interface FileInfoProp {
   filePath: string;
-  complete: boolean;
   fileName: string;
+  textContent: string;
+  complete: boolean;
   audioUrls?: Array<string>;
   audioPaths?: Array<string>;
 }
