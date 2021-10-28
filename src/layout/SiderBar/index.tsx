@@ -3,7 +3,7 @@ import { SettingOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 import Header from './Header';
 import Avatar from './Avatar';
-import AudioSet from './AudioSet';
+import AudioSet from './Audio';
 
 const Wrapper = styled.div`
   width: 280px;

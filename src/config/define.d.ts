@@ -1,7 +1,13 @@
 export declare interface AppSetting {
   voiceSetIndex: number;
-  samplingRate: number;
-  outputFormat: string;
+  // 音量
+  ttsVolumn: number;
+  // 语速
+  ttsSpeed: number;
+  // 音调
+  ttsTone: number;
+  samplingRate: Array<string>;
+  outputFormat: Array<string>;
   appKey?: string;
   accessKeyId?: string;
   accessKeySecret?: string;

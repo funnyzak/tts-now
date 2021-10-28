@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { appName } from '@/config/app';
+import { appName } from '@/config';
 
 const Header = styled.div`
   width: 280px;

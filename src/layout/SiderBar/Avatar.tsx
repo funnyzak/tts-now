@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { voiceTypeList } from '@/config';
@@ -14,11 +16,11 @@ const Index = () => {
   return (
     <Wrapper>
       <img
-        css={css`
-          width: 80px;
-          height: 80px;
-          margin-right: 20px;
-        `}
+        css={{
+          width: '80px',
+          height: 'auto',
+          marginRight: '20px'
+        }}
         src={voiceTypeList[appSetting.voiceSetIndex].img}
       />
       <div>
