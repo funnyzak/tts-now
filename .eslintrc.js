@@ -13,14 +13,14 @@ module.exports = {
     PRODUCTION: 'readonly',
     NODE_ENV: 'readonly'
   },
-  extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb', '@emotion'],
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb'],
   plugins: [
     'react',
     'react-hooks',
     'import',
     'jsx-a11y',
     '@typescript-eslint',
-    'html'
+    'html', '@emotion'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -77,6 +77,8 @@ module.exports = {
     'no-unused-vars': 0,
     // image元素必须有alt标签
     'jsx-a11y/alt-text': 0,
+    "@emotion/jsx-import": "warn",
+
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     'react-hooks/rules-of-hooks': 'error',
