@@ -13,7 +13,7 @@ module.exports = {
     PRODUCTION: 'readonly',
     NODE_ENV: 'readonly'
   },
-  extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb'],
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb', '@emotion'],
   plugins: [
     'react',
     'react-hooks',
