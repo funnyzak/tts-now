@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import AppMain from './AppMain';
 import SiderBar from './SiderBar';
 

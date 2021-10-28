@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Header from './Header';
 import Avatar from './Avatar';
 import AudioSet from './AudioSet';
