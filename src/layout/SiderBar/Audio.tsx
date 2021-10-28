@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
-/** @jsx jsx */
-import { jsx, css } from '@emotion/react';
+import { css } from '@emotion/react';
 import { Slider, Checkbox } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useAppSetting from '@/hook/appHook';
 import { uiConfig } from '@/config';
 
@@ -28,10 +27,12 @@ const CheckComponent: React.FC<CheckBoxInterface> = (
 
   const changeValue = (_value: Array<any>) => {
     setVal(_value);
+  };
 
+  useEffect(() => {
     appSetting[name] = val;
     setAppSetting(appSetting);
-  };
+  }, [val]);
 
   return (
     <div
@@ -57,7 +58,7 @@ interface SilderInterface {
   title: string;
 }
 
-const SliderComponent: React.FC<SilderInterface> = (props) => {
+const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
   const { value, name, title } = props;
 
   const [val, setVal] = useState(value);
@@ -67,9 +68,12 @@ const SliderComponent: React.FC<SilderInterface> = (props) => {
 
   const changeValue = (_value: number) => {
     setVal(_value);
-    appSetting[name] = value;
-    setAppSetting(appSetting);
   };
+
+  useEffect(() => {
+    appSetting[name] = val;
+    setAppSetting(appSetting);
+  }, [val]);
 
   return (
     <div
