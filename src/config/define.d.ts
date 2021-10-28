@@ -8,6 +8,8 @@ export declare interface AppSetting {
   ttsTone: number;
   samplingRate: Array<string>;
   outputFormat: Array<string>;
+  // 单个转换文本
+  singleTxt?: string;
   appKey?: string;
   accessKeyId?: string;
   accessKeySecret?: string;
