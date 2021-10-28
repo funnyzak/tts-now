@@ -10,7 +10,6 @@ export default () => {
   const updateConfig = (newSetting: {
     [T in keyof AppSetting]?: AppSetting[T];
   }) => {
-    console.log(newSetting);
     setSetting({ ...setting, ...newSetting });
   };
 
