@@ -29,9 +29,10 @@
 
 ## 目录
 
+- `app.config.js`: app 基础配置
+- `electron.builder.js`: 打包配置
 - `public`：静态资源文件夹
 - `config`：webpack 打包配置
-- `config/index.js`: 常用配置, edit here
 - `src/background.ts`：electron main ，code here
 
 ## 使用
@@ -49,8 +50,8 @@
 
 ## 打包
 
-- 源构建输出：`./dist`
-- 打包输出目录：`./build`
+- 源构建输出：`./build/bundle`
+- 打包输出目录：`./build/binary`
 
 ## 其他
 

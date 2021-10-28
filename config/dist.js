@@ -5,7 +5,7 @@ const { delDirPath } = require('./utils');
 const mainWebpackConfig = require('./webpack.main');
 const rendererWebpackConfig = require('./webpack.renderer');
 
-const config = require('.');
+const config = require('../app.config');
 
 // 不输出调试map
 delete rendererWebpackConfig.devtool;
@@ -36,7 +36,7 @@ function buildRenderer() {
 }
 
 function main() {
-  delDirPath(path.resolve(__dirname, `../${config.distOutPutPath}`));
+  delDirPath(path.resolve(__dirname, `../${config.distOutPut}`));
 
   Promise.all([buildMain(), buildRenderer()]).then(() => {
     console.log('build app done.');

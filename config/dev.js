@@ -3,7 +3,7 @@ const { spawn } = require('child_process');
 const electron = require('electron');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const config = require('.');
+const config = require('../app.config');
 
 const mainWebpackConfig = require('./webpack.main');
 const rendererWebpackConfig = require('./webpack.renderer');
@@ -30,7 +30,7 @@ function buildRenderer() {
   const compiler = webpack(rendererWebpackConfig);
   const devServerOptions = {
     ...rendererWebpackConfig.devServer,
-    ...config.devServiceConfig
+    ...config.devServer
   };
 
   const server = new WebpackDevServer(devServerOptions, compiler);
@@ -42,7 +42,7 @@ function buildRenderer() {
 }
 
 function launch() {
-  const args = [path.resolve(process.cwd(), 'dist/main.js')];
+  const args = [path.resolve(process.cwd(), `${config.distOutPut}/main.js`)];
   const mainProcess = spawn(electron, args);
   mainProcess.on('close', () => {
     process.exit();

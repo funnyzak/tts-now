@@ -1,6 +1,6 @@
 import { app, protocol, BrowserWindow } from 'electron';
 
-const config = require('../config');
+const config = require('../app.config');
 
 let win: BrowserWindow;
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -25,9 +25,7 @@ function createWindow() {
   });
 
   if (isDevelopment) {
-    win.loadURL(
-      `http://${config.devServiceConfig.host}:${config.devServiceConfig.port}`
-    );
+    win.loadURL(`http://${config.devServer.host}:${config.devServer.port}`);
     win.resizable = true;
     win.webContents.openDevTools();
   } else {
