@@ -60,7 +60,6 @@ interface SilderInterface {
 
 const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
   const { value, name, title } = props;
-
   const [val, setVal] = useState(value);
   const { appSetting, setAppSetting } = useAppSetting();
 

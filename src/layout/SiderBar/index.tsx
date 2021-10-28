@@ -1,5 +1,3 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/react';
 import { Button, Affix } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
@@ -12,6 +10,7 @@ import AudioSet from './Audio';
 const Wrapper = styled.div`
   width: 280px;
   height: 100vh;
+  border-right: 1px solid #f4f6fa;
   overflow-x: hidden;
   overflow-y: auto;
 `;
