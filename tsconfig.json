@@ -33,7 +33,7 @@
     // 检测this是否隐式指定
     "noImplicitThis": true,
     // 默认false,是否检测定义了但是没使用的变量
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     // 用于检查是否有在函数体中没有使用的参数
     "noUnusedParameters": true,
     // 用于检查函数是否有返回值，设为true后，如果函数没有返回值则会提示

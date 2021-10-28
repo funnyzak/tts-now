@@ -6,7 +6,10 @@ import { AppContext, appSetting, appSettingCacheKey } from '@/config';
 export default () => {
   const [setting, setSetting] = useState(appSetting);
 
-  const updateConfig = (newSetting: AppSetting) => {
+  const updateConfig = (newSetting: {
+    [T in keyof AppSetting]?: AppSetting[T];
+  }) => {
+    console.log(newSetting);
     setSetting({ ...setting, ...newSetting });
   };
 
