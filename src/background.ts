@@ -13,9 +13,9 @@ protocol.registerSchemesAsPrivileged([
 function createWindow() {
   // https://www.electronjs.org/zh/docs/latest/api/browser-window
   win = new BrowserWindow({
-    width: 1024,
-    height: 888,
-    minHeight: 775,
+    width: 950,
+    height: 750,
+    minHeight: 750,
     minWidth: 950,
     fullscreenable: false,
     maximizable: true,
