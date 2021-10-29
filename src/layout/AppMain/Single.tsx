@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Input, Button } from 'antd';
+import { Input, Button, Form } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import useAppSetting from '@/hook/appHook';
 import { voiceTypeList } from '@/config';
 
@@ -24,11 +24,22 @@ const Index = () => {
     ? appSetting.singleTxt
     : voiceTypeList[appSetting.voiceSetIndex].text);
 
-  const [singleTxt] = useState(getSingleTxt());
+  const [singleTxt, setSingleTxt] = useState(getSingleTxt());
+  const singleFormRef: any = useRef(null);
 
   const singleTextChange = (e) => {
     setAppSetting({ singleTxt: e.target.value });
   };
+
+  useEffect(() => {
+    if (
+      singleFormRef
+      && singleFormRef.current !== null
+      && singleFormRef.current !== undefined
+    ) {
+      singleFormRef.current.setFieldsValue({ singleTxt: getSingleTxt() });
+    }
+  }, [appSetting.voiceSetIndex]);
 
   return (
     <Wrapper>
@@ -64,17 +75,20 @@ const Index = () => {
         </div>
       </div>
       <div>
-        <Input.TextArea
-          css={{
-            height: 'calc(100vh - 56px - 75px - 80px) !important',
-            padding: '15px'
-          }}
-          defaultValue={singleTxt}
-          disabled={false}
-          placeholder="请输入要合成的文字.."
-          onChange={singleTextChange}
-          allowClear
-        />
+        <Form ref={singleFormRef} initialValues={{ singleTxt }}>
+          <Form.Item name="singleTxt">
+            <Input.TextArea
+              css={{
+                height: 'calc(100vh - 56px - 75px - 80px) !important',
+                padding: '15px'
+              }}
+              disabled={false}
+              placeholder="请输入要合成的文字.."
+              onChange={singleTextChange}
+              allowClear
+            />
+          </Form.Item>
+        </Form>
       </div>
     </Wrapper>
   );

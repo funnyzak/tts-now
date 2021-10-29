@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Modal, Form, Input, Button
-} from 'antd';
+import { Modal, Form, Input } from 'antd';
 import useAppSetting from '@/hook/appHook';
 
 interface IDialogProp {
