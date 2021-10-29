@@ -60,6 +60,8 @@ const VoiceSelectComponent = (props: any) => {
               />
             )}
           >
+            {index}
+            .
             {voiceType.speaker}
             ，
             {voiceType.speechType}
