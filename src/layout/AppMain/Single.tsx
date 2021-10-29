@@ -6,8 +6,6 @@ import { useState, useEffect } from 'react';
 import useAppSetting from '@/hook/appHook';
 import { voiceTypeList } from '@/config';
 
-const { TextArea } = Input;
-
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -18,20 +16,19 @@ const Wrapper = styled.div`
 
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
-  const [singleTxt, setSingleTxt] = useState(
-    !appSetting.singleTxt
-      ? voiceTypeList[appSetting.voiceSetIndex].text
-      : appSetting.singleTxt
-  );
 
-  useEffect(() => {
-    // if (
-    //   singleTxt
-    //   && singleTxt !== voiceTypeList[appSetting.voiceSetIndex].text
-    // ) {
-    setAppSetting({ singleTxt: voiceTypeList[appSetting.voiceSetIndex].text });
-    // }
-  }, [singleTxt, appSetting.voiceSetIndex]);
+  const getSingleTxt = () => (appSetting.singleTxt
+    && appSetting.singleTxt !== null
+    && appSetting.singleTxt.length > 0
+    && voiceTypeList[appSetting.voiceSetIndex].text !== appSetting.singleTxt
+    ? appSetting.singleTxt
+    : voiceTypeList[appSetting.voiceSetIndex].text);
+
+  const [singleTxt] = useState(getSingleTxt());
+
+  const singleTextChange = (e) => {
+    setAppSetting({ singleTxt: e.target.value });
+  };
 
   return (
     <Wrapper>
@@ -67,10 +64,16 @@ const Index = () => {
         </div>
       </div>
       <div>
-        <TextArea
-          css={{ height: 'calc(100vh - 56px - 75px - 80px) !important' }}
-          // value={appSetting.singleTxt}
+        <Input.TextArea
+          css={{
+            height: 'calc(100vh - 56px - 75px - 80px) !important',
+            padding: '15px'
+          }}
+          defaultValue={singleTxt}
           disabled={false}
+          placeholder="请输入要合成的文字.."
+          onChange={singleTextChange}
+          allowClear
         />
       </div>
     </Wrapper>
