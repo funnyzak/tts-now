@@ -12,13 +12,12 @@ const Wrapper = styled.div`
   width: 280px;
   height: 100vh;
   border-right: 1px solid #f4f6fa;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
 `;
 
 const Wrapper2 = styled.div`
   width: 280px;
-  height: calc(100vh - 60px - 60px);
+  height: calc(100vh - 60px - 80px - 60px);
   padding: 0 20px;
   overflow-y: auto;
   box-sizing: border-box;
@@ -30,10 +29,14 @@ const Index = () => {
   return (
     <Wrapper>
       <Affix offsetTop={0}>
-        <Header />
+        <div>
+          <Header />
+          <div css={{ padding: '0 20px' }}>
+            <Avatar />
+          </div>
+        </div>
       </Affix>
       <Wrapper2>
-        <Avatar />
         <AudioSet />
       </Wrapper2>
       <Affix offsetBottom={btnBottom}>
@@ -42,6 +45,7 @@ const Index = () => {
             width: '280px',
             height: '60px',
             padding: '10px 20px',
+            borderRight: '1px solid #f4f6fa',
             backgroundColor: '#fff'
           }}
         >
