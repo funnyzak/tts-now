@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 
 const Wrapper2 = styled.div`
   width: 280px;
-  height: calc(100vh - 80px - 60px);
+  height: calc(100vh - 60px - 60px);
   padding: 0 20px;
   overflow-y: auto;
   box-sizing: border-box;

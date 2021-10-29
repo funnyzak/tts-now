@@ -22,7 +22,7 @@ const VoiceSelectComponent = (props: any) => {
   return (
     <div
       css={{
-        maxHeight: 'calc(100vh - 280px)',
+        maxHeight: 'calc(100vh - 260px)',
         overflowY: 'auto',
         overflowX: 'hidden',
         borderSize: 'border-box',
