@@ -25,13 +25,13 @@ const Index = () => {
   );
 
   useEffect(() => {
-    if (
-      singleTxt
-      && singleTxt !== voiceTypeList[appSetting.voiceSetIndex].text
-    ) {
-      setAppSetting({ singleTxt });
-    }
-  }, [singleTxt]);
+    // if (
+    //   singleTxt
+    //   && singleTxt !== voiceTypeList[appSetting.voiceSetIndex].text
+    // ) {
+    setAppSetting({ singleTxt: voiceTypeList[appSetting.voiceSetIndex].text });
+    // }
+  }, [singleTxt, appSetting.voiceSetIndex]);
 
   return (
     <Wrapper>
@@ -69,7 +69,8 @@ const Index = () => {
       <div>
         <TextArea
           css={{ height: 'calc(100vh - 56px - 75px - 80px) !important' }}
-          value={singleTxt}
+          // value={appSetting.singleTxt}
+          disabled={false}
         />
       </div>
     </Wrapper>

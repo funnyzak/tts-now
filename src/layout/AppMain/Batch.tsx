@@ -34,7 +34,6 @@ interface FileListProp {
 }
 
 const SelectFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
-  console.log(!fileList, fileList !== null);
   if (fileList !== undefined && fileList !== null && fileList.length > 0) {
     return <MainWrapper>这是列表</MainWrapper>;
   }
