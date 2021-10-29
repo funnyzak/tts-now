@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Input, Button, Form } from 'antd';
-import { ReloadOutlined } from '@ant-design/icons';
+import { ReloadOutlined, ExportOutlined } from '@ant-design/icons';
 import { useState, useEffect, useRef } from 'react';
 import useAppSetting from '@/hook/appHook';
 import { voiceTypeList } from '@/config';
@@ -69,6 +69,7 @@ const Index = () => {
             type="primary"
             css={{ width: '148px;', marginLeft: '10px', borderRadius: '5px' }}
             size="large"
+            icon={<ExportOutlined />}
           >
             导出
           </Button>
