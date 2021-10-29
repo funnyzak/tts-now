@@ -104,6 +104,7 @@ const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
         `}
       >
         {value}
+        %
       </div>
     </div>
   );
@@ -136,7 +137,7 @@ const Index = () => {
           title="音量"
         />
       </div>
-      <div css={{ marginTop: '40px' }}>
+      <div css={{ marginTop: '30px' }}>
         <CheckComponent
           value={appSetting.samplingRate}
           name="samplingRate"
