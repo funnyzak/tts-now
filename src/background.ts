@@ -13,6 +13,7 @@ protocol.registerSchemesAsPrivileged([
 function createWindow() {
   // https://www.electronjs.org/zh/docs/latest/api/browser-window
   win = new BrowserWindow({
+    show: isDevelopment,
     width: 950,
     height: 750,
     minHeight: 750,
@@ -33,6 +34,10 @@ function createWindow() {
   } else {
     // Load the index.html when not in development
     win.loadURL(`file://${__dirname}/index.html`);
+
+    win.on('ready-to-show', () => {
+      win.show();
+    });
   }
 }
 
