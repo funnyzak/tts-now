@@ -33,13 +33,14 @@ const VoiceSelectComponent = (props: any) => {
       {voiceTypeList.map((voiceType, index) => (
         <Menu.Item
           key={index.toString()}
-          css={{ borderBottom: '1px solid #eee' }}
-          icon={(
-            <img
-              src={voiceType.img}
-              css={{ height: '30px', width: 'auto' }}
-            />
-            )}
+          css={{
+            borderBottom: '1px solid #eee',
+            height: '45px !important',
+            margin: '0 auto !important'
+          }}
+          icon={
+            <img src={voiceType.img} css={{ height: '30px', width: 'auto' }} />
+          }
         >
           {voiceType.speaker}
           ，
@@ -70,8 +71,7 @@ const Index = () => {
             voiceSetCallBack={changeVoice}
           />
         )}
-        arrow
-        trigger={['hover']}
+        trigger={['click']}
       >
         <Wrapper>
           <img
