@@ -26,7 +26,7 @@ const Wrapper2 = styled.div`
 
 const Index = () => {
   const [btnBottom] = useState(0);
-  const [showSetting, setShowSetting] = useState(false);
+  const [showSetting, setShowSetting] = useState(true);
   return (
     <Wrapper>
       <Affix offsetTop={0}>

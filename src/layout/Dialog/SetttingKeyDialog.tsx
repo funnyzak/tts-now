@@ -11,12 +11,15 @@ interface IDialogProp {
 const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
   const [form] = Form.useForm();
   const { appSetting, setAppSetting } = useAppSetting();
+  const [aliSetting, setAliSetting] = useState({
+    appKey: appSetting.appKey,
+    accessKeyId: appSetting.accessKeyId,
+    accessKeySecret: appSetting.accessKeySecret
+  });
 
-  const [appKey, setAppKey] = useState(appSetting.appKey);
-  const [accessKeyId, setAccessKeyId] = useState(appSetting.accessKeyId);
-  const [accessKeySecret, setAccessKeySecret] = useState(
-    appSetting.accessKeySecret
-  );
+  const valuesChange = (_formValues, _allFormValues) => {
+    setAliSetting(_allFormValues);
+  };
 
   return (
     <>
@@ -26,26 +29,44 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
         okText="确定"
         cancelText="取消"
         visible
-        onOk={() => closeCallBack()}
+        onOk={() => {
+          setAppSetting({ ...aliSetting });
+          closeCallBack();
+        }}
         onCancel={() => closeCallBack()}
         width={300}
       >
-        <Form form={form} layout="vertical">
-          <Form.Item label="AppKey" required tooltip="阿里云">
-            <Input placeholder="请输入AppKey" value={appKey} />
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={aliSetting}
+          labelCol={{ span: 24 }}
+          wrapperCol={{ span: 24 }}
+          onValuesChange={valuesChange}
+        >
+          <Form.Item
+            name="appKey"
+            label="AppKey"
+            required
+            tooltip="需要阿里云后台创建项目获取"
+          >
+            <Input placeholder="请输入AppKey" />
           </Form.Item>
           <Form.Item
             required
+            name="accessKeyId"
             label="AccessKeyId"
-            tooltip={{ title: 'Tooltip with customize icon' }}
+            tooltip={{ title: '阿里云账号API密钥' }}
           >
-            <Input placeholder="请输入AccessKeyId" value={accessKeyId} />
+            <Input placeholder="请输入AccessKeyId" />
           </Form.Item>
-          <Form.Item required label="AccessKeySecret">
-            <Input
-              placeholder="请输入AccessKeySecret"
-              value={accessKeySecret}
-            />
+          <Form.Item
+            name="accessKeySecret"
+            required
+            label="AccessKeySecret"
+            tooltip={{ title: '阿里云账号API密钥' }}
+          >
+            <Input.Password placeholder="请输入AccessKeySecret" />
           </Form.Item>
         </Form>
       </Modal>
