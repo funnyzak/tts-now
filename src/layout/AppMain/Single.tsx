@@ -80,7 +80,8 @@ const Index = () => {
             <Input.TextArea
               css={{
                 height: 'calc(100vh - 56px - 75px - 80px) !important',
-                padding: '15px'
+                padding: '15px',
+                borderRadius: '5px'
               }}
               disabled={false}
               placeholder="请输入要合成的文字.."
