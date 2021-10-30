@@ -2,6 +2,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const electron = require('electron');
 const webpack = require('webpack');
+const chalk = require('chalk');
 const WebpackDevServer = require('webpack-dev-server');
 const config = require('../app.config');
 
@@ -21,35 +22,53 @@ function buildMain() {
         console.log(stats);
       }
 
-      resolve();
+      resolve(true);
     });
   });
 }
 
 function buildRenderer() {
-  const compiler = webpack(rendererWebpackConfig);
-  const devServerOptions = {
-    ...rendererWebpackConfig.devServer,
-    ...config.devServer
-  };
+  return new Promise((resolve, reject) => {
+    const compiler = webpack(rendererWebpackConfig);
+    const devServerOptions = {
+      ...rendererWebpackConfig.devServer,
+      ...config.devServer
+    };
 
-  const server = new WebpackDevServer(devServerOptions, compiler);
-  server.startCallback(() => {
-    console.log(
-      `Starting server on http://${devServerOptions.host}:${devServerOptions.port}`
-    );
+    const server = new WebpackDevServer(devServerOptions, compiler);
+    server.startCallback(() => {
+      console.log(
+        `Starting server on http://${devServerOptions.host}:${devServerOptions.port}`
+      );
+    });
+    resolve(true);
   });
 }
 
-function launch() {
+function startElectron() {
   const args = [path.resolve(process.cwd(), `${config.distOutPut}/main.js`)];
-  const mainProcess = spawn(electron, args);
-  mainProcess.on('close', () => {
+  const electronProcess = spawn(electron, args);
+
+  electronProcess.on('close', () => {
     process.exit();
   });
+
+  electronProcess.stdout.on('data', (data) => {
+    console.log(chalk.blue('------ Electron info start ------'));
+    console.log(chalk.blue(data));
+    console.log(chalk.blue('------ Electron info end ------'));
+  });
+  electronProcess.stderr.on('data', (data) => {
+    console.log(chalk.red('------ Electron error start ------'));
+    console.log(chalk.red(data));
+    console.log(chalk.red('------ Electron error end ------'));
+  });
 }
 
-buildRenderer();
-buildMain().then(() => {
-  launch();
-});
+Promise.all([buildRenderer(), buildMain()])
+  .then(() => {
+    startElectron();
+  })
+  .catch((err) => {
+    console.log(chalk.red(err));
+  });
