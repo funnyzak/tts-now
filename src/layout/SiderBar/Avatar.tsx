@@ -6,8 +6,6 @@ import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import useAppSetting from '@/hook/appHook';
 import { voiceTypeList } from '@/config';
 
-const { Title } = Typography;
-
 const Wrapper = styled.div`
   width: 100%;
   margin: 20px auto;
@@ -17,21 +15,29 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
+const scenePanelStyle = css`
+  max-height: calc(100vh - 260px);
+  overflow: hidden;
+  border-size: border-box;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  background: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const sceneMenuStyle = css`
+  border: 0;
+  overflow-y: auto;
+`;
+
 const VoiceSelectComponent = (props: any) => {
   const { voiceIndex, voiceSetCallBack } = props;
   return (
-    <div
-      css={{
-        maxHeight: 'calc(100vh - 260px)',
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        borderSize: 'border-box',
-        borderRadius: '5px',
-        border: '1px solid #eee',
-        background: '#fff'
-      }}
-    >
-      <Title
+    <div css={scenePanelStyle}>
+      <Typography.Title
         css={css`
           padding: 10px 0 10px 10px;
           border-bottom: 1px solid #eee;
@@ -39,9 +45,9 @@ const VoiceSelectComponent = (props: any) => {
         level={4}
       >
         场景选择
-      </Title>
+      </Typography.Title>
       <Menu
-        css={{ border: '0' }}
+        css={sceneMenuStyle}
         onClick={voiceSetCallBack}
         selectedKeys={[voiceIndex.toString()]}
       >
@@ -60,7 +66,7 @@ const VoiceSelectComponent = (props: any) => {
               />
             )}
           >
-            {index}
+            {index + 1}
             .
             {voiceType.speaker}
             ，
