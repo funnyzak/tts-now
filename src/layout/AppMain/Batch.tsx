@@ -1,12 +1,17 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import React, { useState } from 'react';
+
+import { App, ipcRenderer } from 'electron';
+import fs from 'fs';
+
 import {
   RedoOutlined,
   DeleteOutlined,
   PlayCircleOutlined,
   FolderOpenFilled,
   FileTextOutlined,
+  FileAddOutlined,
   SyncOutlined
 } from '@ant-design/icons';
 import {
@@ -20,6 +25,8 @@ import {
   Row,
   Col
 } from 'antd';
+import { TtsFileStatus } from '@/type/enums';
+import { EventEmitter } from '@/config';
 import useAppSetting from '@/hook/appHook';
 
 const Wrapper = styled.div`
@@ -50,19 +57,76 @@ interface FileListProp {
   fileList?: Array<APP.TtsFileInfo>;
 }
 
-const SelectFilesComponent: React.FC<{}> = () => (
-  <MainWrapper
-    css={css`
-      align-items: center;
-      justify-content: center;
-      background-color: #f4f6fa;
-    `}
-  >
-    <Button type="primary" css={{ width: '145px' }} size="large">
-      选择文本文件
-    </Button>
-  </MainWrapper>
-);
+/**
+ * 获取转换对象列表
+ * @param files 文件路径集合
+ * @returns
+ */
+const readFileList = (files: Array<string>): Array<APP.TtsFileInfo> => {
+  if (files.length === 0) return [];
+
+  console.log('read files:', files);
+
+  const ttsFiles: Array<APP.TtsFileInfo> = [];
+  files.forEach((v) => {
+    ttsFiles.push({
+      filePath: v,
+      fileName: '',
+      textContent: '',
+      status: TtsFileStatus.READY,
+      wordCount: 0
+    });
+  });
+  return ttsFiles;
+};
+
+interface ICallBackFileListProp {
+  callback: (res: Array<APP.TtsFileInfo>) => void;
+}
+
+const SelectFilesComponent: React.FC<ICallBackFileListProp> = ({
+  callback
+}) => {
+  const selectFiles = () => {
+    const actionName = 'select_tts_files';
+
+    ipcRenderer.once(EventEmitter.SELECTED_FILES, (_event, arg) => {
+      console.log('selected files:', arg, _event);
+
+      if (arg.action === actionName && !arg.data.canceled) {
+        callback(readFileList(arg.data.filePaths));
+      }
+    });
+
+    ipcRenderer.send(EventEmitter.SELECT_FILES, {
+      action: actionName,
+      config: {
+        properties: ['openFile', 'multiSelections'],
+        filters: [{ name: '文件', extensions: ['txt', 'text'] }]
+      }
+    });
+  };
+
+  return (
+    <MainWrapper
+      css={css`
+        align-items: center;
+        justify-content: center;
+        background-color: #f4f6fa;
+      `}
+    >
+      <Button
+        type="primary"
+        icon={<FileAddOutlined />}
+        css={{ width: '145px' }}
+        size="large"
+        onClick={selectFiles}
+      >
+        选择文本文件
+      </Button>
+    </MainWrapper>
+  );
+};
 
 const OutPutPathSelectComponent: React.FC<{}> = () => (
   <div>
@@ -127,8 +191,8 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
     value.key = index + 1;
   });
 
-  const statusFilterConfig = Object.keys(APP.TtsFileStatus).map((v) => ({
-    text: APP.TtsFileStatus[v].toString(),
+  const statusFilterConfig = Object.keys(TtsFileStatus).map((v) => ({
+    text: TtsFileStatus[v].toString(),
     value: v
   }));
 
@@ -138,7 +202,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
         css={tableStyle}
         sticky
         dataSource={fileList}
-        rowClassName={(row: APP.TtsFileInfo) => (row.key % 2 === 0 ? 'hightight-bg' : '')}
+        rowClassName={(row: APP.TtsFileInfo) => ((row.key || 0) % 2 === 0 ? 'hightight-bg' : '')}
         pagination={false}
         onChange={tableChange}
       >
@@ -193,24 +257,24 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           key="status"
           width={100}
           filters={statusFilterConfig}
-          onFilter={(val, data: APP.TtsFileInfo) => APP.TtsFileStatus[val as string] === data.status}
-          render={(status: APP.TtsFileStatus, row: APP.TtsFileInfo) => (
+          onFilter={(val, data: APP.TtsFileInfo) => TtsFileStatus[val as string] === data.status}
+          render={(status: TtsFileStatus, row: APP.TtsFileInfo) => (
             <>
               <Tooltip title={row.error} color="red">
                 <Tag
                   icon={
-                    status === APP.TtsFileStatus.PROCESS ? (
+                    status === TtsFileStatus.PROCESS ? (
                       <SyncOutlined spin />
                     ) : (
                       <span />
                     )
                   }
                   color={
-                    status === APP.TtsFileStatus.PROCESS
+                    status === TtsFileStatus.PROCESS
                       ? 'cyan'
-                      : status === APP.TtsFileStatus.SUCCESS
+                      : status === TtsFileStatus.SUCCESS
                         ? 'success'
-                        : status === APP.TtsFileStatus.FAIL
+                        : status === TtsFileStatus.FAIL
                           ? 'error'
                           : 'blue'
                   }
@@ -232,9 +296,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
                 alt="播放音频"
                 style={{
                   color:
-                    data.status === APP.TtsFileStatus.SUCCESS
-                      ? '#52c41a'
-                      : '#ccc'
+                    data.status === TtsFileStatus.SUCCESS ? '#52c41a' : '#ccc'
                 }}
               />
               <FolderOpenFilled
@@ -251,69 +313,22 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
   );
 };
 
-const MangageFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
+interface MangageFilesComponentProp {
+  fileList?: Array<APP.TtsFileInfo>;
+  callback: (res: Array<APP.TtsFileInfo>) => void;
+}
+
+const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
+  fileList,
+  callback
+}) => {
   if (fileList !== undefined && fileList !== null && fileList.length > 0) {
     return <ConvertFilesComponent fileList={fileList} />;
   }
-  return <SelectFilesComponent />;
+  return <SelectFilesComponent callback={callback} />;
 };
 
-// MangageFilesComponent.defaultProps = {
-//   fileList: [
-//     {
-//       key: 1,
-//       filePath: '/path/大同定.txt',
-//       fileName: '大同定.txt',
-//       textContent: `你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-//       你好
-//       你好
-//       你好你好`,
-//       wordCount: 2,
-//       elapsed: 5,
-//       status: App.FileConvertStatus.READY
-//     },
-//     {
-//       key: 1,
-//       filePath: '/path/大同定.txt',
-//       fileName: '大同大同定大同定大同定大同定大同定.txt',
-//       textContent: '你好',
-//       wordCount: 20,
-//       elapsed: 20,
-//       status: App.FileConvertStatus.PROCESS
-//     },
-//     {
-//       key: 1,
-//       filePath: '/path/大同定.txt',
-//       fileName: '大同定.txt',
-//       textContent: '你好',
-//       wordCount: 2,
-//       elapsed: 30,
-//       status: App.FileConvertStatus.FAIL,
-//       error: '网络遇到错误'
-//     },
-//     {
-//       key: 1,
-//       filePath: '/path/大同定.txt',
-//       fileName: '大同定.txt',
-//       textContent: '你好',
-//       wordCount: 12,
-//       elapsed: 0,
-//       status: App.FileConvertStatus.SUCCESS
-//     },
-//     {
-//       key: 1,
-//       filePath: '/path/大同定.txt',
-//       fileName: '大同定.txt',
-//       textContent: '你好',
-//       wordCount: 2,
-//       elapsed: 0,
-//       status: App.FileConvertStatus.READY
-//     }
-//   ]
-// };
-
 const Index = () => {
-  const { appSetting, setAppSetting } = useAppSetting();
   const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>();
 
   return (
@@ -349,7 +364,10 @@ const Index = () => {
           </Col>
         )}
       </Row>
-      <MangageFilesComponent fileList={fileList} />
+      <MangageFilesComponent
+        fileList={fileList}
+        callback={(files) => setFileList(files)}
+      />
     </Wrapper>
   );
 };
