@@ -30,7 +30,7 @@ const CheckComponent: React.FC<CheckBoxInterface> = (
   };
 
   useEffect(() => {
-    appSetting[name] = val;
+    appSetting.ttsSetting[name] = val;
     setAppSetting(appSetting);
   }, [val]);
 
@@ -70,7 +70,7 @@ const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
   };
 
   useEffect(() => {
-    appSetting[name] = val;
+    appSetting.ttsSetting[name] = val;
     setAppSetting(appSetting);
   }, [val]);
 
@@ -122,30 +122,30 @@ const Index = () => {
     <Wrapper>
       <div css={{ paddingBottom: '30px', borderBottom: '1px solid #f2f9f2' }}>
         <SliderComponent
-          value={appSetting.ttsSpeed}
+          value={appSetting.ttsSetting.ttsSpeed}
           name="ttsSpeed"
           title="语速"
         />
         <SliderComponent
-          value={appSetting.ttsTone}
+          value={appSetting.ttsSetting.ttsTone}
           name="ttsTone"
           title="语调"
         />
         <SliderComponent
-          value={appSetting.ttsVolumn}
+          value={appSetting.ttsSetting.ttsVolumn}
           name="ttsVolumn"
           title="音量"
         />
       </div>
       <div css={{ marginTop: '30px' }}>
         <CheckComponent
-          value={appSetting.samplingRate}
+          value={appSetting.ttsSetting.samplingRate}
           name="samplingRate"
           title="采样率"
           options={uiConfig.samplingRateList}
         />
         <CheckComponent
-          value={appSetting.outputFormat}
+          value={appSetting.ttsSetting.outputFormat}
           name="outputFormat"
           title="导出格式"
           options={uiConfig.outputFormatList}

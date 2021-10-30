@@ -36,18 +36,23 @@ const singleTxtStyle = {
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
 
-  const getSingleTxt = () => (appSetting.singleTxt
-    && appSetting.singleTxt !== null
-    && appSetting.singleTxt.length > 0
-    && voiceTypeList[appSetting.voiceSetIndex].text !== appSetting.singleTxt
-    ? appSetting.singleTxt
-    : voiceTypeList[appSetting.voiceSetIndex].text);
+  const getSingleTxt = () => (appSetting.customSetting.singleTxt
+    && appSetting.customSetting.singleTxt !== null
+    && appSetting.customSetting.singleTxt.length > 0
+    && voiceTypeList[appSetting.ttsSetting.sceneIndex].text
+      !== appSetting.customSetting.singleTxt
+    ? appSetting.customSetting.singleTxt
+    : voiceTypeList[appSetting.ttsSetting.sceneIndex].text);
 
   const [singleTxt, setSingleTxt] = useState(getSingleTxt());
   const singleFormRef: any = useRef(null);
 
   const singleTextChange = (e) => {
-    setAppSetting({ singleTxt: e.target.value });
+    setAppSetting({
+      customSetting: Object.assign(appSetting.customSetting, {
+        singleTxt: e.target.value
+      })
+    });
   };
 
   useEffect(() => {
@@ -58,7 +63,7 @@ const Index = () => {
     ) {
       singleFormRef.current.setFieldsValue({ singleTxt: getSingleTxt() });
     }
-  }, [appSetting.voiceSetIndex]);
+  }, [appSetting.ttsSetting.sceneIndex]);
 
   return (
     <Wrapper>

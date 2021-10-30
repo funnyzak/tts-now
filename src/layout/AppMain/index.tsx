@@ -27,14 +27,16 @@ const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
 
   const changeTagHandle = (actionMode: string) => {
-    setAppSetting({ actionMode });
+    setAppSetting({
+      customSetting: Object.assign(appSetting.customSetting, { actionMode })
+    });
   };
 
   return (
     <Wrapper>
       <Tabs
         onChange={changeTagHandle}
-        defaultActiveKey={appSetting.actionMode}
+        defaultActiveKey={appSetting.customSetting.actionMode}
         type="card"
         size="large"
       >

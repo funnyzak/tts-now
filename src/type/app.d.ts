@@ -7,8 +7,27 @@ declare global {
     }): void;
 
     export interface AppSetting {
-      // 场景选择
-      voiceSetIndex: number;
+      ttsSetting: TTSSetting;
+
+      customSetting: CustomSetting;
+
+      aliSetting?: AliSetting;
+    }
+
+    export interface CustomSetting {
+      // 单个转换文本内容
+      singleTxt?: string;
+
+      // 默认转换选项卡
+      actionMode: string;
+    }
+
+    /**
+     * TTS 配置
+     */
+    export interface TTSSetting {
+      // 场景索引
+      sceneIndex: number;
 
       // 音量
       ttsVolumn: number;
@@ -24,20 +43,12 @@ declare global {
 
       // 输出格式
       outputFormat: Array<string>;
-
-      // 单个转换文本内容
-      singleTxt?: string;
-
-      // 默认转换选项卡
-      actionMode: string;
-
-      aliSetting?: IAliSetting;
     }
 
     /**
      * 阿里云配置
      */
-    export interface IAliSetting {
+    export interface AliSetting {
       appKey?: string;
       accessKeyId?: string;
       accessKeySecret?: string;
@@ -46,7 +57,7 @@ declare global {
     /**
      * 文件合成状态
      */
-    export enum FileConvertStatus {
+    export enum TtsFileStatus {
       READY = '就绪',
       PROCESS = '处理',
       FAIL = '错误',
@@ -56,8 +67,12 @@ declare global {
     /**
      * 要合成的文件
      */
-    export interface FileInfoProp {
+    export interface TtsFileInfo {
       key: number;
+      /**
+       * 转换所使用的配置
+       */
+      ttsSetting: TTSSetting;
       /**
        * 文件路径
        */
@@ -73,7 +88,7 @@ declare global {
       /**
        *  状态
        */
-      status: FileConvertStatus;
+      status: TtsFileStatus;
       /**
        * 字符数
        */

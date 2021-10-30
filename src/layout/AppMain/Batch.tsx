@@ -47,7 +47,7 @@ const tableStyle = css`
 `;
 
 interface FileListProp {
-  fileList?: Array<APP.FileInfoProp>;
+  fileList?: Array<APP.TtsFileInfo>;
 }
 
 const SelectFilesComponent: React.FC<{}> = () => (
@@ -88,9 +88,9 @@ const OutPutPathSelectComponent: React.FC<{}> = () => (
 );
 
 const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
-  const [currentRow, setCurrentRow] = useState<APP.FileInfoProp>();
+  const [currentRow, setCurrentRow] = useState<APP.TtsFileInfo>();
 
-  const showTxtDialog = (data: APP.FileInfoProp) => {
+  const showTxtDialog = (data: APP.TtsFileInfo) => {
     Modal.info({
       title: `预览「${data.fileName}」`,
       okText: '关闭预览',
@@ -103,7 +103,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
     });
   };
 
-  const actionHandler = (action: string, data: APP.FileInfoProp) => {
+  const actionHandler = (action: string, data: APP.TtsFileInfo) => {
     setCurrentRow(data);
 
     if (action === 'play') {
@@ -127,8 +127,8 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
     value.key = index + 1;
   });
 
-  const statusFilterConfig = Object.keys(APP.FileConvertStatus).map((v) => ({
-    text: APP.FileConvertStatus[v].toString(),
+  const statusFilterConfig = Object.keys(APP.TtsFileStatus).map((v) => ({
+    text: APP.TtsFileStatus[v].toString(),
     value: v
   }));
 
@@ -138,7 +138,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
         css={tableStyle}
         sticky
         dataSource={fileList}
-        rowClassName={(row: APP.FileInfoProp) => (row.key % 2 === 0 ? 'hightight-bg' : '')}
+        rowClassName={(row: APP.TtsFileInfo) => (row.key % 2 === 0 ? 'hightight-bg' : '')}
         pagination={false}
         onChange={tableChange}
       >
@@ -147,7 +147,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           title="文件"
           dataIndex="fileName"
           key="fileName"
-          render={(_value: string, _row: APP.FileInfoProp) => (
+          render={(_value: string, _row: APP.TtsFileInfo) => (
             <div
               role="button"
               tabIndex={_row.key}
@@ -164,7 +164,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           dataIndex="wordCount"
           key="wordCount"
           width={80}
-          sorter={(a: APP.FileInfoProp, b: APP.FileInfoProp) => a.wordCount - b.wordCount}
+          sorter={(a: APP.TtsFileInfo, b: APP.TtsFileInfo) => a.wordCount - b.wordCount}
           render={(value: number) => (
             <>
               {value}
@@ -185,7 +185,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
               秒
             </>
           )}
-          sorter={(a: APP.FileInfoProp, b: APP.FileInfoProp) => (a.elapsed || 0) - (b.elapsed || 0)}
+          sorter={(a: APP.TtsFileInfo, b: APP.TtsFileInfo) => (a.elapsed || 0) - (b.elapsed || 0)}
         />
         <Table.Column
           title="状态"
@@ -193,24 +193,24 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           key="status"
           width={100}
           filters={statusFilterConfig}
-          onFilter={(val, data: APP.FileInfoProp) => APP.FileConvertStatus[val as string] === data.status}
-          render={(status: APP.FileConvertStatus, row: APP.FileInfoProp) => (
+          onFilter={(val, data: APP.TtsFileInfo) => APP.TtsFileStatus[val as string] === data.status}
+          render={(status: APP.TtsFileStatus, row: APP.TtsFileInfo) => (
             <>
               <Tooltip title={row.error} color="red">
                 <Tag
                   icon={
-                    status === APP.FileConvertStatus.PROCESS ? (
+                    status === APP.TtsFileStatus.PROCESS ? (
                       <SyncOutlined spin />
                     ) : (
                       <span />
                     )
                   }
                   color={
-                    status === APP.FileConvertStatus.PROCESS
+                    status === APP.TtsFileStatus.PROCESS
                       ? 'cyan'
-                      : status === APP.FileConvertStatus.SUCCESS
+                      : status === APP.TtsFileStatus.SUCCESS
                         ? 'success'
-                        : status === APP.FileConvertStatus.FAIL
+                        : status === APP.TtsFileStatus.FAIL
                           ? 'error'
                           : 'blue'
                   }
@@ -225,14 +225,14 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           title="操作"
           width={120}
           key="action"
-          render={(_txt, data: APP.FileInfoProp) => (
+          render={(_txt, data: APP.TtsFileInfo) => (
             <Space size="middle">
               <PlayCircleOutlined
                 onClick={() => actionHandler('play', data)}
                 alt="播放音频"
                 style={{
                   color:
-                    data.status === APP.FileConvertStatus.SUCCESS
+                    data.status === APP.TtsFileStatus.SUCCESS
                       ? '#52c41a'
                       : '#ccc'
                 }}
@@ -314,7 +314,7 @@ const MangageFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
 
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
-  const [fileList, setFileList] = useState<Array<APP.FileInfoProp>>();
+  const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>();
 
   return (
     <Wrapper>

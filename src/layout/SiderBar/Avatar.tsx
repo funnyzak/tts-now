@@ -83,7 +83,8 @@ const Index = () => {
   const [menuShow, setMenuShow] = useState<boolean>(false);
 
   const changeVoice = ({ key: voiceSetIndex }) => {
-    setAppSetting({ voiceSetIndex });
+    appSetting.ttsSetting.sceneIndex = voiceSetIndex;
+    setAppSetting(appSetting);
   };
 
   return (
@@ -94,7 +95,7 @@ const Index = () => {
         }}
         overlay={(
           <VoiceSelectComponent
-            voiceIndex={appSetting.voiceSetIndex}
+            voiceIndex={appSetting.ttsSetting.sceneIndex}
             voiceSetCallBack={changeVoice}
           />
         )}
@@ -107,7 +108,7 @@ const Index = () => {
               height: 'auto',
               marginRight: '20px'
             }}
-            src={voiceTypeList[appSetting.voiceSetIndex].img}
+            src={voiceTypeList[appSetting.ttsSetting.sceneIndex].img}
           />
           <div>
             <div
@@ -118,7 +119,7 @@ const Index = () => {
                 color: #000;
               `}
             >
-              {voiceTypeList[appSetting.voiceSetIndex].speaker}
+              {voiceTypeList[appSetting.ttsSetting.sceneIndex].speaker}
             </div>
             <div
               css={css`
@@ -127,7 +128,7 @@ const Index = () => {
                 color: #666;
               `}
             >
-              {voiceTypeList[appSetting.voiceSetIndex].speechType}
+              {voiceTypeList[appSetting.ttsSetting.sceneIndex].speechType}
             </div>
           </div>
           <div>{!menuShow ? <CaretDownOutlined /> : <CaretUpOutlined />}</div>
