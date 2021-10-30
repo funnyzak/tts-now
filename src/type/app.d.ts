@@ -1,3 +1,5 @@
+import { TtsFileStatus } from './enums';
+
 // https://stackoverflow.com/questions/57132428/augmentations-for-the-global-scope-can-only-be-directly-nested-in-external-modul
 export {};
 declare global {
@@ -55,24 +57,14 @@ declare global {
     }
 
     /**
-     * 文件合成状态
-     */
-    export enum TtsFileStatus {
-      READY = '就绪',
-      PROCESS = '处理',
-      FAIL = '错误',
-      SUCCESS = '成功'
-    }
-
-    /**
      * 要合成的文件
      */
     export interface TtsFileInfo {
-      key: number;
+      key?: number;
       /**
        * 转换所使用的配置
        */
-      ttsSetting: TTSSetting;
+      ttsSetting?: TTSSetting;
       /**
        * 文件路径
        */

@@ -57,5 +57,11 @@ export const AppContext = React.createContext({
   }
 });
 
+// 事件发射器名称
+export const EventEmitter = {
+  SELECT_FILES: 'select_files',
+  SELECTED_FILES: 'selected_files'
+};
+
 // 读取当前配置
 export default appName;
