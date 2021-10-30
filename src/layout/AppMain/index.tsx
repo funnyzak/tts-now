@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import SingleTTS from './Single';
 import BatchTTS from './Batch';
+import useAppSetting from '@/hook/appHook';
+import { AppSetting } from '@/config/define';
 
 import './index.scss';
 
@@ -23,18 +25,26 @@ const PanelWrapper = styled.div`
   background-color: #fff;
 `;
 const Index = () => {
-  const callback = (data) => {
-    console.log(data);
+  const { appSetting, setAppSetting } = useAppSetting();
+
+  const changeTagHandle = (actionMode: string) => {
+    setAppSetting({ actionMode });
   };
+
   return (
     <Wrapper>
-      <Tabs onChange={callback} type="card" size="large">
-        <TabPane tab="文字" key="1">
+      <Tabs
+        onChange={changeTagHandle}
+        defaultActiveKey={appSetting.actionMode}
+        type="card"
+        size="large"
+      >
+        <TabPane tab="文字" key="SINGLE">
           <PanelWrapper>
             <SingleTTS />
           </PanelWrapper>
         </TabPane>
-        <TabPane tab="批量" key="2">
+        <TabPane tab="批量" key="BATCH">
           <PanelWrapper>
             <BatchTTS />
           </PanelWrapper>

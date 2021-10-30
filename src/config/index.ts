@@ -29,6 +29,7 @@ export const defaultAppSetting: AppSetting = {
   ttsTone: 50,
   ttsSpeed: 50,
   ttsVolumn: 50,
+  actionMode: 'SINGLE',
   appKey: '',
   accessKeyId: '',
   accessKeySecret: ''
