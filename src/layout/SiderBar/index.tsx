@@ -23,6 +23,14 @@ const Wrapper2 = styled.div`
   box-sizing: border-box;
 `;
 
+const settingButtonStyle = css`
+  width: 280px;
+  height: 60px;
+  padding: 12px 20px 0;
+  border-right: 1px solid #f4f6fa;
+  background-color: #fff;
+`;
+
 const Index = () => {
   const [btnBottom] = useState(0);
   const [showSetting, setShowSetting] = useState(false);
@@ -40,17 +48,9 @@ const Index = () => {
         <AudioSet />
       </Wrapper2>
       <Affix offsetBottom={btnBottom}>
-        <div
-          css={{
-            width: '280px',
-            height: '60px',
-            padding: '10px 20px',
-            borderRight: '1px solid #f4f6fa',
-            backgroundColor: '#fff'
-          }}
-        >
+        <div css={settingButtonStyle}>
           <Button
-            css={{ width: '100%', borderRadius: '5px' }}
+            css={{ width: '100%' }}
             type="primary"
             icon={<SettingOutlined />}
             size="large"
@@ -58,7 +58,7 @@ const Index = () => {
               setShowSetting(true);
             }}
           >
-            配置密钥
+            配置
           </Button>
         </div>
       </Affix>
