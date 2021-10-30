@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import React, { useState } from 'react';
 
-import { App, ipcRenderer } from 'electron';
+import { App, ipcRenderer, shell } from 'electron';
 import fs from 'fs';
+import path from 'path';
 
 import {
   RedoOutlined,
@@ -70,14 +71,20 @@ const readFileList = (files: Array<string>): Array<APP.TtsFileInfo> => {
 
   const ttsFiles: Array<APP.TtsFileInfo> = [];
   files.forEach((v) => {
-    ttsFiles.push({
-      filePath: v,
-      fileName: '',
-      textContent: '',
-      status: TtsFileStatus.READY,
-      wordCount: 0
-    });
+    try {
+      const textContent = fs.readFileSync(v, 'utf-8');
+      ttsFiles.push({
+        filePath: v,
+        fileName: path.basename(v),
+        textContent,
+        status: TtsFileStatus.READY,
+        wordCount: textContent.length
+      });
+    } catch (err) {
+      console.log(`读取文件【${v}】失败`, err);
+    }
   });
+  console.log('read tts file after:', ttsFiles);
   return ttsFiles;
 };
 
@@ -154,7 +161,7 @@ const OutPutPathSelectComponent: React.FC<{}> = () => {
       <Input
         defaultValue={savePath}
         value={savePath}
-        placeholder="请选择或填写保存路径.."
+        placeholder="还没设置哦.."
         css={{ padding: '0', border: '0', borderTop: '1px solid #f4f6fa' }}
         size="small"
         addonBefore="保存到："
@@ -197,7 +204,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
     if (action === 'play') {
       console.log(action);
     } else if (action === 'open') {
-      console.log(action);
+      shell.showItemInFolder(data.filePath);
     } else if (action === 'txt') {
       showTxtDialog(data);
     }
@@ -230,7 +237,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
         pagination={false}
         onChange={tableChange}
       >
-        <Table.Column title="序号" dataIndex="key" key="key" width={80} />
+        <Table.Column title="序号" dataIndex="key" key="key" width={58} />
         <Table.Column
           title="文件"
           dataIndex="fileName"
@@ -238,6 +245,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           render={(_value: string, _row: APP.TtsFileInfo) => (
             <div
               role="button"
+              css={{ cursor: 'pointer' }}
               tabIndex={_row.key}
               onMouseDown={() => actionHandler('txt', _row)}
             >
@@ -316,12 +324,12 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
                 alt="播放音频"
                 style={{
                   color:
-                    data.status === TtsFileStatus.SUCCESS ? '#52c41a' : '#ccc'
+                      data.status === TtsFileStatus.SUCCESS ? '#52c41a' : '#ccc'
                 }}
               />
               <FolderOpenFilled
                 onClick={() => actionHandler('open', data)}
-                alt="打开原文件"
+                alt="打开文件夹"
                 style={{ color: '#414e62' }}
               />
             </Space>
@@ -346,6 +354,27 @@ const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
     return <ConvertFilesComponent fileList={fileList} />;
   }
   return <SelectFilesComponent callback={callback} />;
+};
+
+MangageFilesComponent.defaultProps = {
+  fileList: [
+    {
+      filePath: '/Users/potato/Desktop/你好朋友.txt',
+      fileName: '你好朋友.txt',
+      textContent: '你好啊，我的朋友！',
+      status: TtsFileStatus.READY,
+      wordCount: 9,
+      key: 1
+    },
+    {
+      filePath: '/Users/potato/Desktop/风.txt',
+      fileName: '风.txt',
+      textContent: '为站在烈烈风中',
+      status: TtsFileStatus.READY,
+      wordCount: 7,
+      key: 2
+    }
+  ]
 };
 
 const Index = () => {
