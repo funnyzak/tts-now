@@ -80,9 +80,11 @@ const Index = () => {
           <Form.Item name="singleTxt">
             <Input.TextArea
               css={{
-                height: 'calc(100vh - 56px - 75px - 80px) !important',
+                height: 'calc(100vh - 80px - 115px - 30px) !important',
                 padding: '15px',
-                borderRadius: '5px'
+                margin: 0,
+                borderRadius: '5px',
+                overflow: 'hidden'
               }}
               disabled={false}
               placeholder="请输入要合成的文字.."

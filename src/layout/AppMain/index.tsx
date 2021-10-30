@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 `;
 
 const PanelWrapper = styled.div`
-  height: calc(100vh - 75px);
+  height: calc(100vh - 80px);
   padding-left: 37px;
   padding-right: 20px;
   background-color: #fff;

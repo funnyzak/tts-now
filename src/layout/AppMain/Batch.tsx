@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 `;
 
 const MainWrapper = styled.div`
-  height: calc(100vh - 56px - 75px - 80px) !important;
+  height: calc(100vh - 80px - 115px - 30px) !important;
   border: 1px solid #f4f6fa;
   display: flex;
 `;
@@ -80,7 +80,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
   return (
     <MainWrapper>
       {fileList !== undefined}
-      <Table dataSource={fileList} css={{ width: '100%' }}>
+      <Table dataSource={fileList} css={{ width: '100%' }} pagination={false}>
         <Table.Column title="文件名" dataIndex="fileName" key="fileName" />
         <Table.Column title="字符数" dataIndex="wordCount" key="wordCount" />
         <Table.Column title="合成耗时" dataIndex="elapsed" key="elapsed" />
