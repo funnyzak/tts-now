@@ -8,7 +8,7 @@ export default () => {
   const [setting, setSetting] = useState(appSetting);
 
   const updateConfig = (newSetting: {
-    [T in keyof App.AppSetting]?: App.AppSetting[T];
+    [T in keyof APP.AppSetting]?: APP.AppSetting[T];
   }) => {
     setSetting({ ...setting, ...newSetting });
   };

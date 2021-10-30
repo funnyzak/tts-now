@@ -21,7 +21,7 @@ export const uiConfig = {
 };
 
 // 默认APP配置
-export const defaultAppSetting: App.AppSetting = {
+export const defaultAppSetting: APP.AppSetting = {
   voiceSetIndex: 0,
   samplingRate: ['8'],
   outputFormat: ['mp3'],
@@ -38,7 +38,7 @@ export const appSettingCacheKey = 'AppSetting';
 export const cacheAppSetting = localStorage.getItem(appSettingCacheKey);
 
 // 读取当前配置
-export const appSetting: App.AppSetting = cacheAppSetting
+export const appSetting: APP.AppSetting = cacheAppSetting
   ? JSON.parse(cacheAppSetting)
   : defaultAppSetting;
 
@@ -46,7 +46,7 @@ export const appSetting: App.AppSetting = cacheAppSetting
 export const AppContext = React.createContext({
   appSetting,
   setAppSetting: (_settings: {
-    [T in keyof App.AppSetting]?: App.AppSetting[T];
+    [T in keyof APP.AppSetting]?: APP.AppSetting[T];
   }) => {
     // console.log(appSetting)
   }

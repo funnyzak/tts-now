@@ -12,7 +12,7 @@ module.exports = {
   globals: {
     PRODUCTION: 'readonly',
     NODE_ENV: 'readonly',
-    App: 'readonly'
+    APP: 'readonly'
   },
   extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb'],
   plugins: [
@@ -35,7 +35,7 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
-    // 长度
+    // 代码长度
     'max-len': ["error", { "code": 200, "ignoreComments": true, "ignoreUrls": true, "ignoreTemplateLiterals": true }],
     'semi': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
