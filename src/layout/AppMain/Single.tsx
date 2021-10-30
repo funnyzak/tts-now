@@ -29,7 +29,8 @@ const singleTxtStyle = {
   padding: '15px',
   margin: 0,
   overflow: 'hidden',
-  marginBottom: '10px'
+  marginBottom: '10px',
+  lineHeight: '22px !important'
 };
 
 const Index = () => {

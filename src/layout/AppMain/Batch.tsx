@@ -82,10 +82,17 @@ const OutPutPathSelectComponent: React.FC<{}> = () => (
       defaultValue=""
       placeholder="请选择或填写合成文件保存的文件夹路径.."
       css={{ padding: '0', border: '0', borderTop: '1px solid #f4f6fa' }}
-      size="large"
-      prefix={(
-        <Button type="primary" size="large">
-          选择保存输出目录
+      size="small"
+      addonBefore="保存到："
+      suffix={(
+        <Button
+          css={css`
+            margin: 0;
+          `}
+          type="primary"
+          size="large"
+        >
+          设置输出文件夹
         </Button>
       )}
     />
@@ -104,8 +111,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
       centered: true,
       keyboard: true,
       icon: <FileTextOutlined />,
-      content: <pre>{data.textContent}</pre>,
-      onOk() {}
+      content: <pre>{data.textContent}</pre>
     });
   };
 
@@ -121,9 +127,22 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
     }
   };
 
+  const tableChange = (_pagination, _filters, _sorter, _extra: any) => {
+    // 重新设置row => key
+    _extra.currentDataSource.map((_v, _i) => {
+      _v.key = _i + 1;
+      return _v;
+    });
+  };
+
   fileList?.forEach((value, index) => {
     value.key = index + 1;
   });
+
+  const statusFilterConfig = Object.keys(FileConvertStatus).map((v) => ({
+    text: FileConvertStatus[v].toString(),
+    value: v
+  }));
 
   return (
     <MainWrapper>
@@ -131,10 +150,11 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
         css={tableStyle}
         sticky
         dataSource={fileList}
-        rowClassName={(row: FileInfoProp) => (row.key % 2 === 0 ? 'hight-bg' : '')}
+        rowClassName={(row: FileInfoProp) => (row.key % 2 === 0 ? 'hightight-bg' : '')}
         pagination={false}
+        onChange={tableChange}
       >
-        <Table.Column title="序号" dataIndex="key" key="key" width={58} />
+        <Table.Column title="序号" dataIndex="key" key="key" width={80} />
         <Table.Column
           title="文件"
           dataIndex="fileName"
@@ -156,6 +176,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           dataIndex="wordCount"
           key="wordCount"
           width={80}
+          sorter={(a: FileInfoProp, b: FileInfoProp) => a.wordCount - b.wordCount}
           render={(value: number) => (
             <>
               {value}
@@ -183,6 +204,8 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           dataIndex="status"
           key="status"
           width={100}
+          filters={statusFilterConfig}
+          onFilter={(val, data: FileInfoProp) => FileConvertStatus[val as string] === data.status}
           render={(status: FileConvertStatus, row: FileInfoProp) => (
             <>
               <Tooltip title={row.error} color="red">
@@ -245,59 +268,60 @@ const MangageFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
   return <SelectFilesComponent />;
 };
 
-MangageFilesComponent.defaultProps = {
-  fileList: [
-    {
-      key: 1,
-      filePath: '/path/大同定.txt',
-      fileName: '大同定.txt',
-      textContent: `你好你好你好你好你好你好你好你好你好你好你好你好你好你好
-      你好
-      你好
-      你好你好`,
-      wordCount: 2,
-      elapsed: 5,
-      status: FileConvertStatus.READY
-    },
-    {
-      key: 1,
-      filePath: '/path/大同定.txt',
-      fileName: '大同大同定大同定大同定大同定大同定.txt',
-      textContent: '你好',
-      wordCount: 2,
-      elapsed: 20,
-      status: FileConvertStatus.PROCESS
-    },
-    {
-      key: 1,
-      filePath: '/path/大同定.txt',
-      fileName: '大同定.txt',
-      textContent: '你好',
-      wordCount: 2,
-      elapsed: 30,
-      status: FileConvertStatus.FAIL,
-      error: '网络遇到错误'
-    },
-    {
-      key: 1,
-      filePath: '/path/大同定.txt',
-      fileName: '大同定.txt',
-      textContent: '你好',
-      wordCount: 2,
-      elapsed: 0,
-      status: FileConvertStatus.SUCCESS
-    },
-    {
-      key: 1,
-      filePath: '/path/大同定.txt',
-      fileName: '大同定.txt',
-      textContent: '你好',
-      wordCount: 2,
-      elapsed: 0,
-      status: FileConvertStatus.READY
-    }
-  ]
-};
+// MangageFilesComponent.defaultProps = {
+//   fileList: [
+//     {
+//       key: 1,
+//       filePath: '/path/大同定.txt',
+//       fileName: '大同定.txt',
+//       textContent: `你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+//       你好
+//       你好
+//       你好你好`,
+//       wordCount: 2,
+//       elapsed: 5,
+//       status: FileConvertStatus.READY
+//     },
+//     {
+//       key: 1,
+//       filePath: '/path/大同定.txt',
+//       fileName: '大同大同定大同定大同定大同定大同定.txt',
+//       textContent: '你好',
+//       wordCount: 20,
+//       elapsed: 20,
+//       status: FileConvertStatus.PROCESS
+//     },
+//     {
+//       key: 1,
+//       filePath: '/path/大同定.txt',
+//       fileName: '大同定.txt',
+//       textContent: '你好',
+//       wordCount: 2,
+//       elapsed: 30,
+//       status: FileConvertStatus.FAIL,
+//       error: '网络遇到错误'
+//     },
+//     {
+//       key: 1,
+//       filePath: '/path/大同定.txt',
+//       fileName: '大同定.txt',
+//       textContent: '你好',
+//       wordCount: 12,
+//       elapsed: 0,
+//       status: FileConvertStatus.SUCCESS
+//     },
+//     {
+//       key: 1,
+//       filePath: '/path/大同定.txt',
+//       fileName: '大同定.txt',
+//       textContent: '你好',
+//       wordCount: 2,
+//       elapsed: 0,
+//       status: FileConvertStatus.READY
+//     }
+//   ]
+// };
+
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
   const [fileList, setFileList] = useState<Array<FileInfoProp>>();
