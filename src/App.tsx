@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ConfigProvider } from 'antd';
+import zhCN from 'antd/lib/locale/zh_CN';
 import Index from './layout';
 import { AppSetting } from '@/config/define';
 import { AppContext, appSetting, appSettingCacheKey } from '@/config';
@@ -18,7 +19,7 @@ export default () => {
   }, [setting]);
 
   return (
-    <ConfigProvider direction="ltr">
+    <ConfigProvider direction="ltr" locale={zhCN}>
       <AppContext.Provider
         value={{ appSetting: setting, setAppSetting: updateConfig }}
       >
