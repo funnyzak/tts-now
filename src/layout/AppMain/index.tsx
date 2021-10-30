@@ -4,7 +4,6 @@ import { css } from '@emotion/react';
 import SingleTTS from './Single';
 import BatchTTS from './Batch';
 import useAppSetting from '@/hook/appHook';
-import { AppSetting } from '@/config/define';
 
 import './index.scss';
 

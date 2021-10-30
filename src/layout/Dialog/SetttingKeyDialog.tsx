@@ -9,11 +9,7 @@ interface IDialogProp {
 const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
   const [form] = Form.useForm();
   const { appSetting, setAppSetting } = useAppSetting();
-  const [aliSetting, setAliSetting] = useState({
-    appKey: appSetting.appKey,
-    accessKeyId: appSetting.accessKeyId,
-    accessKeySecret: appSetting.accessKeySecret
-  });
+  const [aliSetting, setAliSetting] = useState(appSetting.aliSetting);
 
   const valuesChange = (_formValues, _allFormValues) => {
     setAliSetting(_allFormValues);
@@ -28,7 +24,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
         cancelText="取消"
         visible
         onOk={() => {
-          setAppSetting({ ...aliSetting });
+          setAppSetting({ aliSetting });
           closeCallBack();
         }}
         onCancel={() => closeCallBack()}

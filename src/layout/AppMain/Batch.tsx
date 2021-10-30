@@ -10,7 +10,15 @@ import {
   SyncOutlined
 } from '@ant-design/icons';
 import {
-  Button, Table, Tag, Space, Input, Tooltip, Modal
+  Button,
+  Table,
+  Tag,
+  Space,
+  Input,
+  Tooltip,
+  Modal,
+  Row,
+  Col
 } from 'antd';
 import useAppSetting from '@/hook/appHook';
 
@@ -38,28 +46,8 @@ const tableStyle = css`
   overflow-y: auto;
 `;
 
-enum FileConvertStatus {
-  READY = '就绪',
-  PROCESS = '处理',
-  FAIL = '错误',
-  SUCCESS = '成功'
-}
-
-interface FileInfoProp {
-  key: number;
-  filePath: string;
-  fileName: string;
-  textContent: string;
-  status: FileConvertStatus;
-  wordCount: number;
-  error?: string;
-  elapsed?: number;
-  audioUrls?: Array<string>;
-  audioPaths?: Array<string>;
-}
-
 interface FileListProp {
-  fileList?: Array<FileInfoProp>;
+  fileList?: Array<App.FileInfoProp>;
 }
 
 const SelectFilesComponent: React.FC<{}> = () => (
@@ -71,7 +59,7 @@ const SelectFilesComponent: React.FC<{}> = () => (
     `}
   >
     <Button type="primary" css={{ width: '145px' }} size="large">
-      选择文件夹
+      选择文本文件
     </Button>
   </MainWrapper>
 );
@@ -100,9 +88,9 @@ const OutPutPathSelectComponent: React.FC<{}> = () => (
 );
 
 const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
-  const [currentRow, setCurrentRow] = useState<FileInfoProp>();
+  const [currentRow, setCurrentRow] = useState<App.FileInfoProp>();
 
-  const showTxtDialog = (data: FileInfoProp) => {
+  const showTxtDialog = (data: App.FileInfoProp) => {
     Modal.info({
       title: `预览「${data.fileName}」`,
       okText: '关闭预览',
@@ -115,7 +103,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
     });
   };
 
-  const actionHandler = (action: string, data: FileInfoProp) => {
+  const actionHandler = (action: string, data: App.FileInfoProp) => {
     setCurrentRow(data);
 
     if (action === 'play') {
@@ -139,8 +127,8 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
     value.key = index + 1;
   });
 
-  const statusFilterConfig = Object.keys(FileConvertStatus).map((v) => ({
-    text: FileConvertStatus[v].toString(),
+  const statusFilterConfig = Object.keys(App.FileConvertStatus).map((v) => ({
+    text: App.FileConvertStatus[v].toString(),
     value: v
   }));
 
@@ -150,7 +138,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
         css={tableStyle}
         sticky
         dataSource={fileList}
-        rowClassName={(row: FileInfoProp) => (row.key % 2 === 0 ? 'hightight-bg' : '')}
+        rowClassName={(row: App.FileInfoProp) => (row.key % 2 === 0 ? 'hightight-bg' : '')}
         pagination={false}
         onChange={tableChange}
       >
@@ -159,7 +147,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           title="文件"
           dataIndex="fileName"
           key="fileName"
-          render={(_value: string, _row: FileInfoProp) => (
+          render={(_value: string, _row: App.FileInfoProp) => (
             <div
               role="button"
               tabIndex={_row.key}
@@ -176,7 +164,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           dataIndex="wordCount"
           key="wordCount"
           width={80}
-          sorter={(a: FileInfoProp, b: FileInfoProp) => a.wordCount - b.wordCount}
+          sorter={(a: App.FileInfoProp, b: App.FileInfoProp) => a.wordCount - b.wordCount}
           render={(value: number) => (
             <>
               {value}
@@ -197,7 +185,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
               秒
             </>
           )}
-          sorter={(a: FileInfoProp, b: FileInfoProp) => (a.elapsed || 0) - (b.elapsed || 0)}
+          sorter={(a: App.FileInfoProp, b: App.FileInfoProp) => (a.elapsed || 0) - (b.elapsed || 0)}
         />
         <Table.Column
           title="状态"
@@ -205,22 +193,24 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           key="status"
           width={100}
           filters={statusFilterConfig}
-          onFilter={(val, data: FileInfoProp) => FileConvertStatus[val as string] === data.status}
-          render={(status: FileConvertStatus, row: FileInfoProp) => (
+          onFilter={(val, data: App.FileInfoProp) => App.FileConvertStatus[val as string] === data.status}
+          render={(status: App.FileConvertStatus, row: App.FileInfoProp) => (
             <>
               <Tooltip title={row.error} color="red">
                 <Tag
                   icon={
-                    status === FileConvertStatus.PROCESS ? (
+                    status === App.FileConvertStatus.PROCESS ? (
                       <SyncOutlined spin />
-                    ) : null
+                    ) : (
+                      <span />
+                    )
                   }
                   color={
-                    status === FileConvertStatus.PROCESS
+                    status === App.FileConvertStatus.PROCESS
                       ? 'cyan'
-                      : status === FileConvertStatus.SUCCESS
+                      : status === App.FileConvertStatus.SUCCESS
                         ? 'success'
-                        : status === FileConvertStatus.FAIL
+                        : status === App.FileConvertStatus.FAIL
                           ? 'error'
                           : 'blue'
                   }
@@ -235,14 +225,14 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           title="操作"
           width={120}
           key="action"
-          render={(_txt, data: FileInfoProp) => (
+          render={(_txt, data: App.FileInfoProp) => (
             <Space size="middle">
               <PlayCircleOutlined
                 onClick={() => actionHandler('play', data)}
                 alt="播放音频"
                 style={{
                   color:
-                    data.status === FileConvertStatus.SUCCESS
+                    data.status === App.FileConvertStatus.SUCCESS
                       ? '#52c41a'
                       : '#ccc'
                 }}
@@ -280,7 +270,7 @@ const MangageFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
 //       你好你好`,
 //       wordCount: 2,
 //       elapsed: 5,
-//       status: FileConvertStatus.READY
+//       status: App.FileConvertStatus.READY
 //     },
 //     {
 //       key: 1,
@@ -289,7 +279,7 @@ const MangageFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
 //       textContent: '你好',
 //       wordCount: 20,
 //       elapsed: 20,
-//       status: FileConvertStatus.PROCESS
+//       status: App.FileConvertStatus.PROCESS
 //     },
 //     {
 //       key: 1,
@@ -298,7 +288,7 @@ const MangageFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
 //       textContent: '你好',
 //       wordCount: 2,
 //       elapsed: 30,
-//       status: FileConvertStatus.FAIL,
+//       status: App.FileConvertStatus.FAIL,
 //       error: '网络遇到错误'
 //     },
 //     {
@@ -308,7 +298,7 @@ const MangageFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
 //       textContent: '你好',
 //       wordCount: 12,
 //       elapsed: 0,
-//       status: FileConvertStatus.SUCCESS
+//       status: App.FileConvertStatus.SUCCESS
 //     },
 //     {
 //       key: 1,
@@ -317,45 +307,48 @@ const MangageFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
 //       textContent: '你好',
 //       wordCount: 2,
 //       elapsed: 0,
-//       status: FileConvertStatus.READY
+//       status: App.FileConvertStatus.READY
 //     }
 //   ]
 // };
 
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
-  const [fileList, setFileList] = useState<Array<FileInfoProp>>();
+  const [fileList, setFileList] = useState<Array<App.FileInfoProp>>();
 
   return (
     <Wrapper>
-      <div
+      <Row
         css={css`
-          display: flex;
-          justify-content: space-between;
           height: 115px;
-          align-items: center;
         `}
+        justify="space-between"
+        align="middle"
       >
-        <div css={{ fontSize: '24px', color: '#333' }}>批量转换</div>
-        <div>
-          <Space>
-            <Button
-              type="primary"
-              icon={<DeleteOutlined />}
-              css={{
-                backgroundColor: '#748bae',
-                border: '0'
-              }}
-              size="large"
-            >
-              清空
-            </Button>
-            <Button type="primary" icon={<RedoOutlined />} size="large">
-              开始转换
-            </Button>
-          </Space>
-        </div>
-      </div>
+        <Col span={6} css={{ fontSize: '24px', color: '#333' }}>
+          批量转换
+        </Col>
+        {!fileList || fileList.length === 0 ? null : (
+          <Col span={12} css={{ textAlign: 'right' }}>
+            <Space>
+              <Button
+                type="primary"
+                icon={<DeleteOutlined />}
+                css={{
+                  backgroundColor: '#748bae',
+                  border: '0'
+                }}
+                size="large"
+              >
+                清空
+              </Button>
+              <Button type="primary" icon={<RedoOutlined />} size="large">
+                开始转换
+              </Button>
+            </Space>
+          </Col>
+        )}
+      </Row>
       <MangageFilesComponent fileList={fileList} />
     </Wrapper>
   );

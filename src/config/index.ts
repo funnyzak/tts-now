@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppSetting } from './define';
 
 export { default as voiceTypeList } from './voiceType';
 
@@ -22,17 +21,14 @@ export const uiConfig = {
 };
 
 // 默认APP配置
-export const defaultAppSetting: AppSetting = {
+export const defaultAppSetting: App.AppSetting = {
   voiceSetIndex: 0,
   samplingRate: ['8'],
   outputFormat: ['mp3'],
   ttsTone: 50,
   ttsSpeed: 50,
   ttsVolumn: 50,
-  actionMode: 'SINGLE',
-  appKey: '',
-  accessKeyId: '',
-  accessKeySecret: ''
+  actionMode: 'SINGLE'
 };
 
 // App配置缓存Key
@@ -42,7 +38,7 @@ export const appSettingCacheKey = 'AppSetting';
 export const cacheAppSetting = localStorage.getItem(appSettingCacheKey);
 
 // 读取当前配置
-export const appSetting: AppSetting = cacheAppSetting
+export const appSetting: App.AppSetting = cacheAppSetting
   ? JSON.parse(cacheAppSetting)
   : defaultAppSetting;
 
@@ -50,7 +46,7 @@ export const appSetting: AppSetting = cacheAppSetting
 export const AppContext = React.createContext({
   appSetting,
   setAppSetting: (_settings: {
-    [T in keyof AppSetting]?: AppSetting[T];
+    [T in keyof App.AppSetting]?: App.AppSetting[T];
   }) => {
     // console.log(appSetting)
   }

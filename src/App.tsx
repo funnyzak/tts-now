@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 import Index from './layout';
-import { AppSetting } from '@/config/define';
 import { AppContext, appSetting, appSettingCacheKey } from '@/config';
 
 export default () => {
   const [setting, setSetting] = useState(appSetting);
 
   const updateConfig = (newSetting: {
-    [T in keyof AppSetting]?: AppSetting[T];
+    [T in keyof App.AppSetting]?: App.AppSetting[T];
   }) => {
     setSetting({ ...setting, ...newSetting });
   };
