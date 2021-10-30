@@ -1,4 +1,6 @@
-import { app, protocol, BrowserWindow } from 'electron';
+import {
+  app, protocol, BrowserWindow, Menu, ipcMain, dialog
+} from 'electron';
 
 const config = require('../app.config');
 
@@ -101,3 +103,31 @@ if (isDevelopment) {
     });
   }
 }
+
+// 禁止默认菜单
+Menu.setApplicationMenu(null);
+
+// 选择要转换的文件或其他选择
+ipcMain.on('select_files', (event, arg) => {
+  console.log(event, arg);
+
+  // https://www.electronjs.org/docs/latest/api/dialog
+  dialog
+    .showOpenDialog(
+      win,
+      {
+        title: '选择文件',
+        buttonLabel: '确定',
+        properties: ['openFile', 'multiSelections'],
+        filters: [{ name: '文件', extensions: ['txt', 'text'] }],
+        ...arg.config || {}
+      }
+    )
+    .then((_rlt) => {
+      console.log(_rlt);
+      event.reply('selected_files', {
+        data: _rlt,
+        action: arg.action
+      });
+    });
+});
