@@ -75,12 +75,16 @@ module.exports = {
     "no-else-return": 2,//如果if语句里面有return,后面不能跟else语句
     'quote-props': ['warn', 'consistent'],
     // 定义未使用
-    'no-unused-vars': 0,
+    'no-unused-vars': 'off',
     // 导入多次
     "import/no-duplicates": 0,
     "import/prefer-default-export": 0,
     // image元素必须有alt标签
     'jsx-a11y/alt-text': 0,
+    // 变量作用域
+    "no-shadow": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-shadow": "error",
     "@emotion/jsx-import": "off",
     "@emotion/no-vanilla": "warn",
     "@emotion/import-from-emotion": "off",
