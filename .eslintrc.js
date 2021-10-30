@@ -79,6 +79,10 @@ module.exports = {
     'quote-props': ['warn', 'consistent'],
     // 定义未使用
     'no-unused-vars': 'off',
+    // 禁止使用 for..in  for..of
+    "no-restricted-syntax": 1,
+    // 禁止标识符下划线
+    'no-underscore-dangle': 'off',
     // 导入多次
     "import/no-duplicates": 0,
     "import/prefer-default-export": 0,
