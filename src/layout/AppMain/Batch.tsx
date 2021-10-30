@@ -12,6 +12,7 @@ import {
   FolderOpenFilled,
   FileTextOutlined,
   FileAddOutlined,
+  SmileOutlined,
   SyncOutlined
 } from '@ant-design/icons';
 import {
@@ -128,28 +129,51 @@ const SelectFilesComponent: React.FC<ICallBackFileListProp> = ({
   );
 };
 
-const OutPutPathSelectComponent: React.FC<{}> = () => (
-  <div>
-    <Input
-      defaultValue=""
-      placeholder="请选择或填写合成文件保存的文件夹路径.."
-      css={{ padding: '0', border: '0', borderTop: '1px solid #f4f6fa' }}
-      size="small"
-      addonBefore="保存到："
-      suffix={(
-        <Button
-          css={css`
-            margin: 0;
-          `}
-          type="primary"
-          size="large"
-        >
-          设置输出文件夹
-        </Button>
-      )}
-    />
-  </div>
-);
+const OutPutPathSelectComponent: React.FC<{}> = () => {
+  const [savePath, setSavePath] = useState();
+
+  const selectPath = () => {
+    const actionName = 'select_tts_path';
+    ipcRenderer.once(EventEmitter.SELECTED_FILES, (_event, arg) => {
+      console.log('selected path:', arg, _event);
+      if (arg.action === actionName && !arg.data.canceled) {
+        setSavePath(arg.data.filePaths[0]);
+      }
+    });
+
+    ipcRenderer.send(EventEmitter.SELECT_FILES, {
+      action: actionName,
+      config: {
+        title: '选择输出路径',
+        properties: ['openDirectory']
+      }
+    });
+  };
+  return (
+    <div>
+      <Input
+        defaultValue={savePath}
+        value={savePath}
+        placeholder="请选择或填写保存路径.."
+        css={{ padding: '0', border: '0', borderTop: '1px solid #f4f6fa' }}
+        size="small"
+        addonBefore="保存到："
+        suffix={(
+          <Button
+            css={css`
+              margin: 0;
+            `}
+            type="primary"
+            size="large"
+            onClick={selectPath}
+          >
+            设置输出文件夹
+          </Button>
+        )}
+      />
+    </div>
+  );
+};
 
 const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
   const [currentRow, setCurrentRow] = useState<APP.TtsFileInfo>();
@@ -243,11 +267,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           key="elapsed"
           width={80}
           render={(value: number) => (
-            <>
-              {value}
-              {' '}
-              秒
-            </>
+            <>{value ? `${value} 秒` : <SmileOutlined />}</>
           )}
           sorter={(a: APP.TtsFileInfo, b: APP.TtsFileInfo) => (a.elapsed || 0) - (b.elapsed || 0)}
         />
