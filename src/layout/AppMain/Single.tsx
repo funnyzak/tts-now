@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Input, Button, Form } from 'antd';
+import {
+  Input, Button, Form, Space
+} from 'antd';
 import { ReloadOutlined, ExportOutlined } from '@ant-design/icons';
 import { useState, useEffect, useRef } from 'react';
 import useAppSetting from '@/hook/appHook';
@@ -12,7 +14,23 @@ const Wrapper = styled.div`
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
+
+const actionButtonStyle = css`
+  display: flex;
+  justify-content: space-between;
+  height: 115px;
+  align-items: center;
+`;
+
+const singleTxtStyle = {
+  height: 'calc(100vh - 80px - 115px - 10px) !important',
+  padding: '15px',
+  margin: 0,
+  overflow: 'hidden',
+  marginBottom: '10px'
+};
 
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
@@ -43,57 +61,38 @@ const Index = () => {
 
   return (
     <Wrapper>
-      <div
-        css={css`
-          display: flex;
-          justify-content: space-between;
-          height: 115px;
-          align-items: center;
-        `}
-      >
+      <div css={actionButtonStyle}>
         <div css={{ fontSize: '24px', color: '#333' }}>文字转语音</div>
         <div>
-          <Button
-            type="primary"
-            css={{
-              backgroundColor: '#748bae',
-              border: '0',
-              borderRadius: '5px'
-            }}
-            size="large"
-            icon={<ReloadOutlined />}
-          >
-            转换
-          </Button>
-          <Button
-            type="primary"
-            css={{ width: '148px;', marginLeft: '10px', borderRadius: '5px' }}
-            size="large"
-            icon={<ExportOutlined />}
-          >
-            导出
-          </Button>
+          <Space>
+            <Button
+              type="primary"
+              css={{
+                backgroundColor: '#748bae',
+                border: '0'
+              }}
+              size="large"
+              icon={<ReloadOutlined />}
+            >
+              转换
+            </Button>
+            <Button type="primary" size="large" icon={<ExportOutlined />}>
+              导出
+            </Button>
+          </Space>
         </div>
       </div>
-      <div>
-        <Form ref={singleFormRef} initialValues={{ singleTxt }}>
-          <Form.Item name="singleTxt">
-            <Input.TextArea
-              css={{
-                height: 'calc(100vh - 80px - 115px - 30px) !important',
-                padding: '15px',
-                margin: 0,
-                borderRadius: '5px',
-                overflow: 'hidden'
-              }}
-              disabled={false}
-              placeholder="请输入要合成的文字.."
-              onChange={singleTextChange}
-              allowClear
-            />
-          </Form.Item>
-        </Form>
-      </div>
+      <Form ref={singleFormRef} initialValues={{ singleTxt }}>
+        <Form.Item css={{ marginBottom: 0 }} name="singleTxt">
+          <Input.TextArea
+            css={singleTxtStyle}
+            disabled={false}
+            placeholder="请输入要合成的文字.."
+            onChange={singleTextChange}
+            allowClear
+          />
+        </Form.Item>
+      </Form>
     </Wrapper>
   );
 };
