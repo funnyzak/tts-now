@@ -83,6 +83,8 @@ module.exports = {
     'jsx-a11y/alt-text': 0,
     // 变量作用域
     "no-shadow": "off",
+    // 不允许嵌套的三元表达式
+    "no-nested-ternary": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-shadow": "error",
     "@emotion/jsx-import": "off",
