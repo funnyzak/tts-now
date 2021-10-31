@@ -94,6 +94,18 @@ declare global {
        */
       elapsed?: number;
       /**
+       * 转换结束时间
+       */
+      ttsStart?: number;
+      /**
+       * 转换开始时间
+       */
+      ttsEnd?: number;
+      /**
+       * 转换任务ID
+       */
+      taskId?: string;
+      /**
        * 转换输出音频地址
        */
       audioUrls?: Array<string>;
