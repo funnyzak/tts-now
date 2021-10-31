@@ -29,22 +29,22 @@ declare global {
      */
     export interface TTSSetting {
       // 场景索引
-      sceneIndex: number;
+      voiceIndex: number;
 
       // 音量
-      ttsVolumn: number;
+      volumn: number;
 
       // 语速
-      ttsSpeed: number;
+      speedRate: number;
 
-      // 音调
-      ttsTone: number;
+      // 语调，范围是-500~500，默认是0。
+      pitchRate: number;
 
-      // 比率
-      samplingRate: number;
+      // 音频采样率，支持16000Hz和8000Hz
+      simpleRate: number;
 
       // 输出格式
-      outputFormat: string;
+      format: string;
     }
 
     /**

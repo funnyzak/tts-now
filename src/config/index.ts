@@ -24,12 +24,12 @@ export const uiConfig = {
 // 默认APP配置
 export const defaultAppSetting: APP.AppSetting = {
   ttsSetting: {
-    sceneIndex: 0,
-    samplingRate: 8000,
-    outputFormat: 'mp3',
-    ttsTone: 0,
-    ttsSpeed: 0,
-    ttsVolumn: 50
+    voiceIndex: 0,
+    simpleRate: 8000,
+    format: 'mp3',
+    pitchRate: 0,
+    speedRate: 0,
+    volumn: 50
   },
   customSetting: {
     actionMode: 'SINGLE',

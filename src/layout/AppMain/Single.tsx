@@ -39,10 +39,10 @@ const Index = () => {
   const getSingleTxt = () => (appSetting.customSetting.singleTxt
     && appSetting.customSetting.singleTxt !== null
     && appSetting.customSetting.singleTxt.length > 0
-    && voiceTypeList[appSetting.ttsSetting.sceneIndex].text
+    && voiceTypeList[appSetting.ttsSetting.voiceIndex].text
       !== appSetting.customSetting.singleTxt
     ? appSetting.customSetting.singleTxt
-    : voiceTypeList[appSetting.ttsSetting.sceneIndex].text);
+    : voiceTypeList[appSetting.ttsSetting.voiceIndex].text);
 
   const [singleTxt, setSingleTxt] = useState(getSingleTxt());
   const singleFormRef: any = useRef(null);
@@ -63,7 +63,7 @@ const Index = () => {
     ) {
       singleFormRef.current.setFieldsValue({ singleTxt: getSingleTxt() });
     }
-  }, [appSetting.ttsSetting.sceneIndex]);
+  }, [appSetting.ttsSetting.voiceIndex]);
 
   return (
     <Wrapper>
