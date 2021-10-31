@@ -86,6 +86,8 @@ module.exports = {
     // 导入多次
     "import/no-duplicates": 0,
     "import/prefer-default-export": 0,
+    // 禁止promise 使用async
+    "no-async-promise-executor": 0,
     // image元素必须有alt标签
     'jsx-a11y/alt-text': 0,
     // 变量作用域
