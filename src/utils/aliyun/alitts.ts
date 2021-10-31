@@ -97,7 +97,9 @@ class AliTTS {
               this.tokenExpire = res.Token.ExpireTime;
               this.token = res.Token.Id;
               resolve(res.Token.Id);
-            } else reject(res);
+            } else {
+              reject(res);
+            }
           })
           .catch((err) => {
             reject(err);
@@ -114,7 +116,14 @@ class AliTTS {
    */
   task(text: string, options?: AliTtsOption): Promise<string> {
     return new Promise<string>(async (resolve, reject) => {
-      const _token = await this.getToken();
+      let _token = '';
+      try {
+        _token = await this.getToken();
+      } catch (err) {
+        reject(err);
+        return;
+      }
+
       const {
         appKey,
         format,
@@ -181,7 +190,14 @@ class AliTTS {
    */
   status(taskId: string, appKey?: string): Promise<AliTtsComplete> {
     return new Promise<AliTtsComplete>(async (resolve, reject) => {
-      const _token = await this.getToken();
+      let _token = '';
+      try {
+        _token = await this.getToken();
+      } catch (err) {
+        reject(err);
+        return;
+      }
+
       request({
         method: 'GET',
         uri: `${this.ttsEndpoint}?appkey=${
@@ -210,7 +226,14 @@ class AliTTS {
     options?: AliTtsOption
   ): Promise<AliTtsComplete> {
     return new Promise<AliTtsComplete>(async (resolve, reject) => {
-      const taskId: string = await this.task(text, options);
+      let taskId = '';
+      try {
+        taskId = await this.task(text, options);
+        console.log(taskId);
+      } catch (err) {
+        reject(err);
+      }
+
       const _interval = setInterval(async () => {
         try {
           const rlt: AliTtsComplete = await this.status(taskId);
@@ -224,6 +247,19 @@ class AliTTS {
         }
       }, interval);
     });
+  }
+
+  /**
+   *检查配置
+   * @returns
+   */
+  async checkConfig() {
+    try {
+      return (await this.taskSync('h', 2)).audio_address.length > 0;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
   }
 }
 
