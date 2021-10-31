@@ -13,7 +13,7 @@ declare global {
 
       customSetting: CustomSetting;
 
-      aliSetting?: AliSetting;
+      aliSetting: AliSetting;
     }
 
     export interface CustomSetting {

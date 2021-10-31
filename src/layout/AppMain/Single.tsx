@@ -3,10 +3,12 @@ import { css } from '@emotion/react';
 import {
   Input, Button, Form, Space
 } from 'antd';
-import { ReloadOutlined, ExportOutlined } from '@ant-design/icons';
+import { ExportOutlined } from '@ant-design/icons';
 import { useState, useEffect, useRef } from 'react';
 import useAppSetting from '@/hook/appHook';
 import { voiceTypeList, IFIcon } from '@/config';
+import * as core from '@/utils/core';
+import { AliTtsComplete, AliTtsOption } from '@/utils/aliyun/alitts';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -36,6 +38,9 @@ const singleTxtStyle = {
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
 
+  // const [aliTtsInstance, setAliTtsInstance] = useState(core.createAliTTS(appSetting.aliSetting));
+  // const [singleTtsFile, setSingleTtsFile] = useState<AliTtsComplete>()
+
   const getSingleTxt = () => (appSetting.customSetting.singleTxt
     && appSetting.customSetting.singleTxt !== null
     && appSetting.customSetting.singleTxt.length > 0
@@ -55,6 +60,14 @@ const Index = () => {
     });
   };
 
+  const playHandle = () => {
+    core.checkAliSetting(appSetting.aliSetting, true);
+  };
+
+  const exportHandle = () => {
+    core.checkAliSetting(appSetting.aliSetting, true);
+  };
+
   useEffect(() => {
     if (
       singleFormRef
@@ -63,7 +76,7 @@ const Index = () => {
     ) {
       singleFormRef.current.setFieldsValue({ singleTxt: getSingleTxt() });
     }
-  }, [appSetting.ttsSetting.voiceIndex]);
+  }, core.ttsUseEffectDeps(appSetting.ttsSetting));
 
   return (
     <Wrapper>
@@ -79,10 +92,16 @@ const Index = () => {
               }}
               size="large"
               icon={<IFIcon type="icon-icvoice" />}
+              onClick={playHandle}
             >
-              立即合成
+              立即播放
             </Button>
-            <Button type="primary" size="large" icon={<ExportOutlined />}>
+            <Button
+              type="primary"
+              size="large"
+              icon={<ExportOutlined />}
+              onClick={exportHandle}
+            >
               导出
             </Button>
           </Space>
