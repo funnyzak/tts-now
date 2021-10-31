@@ -16,8 +16,8 @@ export const uiConfig = {
   ],
   // 采样率
   samplingRateList: [
-    { label: '8k', value: '8' },
-    { label: '16k', value: '16' }
+    { label: '8k', value: 8000 },
+    { label: '16k', value: 16000 }
   ]
 };
 
@@ -25,10 +25,10 @@ export const uiConfig = {
 export const defaultAppSetting: APP.AppSetting = {
   ttsSetting: {
     sceneIndex: 0,
-    samplingRate: ['8'],
-    outputFormat: ['mp3'],
-    ttsTone: 50,
-    ttsSpeed: 50,
+    samplingRate: 8000,
+    outputFormat: 'mp3',
+    ttsTone: 0,
+    ttsSpeed: 0,
     ttsVolumn: 50
   },
   customSetting: {
@@ -70,8 +70,7 @@ export default appName;
 // iconfont icon
 const IFIcon = createFromIconfontCN({
   extraCommonProps: { type: 'custom_icon' },
-  scriptUrl:
-    `//at.alicdn.com/t/font_2904715_y0eqjm6yuqh.js?=${new Date().getTime()}`
+  scriptUrl: `//at.alicdn.com/t/font_2904715_y0eqjm6yuqh.js?=${new Date().getTime()}`
 });
 
 export { IFIcon };

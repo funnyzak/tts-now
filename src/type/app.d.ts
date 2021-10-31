@@ -41,10 +41,10 @@ declare global {
       ttsTone: number;
 
       // 比率
-      samplingRate: Array<string>;
+      samplingRate: number;
 
       // 输出格式
-      outputFormat: Array<string>;
+      outputFormat: string;
     }
 
     /**

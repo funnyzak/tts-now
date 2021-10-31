@@ -1,32 +1,29 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Slider, Checkbox } from 'antd';
+import { Slider, Radio } from 'antd';
 import React, { useState, useEffect } from 'react';
 import useAppSetting from '@/hook/appHook';
 import { uiConfig } from '@/config';
 
-const CheckboxGroup = Checkbox.Group;
-
-interface CheckBoxInterface {
+interface RadioGroupInterface {
   options: Array<any>;
-  value: Array<any>;
+  value: string;
   name: string;
   title: string;
 }
 
-const CheckComponent: React.FC<CheckBoxInterface> = (
-  props: CheckBoxInterface
+const RadioGroupComponent: React.FC<RadioGroupInterface> = (
+  props: RadioGroupInterface
 ) => {
   const {
     options, value, name, title
   } = props;
 
-  const [checkboxOptions] = useState(options);
   const [val, setVal] = useState(value);
   const { appSetting, setAppSetting } = useAppSetting();
 
-  const changeValue = (_value: Array<any>) => {
-    setVal(_value);
+  const changeValue = (e: any) => {
+    setVal(e.target.value);
   };
 
   useEffect(() => {
@@ -37,16 +34,18 @@ const CheckComponent: React.FC<CheckBoxInterface> = (
   return (
     <div
       css={css`
-        margin-bottom: 20px;
+        margin-bottom: 30px;
       `}
     >
       <div css={{ textAlign: 'left', marginBottom: '10px' }}>{title}</div>
       <div>
-        <CheckboxGroup
-          options={checkboxOptions}
-          value={val}
-          onChange={changeValue}
-        />
+        <Radio.Group value={val} onChange={changeValue}>
+          {options.map((v) => (
+            <Radio key={v.value} value={v.value.toString()}>
+              {v.label}
+            </Radio>
+          ))}
+        </Radio.Group>
       </div>
     </div>
   );
@@ -56,10 +55,14 @@ interface SilderInterface {
   value: number;
   name: string;
   title: string;
+  min: number;
+  max: number;
 }
 
 const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
-  const { value, name, title } = props;
+  const {
+    value, name, title, max, min
+  } = props;
   const [val, setVal] = useState(value);
   const { appSetting, setAppSetting } = useAppSetting();
 
@@ -94,7 +97,8 @@ const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
         tipFormatter={formatter}
         value={val}
         disabled={false}
-        min={10}
+        min={min}
+        max={max}
         onChange={changeValue}
       />
       <div
@@ -104,7 +108,6 @@ const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
         `}
       >
         {value}
-        %
       </div>
     </div>
   );
@@ -124,27 +127,33 @@ const Index = () => {
         <SliderComponent
           value={appSetting.ttsSetting.ttsSpeed}
           name="ttsSpeed"
+          min={-500}
+          max={500}
           title="语速"
         />
         <SliderComponent
           value={appSetting.ttsSetting.ttsTone}
           name="ttsTone"
+          min={-500}
+          max={500}
           title="语调"
         />
         <SliderComponent
           value={appSetting.ttsSetting.ttsVolumn}
           name="ttsVolumn"
+          min={0}
+          max={100}
           title="音量"
         />
       </div>
       <div css={{ marginTop: '30px' }}>
-        <CheckComponent
-          value={appSetting.ttsSetting.samplingRate}
+        <RadioGroupComponent
+          value={appSetting.ttsSetting.samplingRate.toString()}
           name="samplingRate"
           title="采样率"
           options={uiConfig.samplingRateList}
         />
-        <CheckComponent
+        <RadioGroupComponent
           value={appSetting.ttsSetting.outputFormat}
           name="outputFormat"
           title="导出格式"
