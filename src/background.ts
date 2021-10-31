@@ -105,7 +105,9 @@ if (isDevelopment) {
 }
 
 // 禁止默认菜单
-Menu.setApplicationMenu(null);
+if (!isDevelopment) {
+  Menu.setApplicationMenu(null);
+}
 
 // 选择要转换的文件或其他选择
 ipcMain.on('select_files', (event, arg) => {
@@ -113,16 +115,13 @@ ipcMain.on('select_files', (event, arg) => {
 
   // https://www.electronjs.org/docs/latest/api/dialog
   dialog
-    .showOpenDialog(
-      win,
-      {
-        title: '选择文件',
-        buttonLabel: '确定',
-        properties: ['openFile', 'multiSelections'],
-        filters: [{ name: '文件', extensions: ['txt', 'text'] }],
-        ...arg.config || {}
-      }
-    )
+    .showOpenDialog(win, {
+      title: '选择文件',
+      buttonLabel: '确定',
+      properties: ['openFile', 'multiSelections'],
+      filters: [{ name: '文件', extensions: ['txt', 'text'] }],
+      ...(arg.config || {})
+    })
     .then((_rlt) => {
       console.log(_rlt);
       event.reply('selected_files', {

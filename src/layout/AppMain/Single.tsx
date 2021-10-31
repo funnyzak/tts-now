@@ -6,7 +6,7 @@ import {
 import { ReloadOutlined, ExportOutlined } from '@ant-design/icons';
 import { useState, useEffect, useRef } from 'react';
 import useAppSetting from '@/hook/appHook';
-import { voiceTypeList } from '@/config';
+import { voiceTypeList, IFIcon } from '@/config';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -78,9 +78,9 @@ const Index = () => {
                 border: '0'
               }}
               size="large"
-              icon={<ReloadOutlined />}
+              icon={<IFIcon type="icon-icvoice" />}
             >
-              转换
+              播放
             </Button>
             <Button type="primary" size="large" icon={<ExportOutlined />}>
               导出

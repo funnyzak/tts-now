@@ -14,6 +14,7 @@ import {
   FileTextOutlined,
   FileAddOutlined,
   SmileOutlined,
+  ExclamationCircleOutlined,
   SyncOutlined
 } from '@ant-design/icons';
 import {
@@ -324,7 +325,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
                 alt="播放音频"
                 style={{
                   color:
-                      data.status === TtsFileStatus.SUCCESS ? '#52c41a' : '#ccc'
+                    data.status === TtsFileStatus.SUCCESS ? '#52c41a' : '#ccc'
                 }}
               />
               <FolderOpenFilled
@@ -356,29 +357,27 @@ const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
   return <SelectFilesComponent callback={callback} />;
 };
 
-MangageFilesComponent.defaultProps = {
-  fileList: [
-    {
-      filePath: '/Users/potato/Desktop/你好朋友.txt',
-      fileName: '你好朋友.txt',
-      textContent: '你好啊，我的朋友！',
-      status: TtsFileStatus.READY,
-      wordCount: 9,
-      key: 1
-    },
-    {
-      filePath: '/Users/potato/Desktop/风.txt',
-      fileName: '风.txt',
-      textContent: '为站在烈烈风中',
-      status: TtsFileStatus.READY,
-      wordCount: 7,
-      key: 2
-    }
-  ]
-};
+const defaultFileList = [
+  {
+    filePath: '/Users/potato/Desktop/你好朋友.txt',
+    fileName: '你好朋友.txt',
+    textContent: '你好啊，我的朋友！',
+    status: TtsFileStatus.READY,
+    wordCount: 9,
+    key: 1
+  },
+  {
+    filePath: '/Users/potato/Desktop/风.txt',
+    fileName: '风.txt',
+    textContent: '为站在烈烈风中',
+    status: TtsFileStatus.READY,
+    wordCount: 7,
+    key: 2
+  }
+];
 
 const Index = () => {
-  const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>();
+  const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>(defaultFileList);
 
   return (
     <Wrapper>
@@ -403,6 +402,19 @@ const Index = () => {
                   border: '0'
                 }}
                 size="large"
+                onClick={() => {
+                  Modal.confirm({
+                    title: '确定',
+                    icon: <ExclamationCircleOutlined />,
+                    content: `确定清空当前 ${fileList.length} 个任务吗？`,
+                    okText: '确认',
+                    cancelText: '取消',
+                    centered: true,
+                    onOk: () => {
+                      setFileList([]);
+                    }
+                  });
+                }}
               >
                 清空
               </Button>
