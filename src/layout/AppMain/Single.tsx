@@ -80,7 +80,7 @@ const Index = () => {
               size="large"
               icon={<IFIcon type="icon-icvoice" />}
             >
-              播放
+              立即合成
             </Button>
             <Button type="primary" size="large" icon={<ExportOutlined />}>
               导出
