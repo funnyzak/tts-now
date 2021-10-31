@@ -1,4 +1,5 @@
 import React from 'react';
+import { createFromIconfontCN } from '@ant-design/icons';
 
 export { default as voiceTypeList } from './voiceType';
 
@@ -65,3 +66,12 @@ export const EventEmitter = {
 
 // 读取当前配置
 export default appName;
+
+// iconfont icon
+const IFIcon = createFromIconfontCN({
+  extraCommonProps: { type: 'custom_icon' },
+  scriptUrl:
+    `//at.alicdn.com/t/font_2904715_y0eqjm6yuqh.js?=${new Date().getTime()}`
+});
+
+export { IFIcon };
