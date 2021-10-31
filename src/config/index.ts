@@ -31,6 +31,11 @@ export const defaultAppSetting: APP.AppSetting = {
     speedRate: 0,
     volumn: 50
   },
+  aliSetting: {
+    appKey: '',
+    accessKeyId: '',
+    accessKeySecret: ''
+  },
   customSetting: {
     actionMode: 'SINGLE',
     singleTxt: ''

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Modal, Form, Input } from 'antd';
+import {
+  Modal, Form, Input, message
+} from 'antd';
 import useAppSetting from '@/hook/appHook';
+import * as core from '@/utils/core';
 
 interface IDialogProp {
   closeCallBack: () => void;
@@ -15,6 +18,13 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
     setAliSetting(_allFormValues);
   };
 
+  const submitChange = async () => {
+    if (!(await core.checkAliSettingNetwork(aliSetting, true))) return;
+
+    setAppSetting({ aliSetting });
+    closeCallBack();
+  };
+
   return (
     <>
       <Modal
@@ -23,10 +33,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
         okText="确定"
         cancelText="取消"
         visible
-        onOk={() => {
-          setAppSetting({ aliSetting });
-          closeCallBack();
-        }}
+        onOk={submitChange}
         onCancel={() => closeCallBack()}
         width={300}
       >
