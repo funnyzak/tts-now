@@ -134,3 +134,13 @@ export const settingUseEffectDeps = (appSetting: APP.AppSetting) => [
   appSetting.aliSetting.appKey,
   appSetting.aliSetting.accessKeySecret
 ];
+
+export const logger = (...args): void => {
+  if (process.env.NODE_ENV === 'development') {
+    if (args.length > 1 && args[0] === 'error') {
+      console.error('PError:', ...args.slice(1));
+    } else {
+      console.log('PConsole:', ...args);
+    }
+  }
+};

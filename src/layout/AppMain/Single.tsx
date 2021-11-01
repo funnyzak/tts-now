@@ -135,7 +135,8 @@ const Index = () => {
       )}_${new Date().getTime()}.${singleTtsFile.ttsSetting?.format || 'mp3'}`;
       setSingleTtsFile(singleTtsFile);
 
-      console.log(singleTtsFile);
+      core.logger(singleTtsFile);
+
       core
         .downloadFile(singleTtsFile?.audioUrl || '', outPath, {
           fileName: singleTtsFile?.saveName
