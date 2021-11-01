@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import React, { useState } from 'react';
 
-import { ipcRenderer, shell } from 'electron';
+import { App, ipcRenderer, shell } from 'electron';
 import fs from 'fs';
 import path from 'path';
 import ReactAudioPlayer from 'react-audio-player';
@@ -30,6 +30,7 @@ import {
   Row,
   Col
 } from 'antd';
+import { voiceTypeList, IFIcon } from '@/config';
 import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
 import { EventEmitter } from '@/config';
@@ -140,12 +141,13 @@ const SelectFilesComponent: React.FC<ICallBackFileListProp> = ({
   );
 };
 
-const OutPutPathSelectComponent: React.FC<{}> = () => {
-  const [savePath, setSavePath] = useState<string>();
-
+const OutPutPathSelectComponent: React.FC<{
+  savePath: string;
+  savePathCallBack: (path: string) => void;
+}> = ({ savePath, savePathCallBack }) => {
   const selectPath = () => {
     core.selectDirection('select_tts_path', (outPath) => {
-      setSavePath(outPath);
+      savePathCallBack(outPath);
     });
   };
   return (
@@ -174,7 +176,17 @@ const OutPutPathSelectComponent: React.FC<{}> = () => {
   );
 };
 
-const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
+interface ConvertFilesComponentProp {
+  fileList: Array<APP.TtsFileInfo>;
+  savePathCallBack: (path: string) => void;
+  savePath: string;
+}
+
+const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
+  fileList,
+  savePath,
+  savePathCallBack
+}) => {
   const [currentRow, setCurrentRow] = useState<APP.TtsFileInfo>();
 
   const showTxtDialog = (data: APP.TtsFileInfo) => {
@@ -328,7 +340,10 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
           )}
         />
       </Table>
-      <OutPutPathSelectComponent />
+      <OutPutPathSelectComponent
+        savePath={savePath}
+        savePathCallBack={savePathCallBack}
+      />
     </MainWrapper>
   );
 };
@@ -336,15 +351,23 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
 interface MangageFilesComponentProp {
   fileList?: Array<APP.TtsFileInfo>;
   callback: (res: Array<APP.TtsFileInfo>) => void;
+  savePath: string;
+  savePathCallBack: (res: string) => void;
 }
 
 const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
   fileList,
-  callback
+  callback,
+  savePath,
+  savePathCallBack
 }) => (
   <>
     {fileList !== undefined && fileList !== null && fileList.length > 0 ? (
-      <ConvertFilesComponent fileList={fileList} />
+      <ConvertFilesComponent
+        fileList={fileList}
+        savePath={savePath}
+        savePathCallBack={savePathCallBack}
+      />
     ) : (
       <SelectFilesComponent callback={callback} />
     )}
@@ -371,10 +394,16 @@ const defaultFileList = [
 ];
 
 const Index = () => {
+  const { appSetting, setAppSetting } = useAppSetting();
   const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>(defaultFileList);
-  const [savePath, setSavePath] = useState<string>();
+  const [savePath, setSavePath] = useState<string>('');
+  const [aliTtsInstance, setAliTtsInstance] = useState(
+    core.createAliTTS(appSetting.aliSetting)
+  );
 
   const runTask = () => {
+    if (!core.checkAliSetting(appSetting.aliSetting, true)) return;
+
     if (core.isNullOrEmpty(savePath)) {
       message.warn('请选择输出文件夹');
       return;
@@ -382,6 +411,29 @@ const Index = () => {
     if (!fileList || fileList.length === 0) {
       message.warn('请选择要转换的文件');
     }
+
+    // 开始所有转换任务
+    fileList.forEach(async (v) => {
+      v.ttsSetting = appSetting.ttsSetting;
+      v.ttsStart = new Date().getTime();
+      try {
+        v.taskId = await aliTtsInstance.task(v.textContent, {
+          format: appSetting.ttsSetting.format,
+          sample_rate: appSetting.ttsSetting.simpleRate,
+          voice: voiceTypeList[appSetting.ttsSetting.voiceIndex].speakerId,
+          volume: appSetting.ttsSetting.volumn,
+          speech_rate: appSetting.ttsSetting.speedRate,
+          pitchRate: appSetting.ttsSetting.pitchRate
+        });
+        v.status = TtsFileStatus.PROCESS;
+      } catch (error) {
+        core.logger(error);
+        v.taskId = '';
+        v.status = TtsFileStatus.FAIL;
+        v.error = error;
+      }
+    });
+    setFileList(fileList);
   };
 
   return (
@@ -438,6 +490,8 @@ const Index = () => {
       <MangageFilesComponent
         fileList={fileList}
         callback={(files) => setFileList(files)}
+        savePath={savePath}
+        savePathCallBack={(_path) => setSavePath(_path)}
       />
     </Wrapper>
   );
