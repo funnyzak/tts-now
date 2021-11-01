@@ -159,8 +159,7 @@ const OutPutPathSelectComponent: React.FC<{
         placeholder="还没设置哦.."
         css={{ padding: '0', border: '0', borderTop: '1px solid #f4f6fa' }}
         size="small"
-        addonBefore="保存到："
-        suffix={(
+        prefix={(
           <Button
             css={css`
               margin: 0;
@@ -169,7 +168,22 @@ const OutPutPathSelectComponent: React.FC<{
             size="large"
             onClick={selectPath}
           >
-            设置输出文件夹
+            输出文件夹
+          </Button>
+        )}
+        suffix={(
+          <Button
+            css={css`
+              margin: 0;
+            `}
+            size="large"
+            onClick={() => {
+              if (!core.isNullOrEmpty(savePath)) {
+                shell.openPath(savePath);
+              }
+            }}
+          >
+            打开
           </Button>
         )}
       />
