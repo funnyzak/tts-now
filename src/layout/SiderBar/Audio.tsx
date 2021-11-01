@@ -126,21 +126,21 @@ const Index = () => {
       <div css={{ paddingBottom: '30px', borderBottom: '1px solid #f2f9f2' }}>
         <SliderComponent
           value={appSetting.ttsSetting.speedRate}
-          name="ttsSpeed"
+          name="speedRate"
           min={-500}
           max={500}
           title="语速"
         />
         <SliderComponent
           value={appSetting.ttsSetting.pitchRate}
-          name="ttsTone"
+          name="pitchRate"
           min={-500}
           max={500}
           title="语调"
         />
         <SliderComponent
           value={appSetting.ttsSetting.volumn}
-          name="ttsVolumn"
+          name="volumn"
           min={0}
           max={100}
           title="音量"
@@ -149,13 +149,13 @@ const Index = () => {
       <div css={{ marginTop: '30px' }}>
         <RadioGroupComponent
           value={appSetting.ttsSetting.simpleRate.toString()}
-          name="samplingRate"
+          name="simpleRate"
           title="采样率"
           options={uiConfig.samplingRateList}
         />
         <RadioGroupComponent
           value={appSetting.ttsSetting.format}
-          name="outputFormat"
+          name="format"
           title="导出格式"
           options={uiConfig.outputFormatList}
         />
