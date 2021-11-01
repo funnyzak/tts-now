@@ -58,7 +58,7 @@ module.exports = {
     // http://eslint.org/docs/rules/comma-style
     "comma-style": [2, "last"],
     // 圈复杂度
-    "complexity": [2, 9],
+    "complexity": [2, 12],
     // 文件末尾强制换行
     "eol-last": 2,
     // 方法表达式是否需要命名
@@ -94,6 +94,7 @@ module.exports = {
     "no-shadow": "off",
     // 不允许嵌套的三元表达式
     "no-nested-ternary": "off",
+    "no-await-in-loop": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-shadow": "error",
     "@emotion/jsx-import": "off",
