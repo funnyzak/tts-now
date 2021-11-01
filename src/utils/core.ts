@@ -104,6 +104,7 @@ export const checkAliSettingNetwork = async (
   warn?: boolean
 ) => {
   if (!checkAliSetting(aliSetting, warn)) return false;
+
   if (!(await createAliTTS(aliSetting).checkConfig())) {
     message.error('密钥、AppKey貌似不可用哦。');
     return false;
