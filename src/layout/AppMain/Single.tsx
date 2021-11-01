@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import {
-  Input, Button, Form, Space
+  Input, Button, Form, Space, message
 } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import { useState, useEffect, useRef } from 'react';
+import { shell } from 'electron';
+import path from 'path';
 import useAppSetting from '@/hook/appHook';
 import { voiceTypeList, IFIcon } from '@/config';
 import * as core from '@/utils/core';
-import { AliTtsComplete, AliTtsOption } from '@/utils/aliyun/alitts';
+import { TtsFileStatus } from '@/type/enums';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -38,8 +40,11 @@ const singleTxtStyle = {
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
 
-  // const [aliTtsInstance, setAliTtsInstance] = useState(core.createAliTTS(appSetting.aliSetting));
-  // const [singleTtsFile, setSingleTtsFile] = useState<AliTtsComplete>()
+  const [aliTtsInstance, setAliTtsInstance] = useState(
+    core.createAliTTS(appSetting.aliSetting)
+  );
+  const [singleTtsFile, setSingleTtsFile] = useState<APP.TtsFileInfo>();
+  const [processing, setProcessing] = useState<boolean>(false);
 
   const getSingleTxt = () => (appSetting.customSetting.singleTxt
     && appSetting.customSetting.singleTxt !== null
@@ -49,7 +54,7 @@ const Index = () => {
     ? appSetting.customSetting.singleTxt
     : voiceTypeList[appSetting.ttsSetting.voiceIndex].text);
 
-  const [singleTxt, setSingleTxt] = useState(getSingleTxt());
+  const [singleTxt] = useState(getSingleTxt());
   const singleFormRef: any = useRef(null);
 
   const singleTextChange = (e) => {
@@ -58,14 +63,93 @@ const Index = () => {
         singleTxt: e.target.value
       })
     });
+
+    setSingleTtsFile({
+      textContent: e.target.value,
+      status: TtsFileStatus.READY,
+      wordCount: 0
+    });
   };
 
-  const playHandle = () => {
-    core.checkAliSetting(appSetting.aliSetting, true);
+  const playHandle = async () => {
+    if (!core.checkAliSetting(appSetting.aliSetting, true)) return;
+    const txt = singleFormRef.current.getFieldsValue().singleTxt;
+    if (core.isNullOrEmpty(txt)) {
+      message.error('请设置合成内容');
+    }
+    if (
+      singleTtsFile?.status
+      && singleTtsFile?.status === TtsFileStatus.PROCESS
+    ) {
+      message.warn('正在准备播放..');
+    }
+
+    const ttsFileInfo: APP.TtsFileInfo = {
+      ttsSetting: appSetting.ttsSetting,
+      textContent: txt,
+      status: TtsFileStatus.PROCESS,
+      wordCount: txt.length,
+      ttsStart: new Date().getTime()
+    };
+    setSingleTtsFile(ttsFileInfo);
+
+    setProcessing(true);
+    const rlt = await aliTtsInstance.taskSync(
+      txt,
+      2,
+      {
+        format: appSetting.ttsSetting.format,
+        sample_rate: appSetting.ttsSetting.simpleRate,
+        voice: voiceTypeList[appSetting.ttsSetting.voiceIndex].speakerId,
+        volume: appSetting.ttsSetting.volumn,
+        speech_rate: appSetting.ttsSetting.speedRate,
+        pitchRate: appSetting.ttsSetting.pitchRate
+      },
+      2
+    );
+
+    ttsFileInfo.ttsEnd = new Date().getTime();
+    ttsFileInfo.audioUrl = rlt.audio_address;
+    ttsFileInfo.status = TtsFileStatus.SUCCESS;
+    ttsFileInfo.taskId = rlt.task_id;
+
+    setSingleTtsFile(ttsFileInfo);
+    setProcessing(false);
   };
 
   const exportHandle = () => {
-    core.checkAliSetting(appSetting.aliSetting, true);
+    if (
+      !singleTtsFile
+      || core.isNullOrEmpty(singleTtsFile)
+      || core.isNullOrEmpty(singleTtsFile.audioUrl)
+    ) {
+      message.error('没有可导出的内容');
+      return;
+    }
+
+    core.selectDirection('select_export_path', (outPath) => {
+      singleTtsFile.savePath = outPath;
+      singleTtsFile.saveName = `${singleTtsFile.textContent.substring(
+        0,
+        7
+      )}_${new Date().getTime()}.${singleTtsFile.ttsSetting?.format || 'mp3'}`;
+      setSingleTtsFile(singleTtsFile);
+
+      console.log(singleTtsFile);
+      core
+        .downloadFile(singleTtsFile?.audioUrl || '', outPath, {
+          fileName: singleTtsFile?.saveName
+        })
+        .then(() => {
+          message.success('已成功导出');
+          shell.showItemInFolder(
+            path.join(
+              singleTtsFile?.savePath || '',
+              singleTtsFile?.saveName || ''
+            )
+          );
+        });
+    });
   };
 
   useEffect(() => {
@@ -75,8 +159,17 @@ const Index = () => {
       && singleFormRef.current !== undefined
     ) {
       singleFormRef.current.setFieldsValue({ singleTxt: getSingleTxt() });
+      setSingleTtsFile({
+        textContent: getSingleTxt(),
+        status: TtsFileStatus.READY,
+        wordCount: 0
+      });
     }
   }, core.ttsUseEffectDeps(appSetting.ttsSetting));
+
+  useEffect(() => {
+    setAliTtsInstance(core.createAliTTS(appSetting.aliSetting));
+  }, core.aliUseEffectDeps(appSetting.aliSetting));
 
   return (
     <Wrapper>
@@ -91,19 +184,28 @@ const Index = () => {
                 border: '0'
               }}
               size="large"
-              icon={<IFIcon type="icon-icvoice" />}
+              icon={(
+                <IFIcon
+                  type={processing ? 'icon-spin' : 'icon-icvoice'}
+                  spin={processing}
+                />
+              )}
               onClick={playHandle}
             >
               立即播放
             </Button>
-            <Button
-              type="primary"
-              size="large"
-              icon={<ExportOutlined />}
-              onClick={exportHandle}
-            >
-              导出
-            </Button>
+            {!singleTtsFile
+            || core.isNullOrEmpty(singleTtsFile)
+            || core.isNullOrEmpty(singleTtsFile.audioUrl) ? null : (
+              <Button
+                type="primary"
+                size="large"
+                icon={<ExportOutlined />}
+                onClick={exportHandle}
+              >
+                导出
+              </Button>
+              )}
           </Space>
         </div>
       </div>
