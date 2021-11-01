@@ -205,7 +205,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
     if (action === 'play') {
       console.log(action);
     } else if (action === 'open') {
-      shell.showItemInFolder(data.filePath);
+      shell.showItemInFolder(data?.savePath || __dirname);
     } else if (action === 'txt') {
       showTxtDialog(data);
     }
