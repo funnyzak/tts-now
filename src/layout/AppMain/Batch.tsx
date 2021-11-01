@@ -2,9 +2,10 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import React, { useState } from 'react';
 
-import { App, ipcRenderer, shell } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import fs from 'fs';
 import path from 'path';
+import ReactAudioPlayer from 'react-audio-player';
 
 import {
   RedoOutlined,
@@ -25,9 +26,11 @@ import {
   Input,
   Tooltip,
   Modal,
+  message,
   Row,
   Col
 } from 'antd';
+import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
 import { EventEmitter } from '@/config';
 import useAppSetting from '@/hook/appHook';
@@ -68,7 +71,7 @@ interface FileListProp {
 const readFileList = (files: Array<string>): Array<APP.TtsFileInfo> => {
   if (files.length === 0) return [];
 
-  console.log('read files:', files);
+  core.logger('read files:', files);
 
   const ttsFiles: Array<APP.TtsFileInfo> = [];
   files.forEach((v) => {
@@ -82,10 +85,10 @@ const readFileList = (files: Array<string>): Array<APP.TtsFileInfo> => {
         wordCount: textContent.length
       });
     } catch (err) {
-      console.log(`读取文件【${v}】失败`, err);
+      core.logger(`读取文件【${v}】失败`, err);
     }
   });
-  console.log('read tts file after:', ttsFiles);
+  core.logger('read tts file after:', ttsFiles);
   return ttsFiles;
 };
 
@@ -100,7 +103,7 @@ const SelectFilesComponent: React.FC<ICallBackFileListProp> = ({
     const actionName = 'select_tts_files';
 
     ipcRenderer.once(EventEmitter.SELECTED_FILES, (_event, arg) => {
-      console.log('selected files:', arg, _event);
+      core.logger('selected files:', arg, _event);
 
       if (arg.action === actionName && !arg.data.canceled) {
         callback(readFileList(arg.data.filePaths));
@@ -138,23 +141,11 @@ const SelectFilesComponent: React.FC<ICallBackFileListProp> = ({
 };
 
 const OutPutPathSelectComponent: React.FC<{}> = () => {
-  const [savePath, setSavePath] = useState();
+  const [savePath, setSavePath] = useState<string>();
 
   const selectPath = () => {
-    const actionName = 'select_tts_path';
-    ipcRenderer.once(EventEmitter.SELECTED_FILES, (_event, arg) => {
-      console.log('selected path:', arg, _event);
-      if (arg.action === actionName && !arg.data.canceled) {
-        setSavePath(arg.data.filePaths[0]);
-      }
-    });
-
-    ipcRenderer.send(EventEmitter.SELECT_FILES, {
-      action: actionName,
-      config: {
-        title: '选择输出路径',
-        properties: ['openDirectory']
-      }
+    core.selectDirection('select_tts_path', (outPath) => {
+      setSavePath(outPath);
     });
   };
   return (
@@ -203,7 +194,7 @@ const ConvertFilesComponent: React.FC<FileListProp> = ({ fileList }) => {
     setCurrentRow(data);
 
     if (action === 'play') {
-      console.log(action);
+      core.logger(action);
     } else if (action === 'open') {
       shell.showItemInFolder(data?.savePath || __dirname);
     } else if (action === 'txt') {
@@ -350,12 +341,15 @@ interface MangageFilesComponentProp {
 const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
   fileList,
   callback
-}) => {
-  if (fileList !== undefined && fileList !== null && fileList.length > 0) {
-    return <ConvertFilesComponent fileList={fileList} />;
-  }
-  return <SelectFilesComponent callback={callback} />;
-};
+}) => (
+  <>
+    {fileList !== undefined && fileList !== null && fileList.length > 0 ? (
+      <ConvertFilesComponent fileList={fileList} />
+    ) : (
+      <SelectFilesComponent callback={callback} />
+    )}
+  </>
+);
 
 const defaultFileList = [
   {
@@ -378,6 +372,17 @@ const defaultFileList = [
 
 const Index = () => {
   const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>(defaultFileList);
+  const [savePath, setSavePath] = useState<string>();
+
+  const runTask = () => {
+    if (core.isNullOrEmpty(savePath)) {
+      message.warn('请选择输出文件夹');
+      return;
+    }
+    if (!fileList || fileList.length === 0) {
+      message.warn('请选择要转换的文件');
+    }
+  };
 
   return (
     <Wrapper>
@@ -418,7 +423,12 @@ const Index = () => {
               >
                 清空
               </Button>
-              <Button type="primary" icon={<RedoOutlined />} size="large">
+              <Button
+                type="primary"
+                icon={<RedoOutlined />}
+                size="large"
+                onClick={runTask}
+              >
                 开始转换任务
               </Button>
             </Space>
