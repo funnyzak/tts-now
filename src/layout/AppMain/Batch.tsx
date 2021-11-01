@@ -35,6 +35,7 @@ import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
 import { EventEmitter } from '@/config';
 import useAppSetting from '@/hook/appHook';
+import { AliTtsComplete } from '@/utils/aliyun/alitts';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -400,6 +401,7 @@ const Index = () => {
   const [aliTtsInstance, setAliTtsInstance] = useState(
     core.createAliTTS(appSetting.aliSetting)
   );
+  const [process, setProcess] = useState<boolean>(false);
 
   const runTask = () => {
     if (!core.checkAliSetting(appSetting.aliSetting, true)) return;
@@ -412,10 +414,19 @@ const Index = () => {
       message.warn('请选择要转换的文件');
     }
 
+    if (process) {
+      message.info('已经在处理了');
+    }
+
     // 开始所有转换任务
     fileList.forEach(async (v) => {
       v.ttsSetting = appSetting.ttsSetting;
       v.ttsStart = new Date().getTime();
+      v.savePath = savePath;
+      v.fileName = `${v.textContent.substring(0, 7)}_${new Date().getTime()}.${
+        v.ttsSetting.format
+      }`;
+
       try {
         v.taskId = await aliTtsInstance.task(v.textContent, {
           format: appSetting.ttsSetting.format,
@@ -434,6 +445,41 @@ const Index = () => {
       }
     });
     setFileList(fileList);
+
+    const statusPull = () => {
+      fileList.forEach(async (v) => {
+        if (v.status === TtsFileStatus.PROCESS) {
+          try {
+            const aliTtsComplete: AliTtsComplete = await aliTtsInstance.status(
+              v.taskId
+            );
+
+            if (!core.isNullOrEmpty(aliTtsComplete.audio_address)) {
+              v.status = TtsFileStatus.SUCCESS;
+              v.ttsEnd = new Date().getTime();
+              v.audioUrl = aliTtsComplete.audio_address;
+              core.downloadFile(v.audioUrl, v.savePath, {
+                fileName: v.saveName
+              });
+            }
+          } catch (error) {
+            core.logger(error);
+            v.taskId = '';
+            v.status = TtsFileStatus.FAIL;
+            v.error = error;
+          }
+        }
+      });
+      setFileList(fileList);
+
+      if (
+        fileList.filter((v) => v.status === TtsFileStatus.PROCESS).length > 0
+      ) {
+        statusPull();
+      }
+    };
+
+    statusPull();
   };
 
   return (
