@@ -22,6 +22,9 @@ declare global {
 
       // 默认转换选项卡
       actionMode: string;
+
+      // 保存路径
+      savePath?: string;
     }
 
     /**
@@ -66,11 +69,11 @@ declare global {
        */
       ttsSetting?: TTSSetting;
       /**
-       * 文件路径
+       * 原文件路径
        */
       filePath?: string;
       /**
-       * 文件名
+       * 原文件名
        */
       fileName?: string;
       /**

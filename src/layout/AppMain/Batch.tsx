@@ -209,7 +209,12 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
     if (action === 'play') {
       core.logger(action);
     } else if (action === 'open') {
-      shell.showItemInFolder(data?.savePath || __dirname);
+      if (data.status !== TtsFileStatus.SUCCESS) {
+        return;
+      }
+      shell.showItemInFolder(
+        path.join(data?.savePath || '', data?.saveName || '')
+      );
     } else if (action === 'txt') {
       showTxtDialog(data);
     }
@@ -335,7 +340,10 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
               <FolderOpenFilled
                 onClick={() => actionHandler('open', data)}
                 alt="打开文件夹"
-                style={{ color: '#414e62' }}
+                style={{
+                  color:
+                    data.status === TtsFileStatus.SUCCESS ? '#414e62' : '#ccc'
+                }}
               />
             </Space>
           )}
@@ -397,38 +405,45 @@ const defaultFileList = [
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
   const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>(defaultFileList);
-  const [savePath, setSavePath] = useState<string>('');
-  const [aliTtsInstance, setAliTtsInstance] = useState(
-    core.createAliTTS(appSetting.aliSetting)
-  );
+  const [aliTtsInstance] = useState(core.createAliTTS(appSetting.aliSetting));
   const [process, setProcess] = useState<boolean>(false);
 
-  const runTask = () => {
+  const runTask = async () => {
     if (!core.checkAliSetting(appSetting.aliSetting, true)) return;
 
-    if (core.isNullOrEmpty(savePath)) {
+    if (core.isNullOrEmpty(appSetting.customSetting.savePath)) {
       message.warn('请选择输出文件夹');
       return;
     }
     if (!fileList || fileList.length === 0) {
       message.warn('请选择要转换的文件');
+      return;
+    }
+
+    if (!fs.existsSync(appSetting.customSetting.savePath || '')) {
+      message.warn('保存路径不存在哦，清检查。');
+      return;
     }
 
     if (process) {
       message.info('已经在处理了');
     }
 
+    setProcess(true);
+    setFileList(fileList.map((v) => ({ ...v, status: TtsFileStatus.READY })));
+
     // 开始所有转换任务
-    fileList.forEach(async (v) => {
-      v.ttsSetting = appSetting.ttsSetting;
-      v.ttsStart = new Date().getTime();
-      v.savePath = savePath;
-      v.fileName = `${v.textContent.substring(0, 7)}_${new Date().getTime()}.${
-        v.ttsSetting.format
-      }`;
+    for (const finfo of fileList) {
+      finfo.ttsSetting = appSetting.ttsSetting;
+      finfo.status = TtsFileStatus.READY;
+      finfo.ttsStart = new Date().getTime();
+      finfo.savePath = appSetting.customSetting.savePath;
+      finfo.saveName = `${
+        finfo.fileName?.split('.')[0]
+      }_${new Date().getTime()}.${finfo.ttsSetting.format}`;
 
       try {
-        v.taskId = await aliTtsInstance.task(v.textContent, {
+        finfo.taskId = await aliTtsInstance.task(finfo.textContent, {
           format: appSetting.ttsSetting.format,
           sample_rate: appSetting.ttsSetting.simpleRate,
           voice: voiceTypeList[appSetting.ttsSetting.voiceIndex].speakerId,
@@ -436,46 +451,49 @@ const Index = () => {
           speech_rate: appSetting.ttsSetting.speedRate,
           pitchRate: appSetting.ttsSetting.pitchRate
         });
-        v.status = TtsFileStatus.PROCESS;
+        finfo.status = TtsFileStatus.PROCESS;
       } catch (error) {
         core.logger(error);
-        v.taskId = '';
-        v.status = TtsFileStatus.FAIL;
-        v.error = error;
+        finfo.taskId = '';
+        finfo.status = TtsFileStatus.FAIL;
+        finfo.error = error;
       }
-    });
+    }
     setFileList(fileList);
 
-    const statusPull = () => {
-      fileList.forEach(async (v) => {
-        if (v.status === TtsFileStatus.PROCESS) {
-          try {
-            const aliTtsComplete: AliTtsComplete = await aliTtsInstance.status(
-              v.taskId
-            );
-
-            if (!core.isNullOrEmpty(aliTtsComplete.audio_address)) {
-              v.status = TtsFileStatus.SUCCESS;
-              v.ttsEnd = new Date().getTime();
-              v.audioUrl = aliTtsComplete.audio_address;
-              core.downloadFile(v.audioUrl, v.savePath, {
-                fileName: v.saveName
-              });
-            }
-          } catch (error) {
-            core.logger(error);
-            v.taskId = '';
-            v.status = TtsFileStatus.FAIL;
-            v.error = error;
-          }
+    const statusPull = async () => {
+      for (const finfo of fileList) {
+        if (finfo.status !== TtsFileStatus.PROCESS) {
+          continue;
         }
-      });
+        try {
+          const aliTtsComplete: AliTtsComplete = await aliTtsInstance.status(
+            finfo.taskId
+          );
+
+          if (!core.isNullOrEmpty(aliTtsComplete.audio_address)) {
+            finfo.status = TtsFileStatus.SUCCESS;
+            finfo.ttsEnd = new Date().getTime();
+            finfo.audioUrl = aliTtsComplete.audio_address;
+            core.downloadFile(finfo.audioUrl, finfo.savePath, {
+              fileName: finfo.saveName
+            });
+          }
+        } catch (error) {
+          core.logger(error);
+          finfo.taskId = '';
+          finfo.status = TtsFileStatus.FAIL;
+          finfo.error = error;
+        }
+      }
       setFileList(fileList);
 
       if (
         fileList.filter((v) => v.status === TtsFileStatus.PROCESS).length > 0
       ) {
         statusPull();
+      } else {
+        setProcess(false);
       }
     };
 
@@ -523,7 +541,7 @@ const Index = () => {
               </Button>
               <Button
                 type="primary"
-                icon={<RedoOutlined />}
+                icon={<RedoOutlined spin={process} />}
                 size="large"
                 onClick={runTask}
               >
@@ -536,8 +554,11 @@ const Index = () => {
       <MangageFilesComponent
         fileList={fileList}
         callback={(files) => setFileList(files)}
-        savePath={savePath}
-        savePathCallBack={(_path) => setSavePath(_path)}
+        savePath={appSetting.customSetting.savePath || ''}
+        savePathCallBack={(_path) => {
+          appSetting.customSetting.savePath = _path;
+          setAppSetting(appSetting);
+        }}
       />
     </Wrapper>
   );

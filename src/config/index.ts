@@ -25,7 +25,7 @@ export const uiConfig = {
 export const defaultAppSetting: APP.AppSetting = {
   ttsSetting: {
     voiceIndex: 0,
-    simpleRate: 8000,
+    simpleRate: 16000,
     format: 'mp3',
     pitchRate: 0,
     speedRate: 0,
