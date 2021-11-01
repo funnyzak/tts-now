@@ -189,6 +189,7 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
   savePathCallBack
 }) => {
   const [currentRow, setCurrentRow] = useState<APP.TtsFileInfo>();
+  const [audioPlayer, setAudioPlayer] = useState<any>();
 
   const showTxtDialog = (data: APP.TtsFileInfo) => {
     Modal.info({
@@ -207,7 +208,12 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
     setCurrentRow(data);
 
     if (action === 'play') {
-      core.logger(action);
+      core.logger(audioPlayer);
+      // 继续播放
+      audioPlayer.audioEl.current.load();
+      setTimeout(() => {
+        audioPlayer.audioEl.current.play();
+      }, 500);
     } else if (action === 'open') {
       if (data.status !== TtsFileStatus.SUCCESS) {
         return;
@@ -239,6 +245,11 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
 
   return (
     <MainWrapper>
+      <ReactAudioPlayer
+        src={currentRow?.audioUrl}
+        autoPlay={false}
+        ref={(el) => setAudioPlayer(el)}
+      />
       <Table
         css={tableStyle}
         sticky
@@ -253,15 +264,20 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
           dataIndex="fileName"
           key="fileName"
           render={(_value: string, _row: APP.TtsFileInfo) => (
-            <div
-              role="button"
-              css={{ cursor: 'pointer' }}
-              tabIndex={_row.key}
-              onMouseDown={() => actionHandler('txt', _row)}
-            >
-              <FileTextOutlined />
-              {' '}
-              {_value}
+            <div css={{ cursor: 'pointer' }}>
+              <FileTextOutlined
+                onClick={() => {
+                  shell.showItemInFolder(_row?.filePath || '');
+                }}
+              />
+              <span
+                role="button"
+                tabIndex={_row.key}
+                onMouseDown={() => actionHandler('txt', _row)}
+              >
+                {' '}
+                {_value}
+              </span>
             </div>
           )}
         />
@@ -283,9 +299,9 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
           title="耗时"
           dataIndex="elapsed"
           key="elapsed"
-          width={80}
+          width={100}
           render={(value: number) => (
-            <>{value ? `${value} 秒` : <SmileOutlined />}</>
+            <>{value ? `${(value / 1000).toFixed(2)} 秒` : <SmileOutlined />}</>
           )}
           sorter={(a: APP.TtsFileInfo, b: APP.TtsFileInfo) => (a.elapsed || 0) - (b.elapsed || 0)}
         />
@@ -475,6 +491,9 @@ const Index = () => {
             finfo.status = TtsFileStatus.SUCCESS;
             finfo.ttsEnd = new Date().getTime();
             finfo.audioUrl = aliTtsComplete.audio_address;
+            finfo.elapsed = finfo.ttsStart
+              ? finfo.ttsEnd - finfo.ttsStart
+              : undefined;
             core.downloadFile(finfo.audioUrl, finfo.savePath, {
               fileName: finfo.saveName
             });

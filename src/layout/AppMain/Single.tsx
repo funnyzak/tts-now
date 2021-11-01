@@ -219,6 +219,9 @@ const Index = () => {
                   导出
                 </Button>
                 <ReactAudioPlayer
+                  css={css`
+                    display: none;
+                  `}
                   src={singleTtsFile.audioUrl}
                   autoPlay
                   ref={(el) => setAudioPlayer(el)}
