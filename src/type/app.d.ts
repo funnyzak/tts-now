@@ -68,11 +68,11 @@ declare global {
       /**
        * 文件路径
        */
-      filePath: string;
+      filePath?: string;
       /**
        * 文件名
        */
-      fileName: string;
+      fileName?: string;
       /**
        * 文本内容
        */
@@ -108,11 +108,16 @@ declare global {
       /**
        * 转换输出音频地址
        */
-      audioUrls?: Array<string>;
+      audioUrl?: string;
       /**
        * 保存地址
        */
-      audioPaths?: Array<string>;
+      savePath?: string;
+
+      /**
+       * 保存名称
+       */
+      saveName?: string;
     }
   }
 }
