@@ -49,7 +49,7 @@ export const appSettingCacheKey = 'AppSetting';
 export const cacheAppSetting = localStorage.getItem(appSettingCacheKey);
 
 // 读取当前配置
-export const appSetting: APP.AppSetting = cacheAppSetting
+export const appSetting: APP.AppSetting = cacheAppSetting && JSON.parse(cacheAppSetting).customSetting
   ? JSON.parse(cacheAppSetting)
   : defaultAppSetting;
 
@@ -75,7 +75,7 @@ export default appName;
 // iconfont icon
 const IFIcon = createFromIconfontCN({
   extraCommonProps: { type: 'custom_icon' },
-  scriptUrl: `//at.alicdn.com/t/font_2904715_y0eqjm6yuqh.js?=${new Date().getTime()}`
+  scriptUrl: `//at.alicdn.com/t/font_2904715_u3pj13pvo9l.js?=${new Date().getTime()}`
 });
 
 export { IFIcon };
