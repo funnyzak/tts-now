@@ -66,7 +66,7 @@ const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
   const [val, setVal] = useState(value);
   const { appSetting, setAppSetting } = useAppSetting();
 
-  const formatter = (_value) => `${_value}%`;
+  const formatter = (_value) => `${_value}`;
 
   const changeValue = (_value: number) => {
     setVal(_value);

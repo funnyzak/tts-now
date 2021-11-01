@@ -116,7 +116,9 @@ export const ttsUseEffectDeps = (ttsSetting: APP.TTSSetting) => [
   ttsSetting.voiceIndex,
   ttsSetting.pitchRate,
   ttsSetting.simpleRate,
-  ttsSetting.speedRate
+  ttsSetting.speedRate,
+  ttsSetting.volumn,
+  ttsSetting.format
 ];
 
 export const aliUseEffectDeps = (aliSetting: APP.AliSetting) => [

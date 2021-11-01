@@ -7,10 +7,13 @@ import { ExportOutlined } from '@ant-design/icons';
 import { useState, useEffect, useRef } from 'react';
 import { shell } from 'electron';
 import path from 'path';
+import ReactAudioPlayer from 'react-audio-player';
 import useAppSetting from '@/hook/appHook';
 import { voiceTypeList, IFIcon } from '@/config';
 import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
+
+// https://github.com/justinmc/react-audio-player
 
 const Wrapper = styled.div`
   width: 100%;
@@ -40,12 +43,6 @@ const singleTxtStyle = {
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
 
-  const [aliTtsInstance, setAliTtsInstance] = useState(
-    core.createAliTTS(appSetting.aliSetting)
-  );
-  const [singleTtsFile, setSingleTtsFile] = useState<APP.TtsFileInfo>();
-  const [processing, setProcessing] = useState<boolean>(false);
-
   const getSingleTxt = () => (appSetting.customSetting.singleTxt
     && appSetting.customSetting.singleTxt !== null
     && appSetting.customSetting.singleTxt.length > 0
@@ -56,6 +53,11 @@ const Index = () => {
 
   const [singleTxt] = useState(getSingleTxt());
   const singleFormRef: any = useRef(null);
+  const [aliTtsInstance, setAliTtsInstance] = useState(
+    core.createAliTTS(appSetting.aliSetting)
+  );
+  const [singleTtsFile, setSingleTtsFile] = useState<APP.TtsFileInfo>();
+  const [audioPlayer, setAudioPlayer] = useState<any>();
 
   const singleTextChange = (e) => {
     setAppSetting({
@@ -71,8 +73,17 @@ const Index = () => {
     });
   };
 
+  const [processing, setProcessing] = useState<boolean>(false);
   const playHandle = async () => {
     if (!core.checkAliSetting(appSetting.aliSetting, true)) return;
+
+    if (singleTtsFile?.audioUrl) {
+      core.logger(audioPlayer);
+      // 继续播放
+      audioPlayer.audioEl.current.play();
+      return;
+    }
+
     const txt = singleFormRef.current.getFieldsValue().singleTxt;
     if (core.isNullOrEmpty(txt)) {
       message.error('请设置合成内容');
@@ -198,14 +209,21 @@ const Index = () => {
             {!singleTtsFile
             || core.isNullOrEmpty(singleTtsFile)
             || core.isNullOrEmpty(singleTtsFile.audioUrl) ? null : (
-              <Button
-                type="primary"
-                size="large"
-                icon={<ExportOutlined />}
-                onClick={exportHandle}
-              >
-                导出
-              </Button>
+              <>
+                <Button
+                  type="primary"
+                  size="large"
+                  icon={<ExportOutlined />}
+                  onClick={exportHandle}
+                >
+                  导出
+                </Button>
+                <ReactAudioPlayer
+                  src={singleTtsFile.audioUrl}
+                  autoPlay
+                  ref={(el) => setAudioPlayer(el)}
+                />
+              </>
               )}
           </Space>
         </div>
