@@ -9,7 +9,6 @@ const request = require('request-promise');
 export interface AliTtsOption {
   // https://help.aliyun.com/document_detail/130555.html
   appKey?: string;
-  text: string;
   format?: string;
   sample_rate?: number;
   voice?: string;
@@ -32,6 +31,8 @@ export interface AliTtsComplete {
 }
 
 class AliTTS {
+  debug: boolean = false;
+
   /**
    *长文本合成请求URL
    *
@@ -71,10 +72,21 @@ class AliTTS {
   tokenExpire: number =
     parseInt((new Date().getTime() / 1000).toString(), 10) - 10;
 
-  constructor(appKey: string, aliConfig: RPCClient.Config) {
+  constructor(
+    appKey: string,
+    aliConfig: RPCClient.Config,
+    debug: boolean = false
+  ) {
     this.aliConfig = aliConfig;
     this.appKey = appKey;
+    this.debug = debug;
     this.client = new RPCClient(this.aliConfig);
+  }
+
+  log(...args): void {
+    if (this.debug) {
+      console.log('alitts debug:', ...args);
+    }
   }
 
   /**
@@ -92,12 +104,13 @@ class AliTTS {
         this.client
           .request('CreateToken', { Format: 'JSON' })
           .then((res: any) => {
-            console.log('AliTTS CreateToken', res);
+            this.log('AliTTS CreateToken', res);
             if (res.ErrMsg === '') {
               this.tokenExpire = res.Token.ExpireTime;
               this.token = res.Token.Id;
               resolve(res.Token.Id);
             } else {
+              this.log(res);
               reject(res);
             }
           })
@@ -168,8 +181,12 @@ class AliTTS {
           }
         }
       };
+      this.log(requestConfig);
+
       request(requestConfig)
         .then((_rlt) => {
+          this.log('task complete:', _rlt);
+
           if (_rlt.data.task_id) {
             resolve(_rlt.data.task_id);
           } else {
@@ -177,6 +194,7 @@ class AliTTS {
           }
         })
         .catch((_err) => {
+          this.log('task error:', _err);
           reject(_err);
         });
     });
@@ -197,18 +215,21 @@ class AliTTS {
         reject(err);
         return;
       }
-
-      request({
+      const _config = {
         method: 'GET',
         uri: `${this.ttsEndpoint}?appkey=${
           appKey || this.appKey
         }&task_id=${taskId}&token=${_token}`,
         json: true
-      })
+      };
+
+      request(_config)
         .then((rlt: any) => {
+          this.log('task status:', rlt);
           resolve(rlt.data);
         })
         .catch((err) => {
+          this.log('task status error:', err);
           reject(err);
         });
     });
@@ -229,8 +250,8 @@ class AliTTS {
       let taskId = '';
       try {
         taskId = await this.task(text, options);
-        console.log(taskId);
       } catch (err) {
+        this.log(err);
         reject(err);
       }
 
@@ -243,9 +264,10 @@ class AliTTS {
           }
         } catch (err) {
           clearInterval(_interval);
+          this.log(err);
           reject(err);
         }
-      }, interval);
+      }, interval * 1000);
     });
   }
 
