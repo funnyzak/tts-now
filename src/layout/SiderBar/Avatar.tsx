@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { Menu, Dropdown, Typography } from 'antd';
+import {
+  Menu, Dropdown, Typography, Tooltip
+} from 'antd';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import useAppSetting from '@/hook/appHook';
 import { voiceTypeList } from '@/config';
@@ -66,11 +68,17 @@ const VoiceSelectComponent = (props: any) => {
               />
             )}
           >
-            {index + 1}
-            .
-            {voiceType.speaker}
-            ，
-            {voiceType.speechType}
+            <Tooltip
+              title={`${voiceType.scene}|${voiceType.language}|品质:${voiceType.quality}`}
+              placement="right"
+              color="gold"
+            >
+              {index + 1}
+              .
+              {voiceType.speaker}
+              ，
+              {voiceType.speechType}
+            </Tooltip>
           </Menu.Item>
         ))}
       </Menu>

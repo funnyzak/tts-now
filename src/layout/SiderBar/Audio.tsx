@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import { Slider, Radio } from 'antd';
 import React, { useState, useEffect } from 'react';
 import useAppSetting from '@/hook/appHook';
-import { uiConfig } from '@/config';
+import { uiConfig, voiceTypeList } from '@/config';
 
 interface RadioGroupInterface {
   options: Array<any>;
@@ -119,8 +119,19 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
+const parsePitchRateOptions = (list) => list.map((v) => ({ label: `${v / 1000}k`, value: v }));
+
 const Index = () => {
-  const { appSetting } = useAppSetting();
+  const { appSetting, setAppSetting } = useAppSetting();
+  const [pitchRateList, setPitchRateList] = useState<Array<number>>([
+    8000, 16000
+  ]);
+
+  useEffect(() => {
+    setPitchRateList(
+      voiceTypeList[appSetting.ttsSetting.voiceIndex].sampleRate
+    );
+  }, [appSetting.ttsSetting.voiceIndex]);
   return (
     <Wrapper>
       <div css={{ paddingBottom: '30px', borderBottom: '1px solid #f2f9f2' }}>
@@ -151,7 +162,7 @@ const Index = () => {
           value={appSetting.ttsSetting.simpleRate.toString()}
           name="simpleRate"
           title="采样率"
-          options={uiConfig.samplingRateList}
+          options={parsePitchRateOptions(pitchRateList)}
         />
         <RadioGroupComponent
           value={appSetting.ttsSetting.format}

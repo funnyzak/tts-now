@@ -13,11 +13,6 @@ export const uiConfig = {
     { label: 'mp3', value: 'mp3' },
     { label: 'wav', value: 'wav' },
     { label: 'pcm', value: 'pcm' }
-  ],
-  // 采样率
-  samplingRateList: [
-    { label: '8k', value: 8000 },
-    { label: '16k', value: 16000 }
   ]
 };
 
