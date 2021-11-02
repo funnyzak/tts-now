@@ -21,7 +21,7 @@ export const selectDirection = (
     action: actionName,
     config: {
       title: '选择路径',
-      properties: ['openDirectory']
+      properties: ['openDirectory', 'noResolveAliases', 'createDirectory']
     }
   });
 };
