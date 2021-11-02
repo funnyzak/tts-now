@@ -226,7 +226,11 @@ class AliTTS {
       request(_config)
         .then((rlt: any) => {
           this.log('task status:', rlt);
-          resolve(rlt.data);
+          if (rlt.error_code !== 20000000) {
+            reject(rlt.error_message);
+          } else {
+            resolve(rlt.data);
+          }
         })
         .catch((err) => {
           this.log('task status error:', err);
@@ -257,7 +261,16 @@ class AliTTS {
 
       const _interval = setInterval(async () => {
         try {
-          const rlt: AliTtsComplete = await this.status(taskId);
+          let rlt: AliTtsComplete;
+          try {
+            rlt = await this.status(taskId);
+            this.log('task sync status:', rlt);
+          } catch (err) {
+            clearInterval(_interval);
+            this.log('task sync status error:', err);
+            reject(err);
+            return;
+          }
           if (rlt.audio_address !== null && rlt.audio_address.length > 0) {
             clearInterval(_interval);
             resolve(rlt);

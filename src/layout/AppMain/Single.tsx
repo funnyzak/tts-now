@@ -12,6 +12,7 @@ import useAppSetting from '@/hook/appHook';
 import { voiceTypeList, IFIcon } from '@/config';
 import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
+import { AliTtsComplete } from '@/utils/aliyun/alitts';
 
 // https://github.com/justinmc/react-audio-player
 
@@ -105,19 +106,29 @@ const Index = () => {
     setSingleTtsFile(ttsFileInfo);
 
     setProcessing(true);
-    const rlt = await aliTtsInstance.taskSync(
-      txt,
-      2,
-      {
-        format: appSetting.ttsSetting.format,
-        sample_rate: appSetting.ttsSetting.simpleRate,
-        voice: voiceTypeList[appSetting.ttsSetting.voiceIndex].speakerId,
-        volume: appSetting.ttsSetting.volumn,
-        speech_rate: appSetting.ttsSetting.speedRate,
-        pitchRate: appSetting.ttsSetting.pitchRate
-      },
-      2
-    );
+
+    let rlt: AliTtsComplete;
+    try {
+      rlt = await aliTtsInstance.taskSync(
+        txt,
+        2,
+        {
+          format: appSetting.ttsSetting.format,
+          sample_rate: appSetting.ttsSetting.simpleRate,
+          voice: voiceTypeList[appSetting.ttsSetting.voiceIndex].speakerId,
+          volume: appSetting.ttsSetting.volumn,
+          speech_rate: appSetting.ttsSetting.speedRate,
+          pitchRate: appSetting.ttsSetting.pitchRate
+        },
+        2
+      );
+    } catch (err) {
+      core.logger('single error:', err);
+      message.error(err);
+      ttsFileInfo.status = TtsFileStatus.FAIL;
+      setProcessing(false);
+      return;
+    }
 
     ttsFileInfo.ttsEnd = new Date().getTime();
     ttsFileInfo.audioUrl = rlt.audio_address;
