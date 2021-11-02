@@ -29,7 +29,7 @@ module.exports = {
     installerHeaderIcon: 'public/icon/256x256.ico',
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
-    shortcutName: 'electron quick start'
+    shortcutName: packageInfo.name
   },
   win: {
     icon: 'public/icon/256x256.ico',
