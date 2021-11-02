@@ -4,7 +4,7 @@ import { createFromIconfontCN } from '@ant-design/icons';
 export { default as voiceTypeList } from './voiceType';
 
 // App 名称
-export const appName: string = '语音合成助手';
+export const appName: string = '阿里语音合成助手';
 
 // ui配置
 export const uiConfig = {

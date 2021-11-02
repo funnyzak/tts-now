@@ -4,6 +4,8 @@
 
 基于阿里云语音合成 API 的语音合成助手。应用基于 React Typescript Webpack 构建。
 
+备注：此工具依赖阿里云语音合成 API，使用时需要到阿里云创建语音合成 AppKey，以及阿里云账号 API Key。
+
 ## 环境
 
 使用的 Node 的构建版本为 **^14.17.5**，为避免冲突，建议使用此版本。可以使用 **_nvm_** 管理 Node 版本。
@@ -35,7 +37,7 @@
 - `config`：webpack 打包配置
 - `src/background.ts`：electron main ，code here
 
-## 使用
+## 命令
 
 执行：`yarn install` or `npm install`，然后：
 
@@ -56,6 +58,24 @@
 ## 其他
 
 此工具 [基于 typescript 和 React 的 Electron 脚手架应用](https://github.com/funnyzak/electron-react-quick-start) 构建。
+
+## 预览
+
+以下为 App 实际运行展示：
+
+### 语音场景选择（99 种）
+
+![场景](./public/_docs/assets/img/2_scene.png)
+
+### 单文本快速合成
+
+![单文本快速合成](./public/_docs/assets/img/1_singletxt.png)
+
+### 批量合成
+
+![批量合成](./public/_docs/assets/img/3_batch_ready.png)
+![批量合成](./public/_docs/assets/img/4_batch_process.png)
+![批量合成](./public/_docs/assets/img/5_batch_success.png)
 
 ## 参考
 

@@ -413,28 +413,9 @@ const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
   </>
 );
 
-const defaultFileList = [
-  {
-    filePath: '/Users/potato/Desktop/你好朋友.txt',
-    fileName: '你好朋友.txt',
-    textContent: '你好啊，我的朋友！',
-    status: TtsFileStatus.READY,
-    wordCount: 9,
-    key: 1
-  },
-  {
-    filePath: '/Users/potato/Desktop/风.txt',
-    fileName: '风.txt',
-    textContent: '为站在烈烈风中',
-    status: TtsFileStatus.READY,
-    wordCount: 7,
-    key: 2
-  }
-];
-
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
-  const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>(defaultFileList);
+  const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>();
   const [aliTtsInstance] = useState(core.createAliTTS(appSetting.aliSetting));
   const [processing, setProcessing] = useState<boolean>(false);
 
