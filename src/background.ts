@@ -1,5 +1,5 @@
 import {
-  app, protocol, BrowserWindow, Menu, ipcMain, dialog
+  app, BrowserWindow, ipcMain, Menu, dialog, shell
 } from 'electron';
 
 const config = require('../app.config');
@@ -7,11 +7,7 @@ const config = require('../app.config');
 let win: BrowserWindow;
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-
-// Scheme must be registered before the app is ready
-protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
-]);
+const isMac = process.platform === 'darwin';
 
 /**
  * 禁止刷新和调试
@@ -104,10 +100,78 @@ if (isDevelopment) {
   }
 }
 
-// 禁止默认菜单
-if (!isDevelopment) {
-  Menu.setApplicationMenu(null);
-}
+app.on('second-instance', () => {
+  if (win) {
+    if (win.isMinimized()) win.restore();
+    win.focus();
+  }
+});
+
+const menuTemplate: any = [
+  ...(isMac
+    ? [
+      {
+        label: app.name,
+        submenu: [
+          { role: 'about' },
+          { type: 'separator' },
+          { role: 'services' },
+          { type: 'separator' },
+          { role: 'hide' },
+          { role: 'hideOthers' },
+          { role: 'unhide' },
+          { type: 'separator' },
+          { role: 'quit' }
+        ]
+      }
+    ]
+    : []),
+  {
+    label: '编辑',
+    submenu: [
+      { role: 'undo' },
+      { role: 'redo' },
+      { type: 'separator' },
+      { role: 'cut' },
+      { role: 'copy' },
+      { role: 'paste' },
+      ...(isMac
+        ? [
+          { role: 'pasteAndMatchStyle' },
+          { role: 'delete' },
+          { role: 'selectAll' },
+          { type: 'separator' },
+          {
+            label: 'Speech',
+            submenu: [{ role: 'startSpeaking' }, { role: 'stopSpeaking' }]
+          }
+        ]
+        : [{ role: 'delete' }, { type: 'separator' }, { role: 'selectAll' }])
+    ]
+  },
+  {
+    label: '帮助',
+    role: 'help',
+    submenu: [
+      {
+        label: '下载新版',
+        click: async () => {
+          await shell.openExternal(
+            'https://github.com/funnyzak/aliyun-tts-assastant/releases'
+          );
+        }
+      },
+      {
+        label: '找作者',
+        click: async () => {
+          await shell.openExternal('https://yycc.me');
+        }
+      }
+    ]
+  }
+];
+const menu = Menu.buildFromTemplate(menuTemplate);
+Menu.setApplicationMenu(menu);
 
 // 选择要转换的文件或其他选择
 ipcMain.on('select_files', (event, arg) => {
