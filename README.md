@@ -6,6 +6,14 @@
 
 备注：此工具依赖阿里云语音合成 API，使用时需要到阿里云创建语音合成 AppKey，以及阿里云账号 API Key。点这里=>直达注册](https://ai.aliyun.com/nls/tts)。
 
+### 已编译版本：
+
+- windows32/64
+- mac
+- linux
+
+[点击这里](https://github.com/funnyzak/aliyun-tts-assastant/releases)可直接下载使用。
+
 ## 环境
 
 应用基于 React Typescript Webpack 构建。
