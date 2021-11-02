@@ -1,7 +1,7 @@
 {
-  "name": "aliyun-tts-assastant",
+  "name": "tts-now",
   "version": "0.8.0",
-  "description": "aliyun-tts-assastant",
+  "description": "aliyun tts assastant",
   "main": "build/bundle/main.js",
   "scripts": {
     "nodev": "nvm install 14.17.0",
