@@ -95,49 +95,5 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "typescript": "^4.4.4"
-  },
-  "build": {
-    "appId": "github.funnyzak.electron",
-    "productName": "electron app",
-    "copyright": "copyright © 2021 eric ",
-    "asar": true,
-    "files": [
-      "dist/**/*"
-    ],
-    "directories": {
-      "output": "build"
-    },
-    "mac": {
-      "icon": "public/icon/128x128.icns",
-      "category": "Utility"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowElevation": true,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon": "public/icon/256x256.ico",
-      "uninstallerIcon": "public/icon/256x256.ico",
-      "installerHeaderIcon": "public/icon/256x256.ico",
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "electron quick start"
-    },
-    "win": {
-      "icon": "public/icon/256x256.ico",
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ]
-    },
-    "linux": {
-      "target": "zip",
-      "category": "Utility",
-      "icon": "public/icon/128x128.ico"
-    }
   }
 }
