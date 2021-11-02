@@ -14,7 +14,7 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
     env:
         APP_NAME: aliyun-tts-assastant # electron.build productName对应
-        APP_VERSION: 0.1.5  # 当前版本，需和package verson对应
+        APP_VERSION: 0.8.0  # 当前版本，需和package verson对应
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2

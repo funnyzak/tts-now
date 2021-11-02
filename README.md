@@ -1,23 +1,20 @@
-# TTS Asstants Base AliYun
+# <img src="https://raw.githubusercontent.com/funnyzak/aliyun-tts-assastant/master/public/icon/256x256.png" width="60px" align="center" alt="阿里云语音合成助手 icon"> 阿里云语音合成助手
 
-## 说明
+应用基于阿里云语音合成 API 的语音合成助手。支持高达 99 种各种场景的语音合成，可单文本快速合成和批量语音合成。
 
-基于阿里云语音合成 API 的语音合成助手。支持 99 种场景语音合成，可以单文本快速预览和批量语音合成。
+编译版本支持 Windows32/64、Mac、Linux 版本。[点这里](https://github.com/funnyzak/aliyun-tts-assastant/releases)可下载使用。
 
-备注：此工具依赖阿里云语音合成 API，使用时需要到阿里云创建语音合成 AppKey，以及阿里云账号 API Key。点这里=>[直达注册](https://ai.aliyun.com/nls/tts)。
+> 使用前需要到阿里云创建语音合成 AppKey，以及阿里云账号 API Key。点这里 => [直达注册](https://ai.aliyun.com/nls/tts)。
 
-### 已编译版本：
+![批量合成](./public/_docs/assets/img/5_batch_success.png)
 
-- windows32/64
-- mac
-- linux
+---
 
-[点击这里](https://github.com/funnyzak/aliyun-tts-assastant/releases)可直接下载使用。
+## 构建
 
-## 环境
+应用使用 Electron 并基于 React Typescript Webpack 构建。
 
-应用基于 React Typescript Webpack 构建。
-使用的 Node 的构建版本为 **^14.17.5**，为避免冲突，建议使用此版本。可以使用 **_nvm_** 管理 Node 版本。
+> 使用的 Node 的构建版本为 **^14.17.5**，为避免冲突，建议使用此版本。可以使用 **_nvm_** 管理 Node 版本。
 
 主要依赖库版本：
 
@@ -32,13 +29,7 @@
 - webpack: ^5.59.1
 - prettier: 2.4.1
 
-### UI/组件：
-
-- antd
-- @ant-design/icons
-- normalize.css
-
-## 目录
+### 目录
 
 - `app.config.js`: app 基础配置
 - `electron.builder.js`: 打包配置
@@ -46,7 +37,7 @@
 - `config`：webpack 打包配置
 - `src/background.ts`：electron main ，code here
 
-## 命令
+### 命令
 
 执行：`yarn install` or `npm install`，然后：
 
@@ -59,44 +50,16 @@
 - 构建 Mac 二进制：`npm run build:mac`
 - 构建 Linux 二进制：`npm run build:linux`
 
-## 打包
+### 打包
 
 - 源构建输出：`./build/bundle`
 - 打包输出目录：`./build/binary`
 
-## 其他
+---
 
-此工具 [基于 typescript 和 React 的 Electron 脚手架应用](https://github.com/funnyzak/electron-react-quick-start) 构建。
+## 赞赏
 
-## 预览
-
-以下为 App 实际运行展示：
-
-### 语音场景选择（99 种）
-
-![场景](./public/_docs/assets/img/2_scene.png)
-
-### 单文本快速合成
-
-![单文本快速合成](./public/_docs/assets/img/1_singletxt.png)
-
-### 批量合成
-
-![批量合成](./public/_docs/assets/img/3_batch_ready.png)
-![批量合成](./public/_docs/assets/img/4_batch_process.png)
-![批量合成](./public/_docs/assets/img/5_batch_success.png)
-
-## 参考
-
-- [Electron](https://electronjs.org/docs)
-- [Babel Config](https://babel.docschina.org/docs/en/7.0.0/configuration/)
-- [EsLint](https://eslint.org/docs/user-guide/configuring/)
-- [eslintignore-file](https://eslint.org/docs/user-guide/configuring/ignoring-code#the-eslintignore-file)
-- [TSconfig](https://www.typescriptlang.org/tsconfig/)
-- [npmrc](https://docs.npmjs.com/cli/v7/configuring-npm/npmrc)
-- [gitignore](https://git-scm.com/docs/gitignore)
-- [webpack](https://webpack.docschina.org/guides/getting-started/)
-- [prettier](https://prettier.io/docs/en/index.html)
+![赞赏支持](./public/_docs/assets/img/coffee.png)
 
 ## License
 
