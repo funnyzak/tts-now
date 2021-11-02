@@ -92,4 +92,4 @@
 
 ## License
 
-MIT License © 2021 [funnyzak](https://github.com/funnyzak)
+Apache-2.0 License © 2021 [funnyzak](https://github.com/funnyzak)
