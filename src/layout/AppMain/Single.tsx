@@ -3,13 +3,17 @@ import { css } from '@emotion/react';
 import {
   Input, Button, Form, Space, message
 } from 'antd';
-import { ExportOutlined } from '@ant-design/icons';
+import {
+  ExportOutlined,
+  PlayCircleOutlined,
+  LoadingOutlined
+} from '@ant-design/icons';
 import { useState, useEffect, useRef } from 'react';
 import { shell } from 'electron';
 import path from 'path';
 import ReactAudioPlayer from 'react-audio-player';
 import useAppSetting from '@/hook/appHook';
-import { voiceTypeList, IFIcon } from '@/config';
+import { voiceTypeList } from '@/config';
 import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
 import { AliTtsComplete } from '@/utils/aliyun/alitts';
@@ -207,12 +211,7 @@ const Index = () => {
                 border: '0'
               }}
               size="large"
-              icon={(
-                <IFIcon
-                  type={processing ? 'icon-spin' : 'icon-icvoice'}
-                  spin={processing}
-                />
-              )}
+              icon={processing ? <LoadingOutlined /> : <PlayCircleOutlined />}
               onClick={playHandle}
             >
               立即播放
