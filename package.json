@@ -1,6 +1,6 @@
 {
   "name": "aliyun-tts-assastant",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "aliyun-tts-assastant",
   "main": "build/bundle/main.js",
   "scripts": {
