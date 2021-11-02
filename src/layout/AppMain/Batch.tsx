@@ -168,7 +168,7 @@ const OutPutPathSelectComponent: React.FC<{
             size="large"
             onClick={selectPath}
           >
-            输出文件夹
+            输出文件夹设置
           </Button>
         )}
         suffix={(
@@ -178,8 +178,8 @@ const OutPutPathSelectComponent: React.FC<{
             `}
             size="large"
             onClick={() => {
-              if (!core.isNullOrEmpty(savePath)) {
-                shell.openPath(savePath);
+              if (core.checkDirExist(savePath, '输出文件夹不存在哦')) {
+                core.logger(shell.openPath(savePath));
               }
             }}
           >
@@ -436,7 +436,7 @@ const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
   const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>(defaultFileList);
   const [aliTtsInstance] = useState(core.createAliTTS(appSetting.aliSetting));
-  const [process, setProcess] = useState<boolean>(false);
+  const [processing, setProcessing] = useState<boolean>(false);
 
   const runTask = async () => {
     if (!core.checkAliSetting(appSetting.aliSetting, true)) return;
@@ -450,16 +450,20 @@ const Index = () => {
       return;
     }
 
-    if (!fs.existsSync(appSetting.customSetting.savePath || '')) {
-      message.warn('保存路径不存在哦，清检查。');
+    if (
+      !core.checkDirExist(
+        appSetting.customSetting.savePath,
+        '输出文件夹不存在哦'
+      )
+    ) {
       return;
     }
 
-    if (process) {
+    if (processing) {
       message.info('已经在处理了');
     }
 
-    setProcess(true);
+    setProcessing(true);
     setFileList(fileList.map((v) => ({ ...v, status: TtsFileStatus.READY })));
 
     // 开始所有转换任务
@@ -526,7 +530,7 @@ const Index = () => {
       ) {
         statusPull();
       } else {
-        setProcess(false);
+        setProcessing(false);
       }
     };
 
@@ -553,7 +557,8 @@ const Index = () => {
                 icon={<DeleteOutlined />}
                 css={{
                   backgroundColor: '#748bae',
-                  border: '0'
+                  border: '0',
+                  display: processing ? 'none' : ''
                 }}
                 size="large"
                 onClick={() => {
@@ -574,7 +579,7 @@ const Index = () => {
               </Button>
               <Button
                 type="primary"
-                icon={<RedoOutlined spin={process} />}
+                icon={<RedoOutlined spin={processing} />}
                 size="large"
                 onClick={runTask}
               >

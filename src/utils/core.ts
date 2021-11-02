@@ -1,11 +1,25 @@
 import { message } from 'antd';
 import { App, ipcRenderer } from 'electron';
+import fs from 'fs';
 import AliTTS from '@/utils/aliyun/alitts';
 import { EventEmitter } from '@/config';
 
 const { DownloaderHelper } = require('node-downloader-helper');
 
 const ENV = process.env.NODE_ENV;
+
+export const checkDirExist = (
+  _path?: string,
+  _tipIfNoExists?: string
+): boolean => {
+  if (!fs.existsSync(_path || '')) {
+    if (_tipIfNoExists) {
+      message.warn(_tipIfNoExists);
+    }
+    return false;
+  }
+  return true;
+};
 
 export const selectDirection = (
   actionName: string,
