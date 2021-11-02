@@ -107,7 +107,7 @@ const Index = () => {
             voiceSetCallBack={changeVoice}
           />
         )}
-        trigger={['click']}
+        trigger={['hover']}
       >
         <Wrapper>
           <img
