@@ -95,6 +95,13 @@ module.exports = {
     // 不允许嵌套的三元表达式
     "no-nested-ternary": "off",
     "no-await-in-loop": "off",
+    // 对象/数组 解构
+    "prefer-destructuring": ["error", {
+      "array": true,
+      "object": true
+    }, {
+        "enforceForRenamedProperties": false
+      }],
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-shadow": "error",
     "@emotion/jsx-import": "off",
