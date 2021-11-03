@@ -17,7 +17,7 @@ module.exports = {
     output: 'build/binary'
   },
   mac: {
-    icon: 'public/icon/128x128.icns',
+    icon: 'public/icon/256x256.icns',
     category: 'Utility'
   },
   nsis: {
@@ -43,6 +43,6 @@ module.exports = {
   linux: {
     target: 'zip',
     category: 'Utility',
-    icon: 'public/icon/128x128.ico'
+    icon: 'public/icon/256x256.ico'
   }
 };
