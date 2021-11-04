@@ -214,7 +214,13 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
       centered: true,
       keyboard: true,
       icon: <FileTextOutlined />,
-      content: <pre>{data.textContent}</pre>
+      content: (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `<p>${data.textContent.replaceAll('\n', '</p><p>')}</p>`
+          }}
+        />
+      )
     });
   };
 
