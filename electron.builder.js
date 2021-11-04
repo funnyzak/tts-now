@@ -1,10 +1,11 @@
 const packageInfo = require('./package.json');
+const appConfig = require('./app.config');
 
 // 和electron-builder保持一致
 // 更多请看这里：https://www.electron.build/configuration/configuration
 module.exports = {
   appId: 'github.funnyzak.electron',
-  productName: packageInfo.name,
+  productName: appConfig.appName,
   copyright: 'copyright © 2021 eric',
   asar: true,
   // 要打包进的资源  glob Patterns
@@ -29,7 +30,7 @@ module.exports = {
     installerHeaderIcon: 'public/icon/256x256.ico',
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
-    shortcutName: packageInfo.name
+    shortcutName: appConfig.appName
   },
   win: {
     icon: 'public/icon/256x256.ico',
