@@ -154,7 +154,15 @@ const menuTemplate: any = [
     role: 'help',
     submenu: [
       {
-        label: '下载新版',
+        label: '帮助',
+        click: async () => {
+          await shell.openExternal(
+            'https://github.com/funnyzak/aliyun-tts-assastant/blob/master/README.md'
+          );
+        }
+      },
+      {
+        label: '下新版',
         click: async () => {
           await shell.openExternal(
             'https://github.com/funnyzak/aliyun-tts-assastant/releases'
