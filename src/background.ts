@@ -125,7 +125,19 @@ const menuTemplate: any = [
         ]
       }
     ]
-    : []),
+    : [
+      {
+        label: '程序',
+        submenu: [
+          {
+            label: '退出',
+            click: () => {
+              app.quit();
+            }
+          }
+        ]
+      }
+    ]),
   {
     label: '编辑',
     submenu: [
