@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/funnyzak/aliyun-tts-assastant.git"
+    "url": "git+https://github.com/funnyzak/tts-now.git"
   },
   "keywords": [
     "electron",
@@ -31,9 +31,9 @@
   "author": "funnyzak <silenceace@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/funnyzak/aliyun-tts-assastant/issues"
+    "url": "https://github.com/funnyzak/tts-now/issues"
   },
-  "homepage": "https://github.com/funnyzak/aliyun-tts-assastant#readme",
+  "homepage": "https://github.com/funnyzak/tts-now#readme",
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",

@@ -157,7 +157,7 @@ const menuTemplate: any = [
         label: '帮助',
         click: async () => {
           await shell.openExternal(
-            'https://github.com/funnyzak/aliyun-tts-assastant/blob/master/README.md'
+            'https://github.com/funnyzak/tts-now/blob/master/README.md'
           );
         }
       },
@@ -165,7 +165,7 @@ const menuTemplate: any = [
         label: '下新版',
         click: async () => {
           await shell.openExternal(
-            'https://github.com/funnyzak/aliyun-tts-assastant/releases'
+            'https://github.com/funnyzak/tts-now/releases'
           );
         }
       },

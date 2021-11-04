@@ -1,8 +1,8 @@
-# <img src="https://raw.githubusercontent.com/funnyzak/aliyun-tts-assastant/master/public/icon/256x256.png" width="60px" align="center" alt="阿里云语音合成助手 icon"> 阿里云语音合成助手
+# <img src="https://raw.githubusercontent.com/funnyzak/tts-now/master/public/icon/256x256.png" width="60px" align="center" alt="阿里云语音合成助手 icon"> 阿里云语音合成助手
 
 应用基于阿里云语音合成 API 的语音合成助手。支持高达 99 种各种场景的语音合成，可单文本快速合成和批量语音合成。
 
-编译版本支持 Windows32/64、Mac、Linux 版本。[点这里](https://github.com/funnyzak/aliyun-tts-assastant/releases)可下载使用。
+编译版本支持 Windows32/64、Mac、Linux 版本。[点这里](https://github.com/funnyzak/tts-now/releases)可下载使用。
 
 > 使用前需要到阿里云创建语音合成 AppKey，以及阿里云账号 API Key。点这里 => [直达注册](https://ai.aliyun.com/nls/tts)。
 
