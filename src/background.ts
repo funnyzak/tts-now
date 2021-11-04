@@ -127,7 +127,7 @@ const menuTemplate: any = [
     ]
     : [
       {
-        label: '程序',
+        label: config.appName,
         submenu: [
           {
             label: '退出',
