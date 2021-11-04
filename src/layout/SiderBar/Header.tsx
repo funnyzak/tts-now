@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { appName } from '@/config';
 
 const Header = styled.div`
@@ -15,6 +16,7 @@ const Header = styled.div`
 
 const Index = () => (
   <Header>
+    {/* <img src="./icon/256x256.png" height="30px" css={css`margin-right:10px;`}/> */}
     {' '}
     {appName}
     {' '}
