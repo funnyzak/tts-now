@@ -13,7 +13,8 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
     env:
-        APP_NAME: TTS.Now # electron.build productName对应
+        PACKAGE_APP_NAME: TTS Now # electron.build productName对应
+        LINUX_PACKAGE_APP_NAME: tts-now
         APP_VERSION: 0.8.0  # 当前版本，需和package verson对应
     steps:
       - name: Check out Git repository
@@ -49,16 +50,16 @@ jobs:
         if: startsWith(matrix.os, 'macos')
         with:
           files: |
-            build/binary/${{env.APP_NAME}}-${{env.APP_VERSION}}.dmg
+            build/binary/${{env.PACKAGE_APP_NAME}}-${{env.APP_VERSION}}.dmg
       - name: Release Windows
         uses: softprops/action-gh-release@v1
         if: startsWith(matrix.os, 'windows')
         with:
           files: |
-            build/binary/${{env.APP_NAME}} Setup ${{env.APP_VERSION}}.exe
+            build/binary/${{env.PACKAGE_APP_NAME}} Setup ${{env.APP_VERSION}}.exe
       - name: Release Ubuntu
         uses: softprops/action-gh-release@v1
         if: startsWith(matrix.os, 'ubuntu')
         with:
           files: |
-            build/binary/${{env.APP_NAME}}-${{env.APP_VERSION}}.zip
+            build/binary/${{env.LINUX_PACKAGE_APP_NAME}}-${{env.APP_VERSION}}.zip
