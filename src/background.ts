@@ -113,15 +113,15 @@ const menuTemplate: any = [
       {
         label: app.name,
         submenu: [
-          { role: 'about' },
+          { role: 'about', label: '关于' },
           { type: 'separator' },
           { role: 'services' },
           { type: 'separator' },
-          { role: 'hide' },
+          { role: 'hide', label: '隐藏' },
           { role: 'hideOthers' },
           { role: 'unhide' },
           { type: 'separator' },
-          { role: 'quit' }
+          { role: 'quit', label: '退出' }
         ]
       }
     ]
