@@ -180,12 +180,6 @@ const menuTemplate: any = [
             'https://github.com/funnyzak/tts-now/releases'
           );
         }
-      },
-      {
-        label: '找作者',
-        click: async () => {
-          await shell.openExternal('https://yycc.me');
-        }
       }
     ]
   }
