@@ -6,7 +6,7 @@
 
 > 使用前需要到阿里云创建语音合成 AppKey，以及阿里云账号 API Key。点这里 => [直达注册](https://ai.aliyun.com/nls/tts)。
 
-![批量合成](./public/_docs/assets/img/demo.gif)
+![合成演示](./public/_docs/assets/img/demo.gif)
 
 ---
 
@@ -56,10 +56,6 @@
 - 打包输出目录：`./build/binary`
 
 ---
-
-## 赞赏
-
-![赞赏支持](./public/_docs/assets/img/coffee.png)
 
 ## License
 
