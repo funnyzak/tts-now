@@ -1,10 +1,9 @@
 import React from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
-import appConfig from '../../app.config';
 
 export { default as voiceTypeList } from './voiceType';
 // App 名称
-export const { appName } = appConfig;
+export const appName = '阿里云语音合成助手';
 
 // ui配置
 export const uiConfig = {
