@@ -13,8 +13,8 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
     env:
-        PACKAGE_APP_NAME: TTS Now # electron.build productName对应
-        LINUX_PACKAGE_APP_NAME: tts-now
+        PACKAGE_APP_NAME: 阿里云语音合成助手 # electron.build productName对应
+        LINUX_PACKAGE_APP_NAME: 阿里云语音合成助手
         APP_VERSION: 0.8.0  # 当前版本，需和package verson对应
     steps:
       - name: Check out Git repository

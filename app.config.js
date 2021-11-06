@@ -1,5 +1,5 @@
 const appConfig = {
-  appName: 'TTS Now',
+  appName: '阿里云语音合成助手',
   // 源打包输出
   distOutPut: 'build/bundle',
   // 开发环境 服务配置
