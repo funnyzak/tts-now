@@ -57,6 +57,10 @@
 
 ---
 
+## 赞赏
+
+![赞赏](./public/_docs/assets/img/coffee.png)
+
 ## License
 
 Apache-2.0 License © 2021 [funnyzak](https://github.com/funnyzak)
