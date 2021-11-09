@@ -55,11 +55,15 @@
 - bundle 构建输出：`./build/bundle`
 - 二进制构建输出：`./build/binary`
 
----
-
 ## 赞赏
 
 ![赞赏](./public/_docs/assets/img/coffee.png)
+
+## Author
+
+| [![twitter/funnyzak](https://s.gravatar.com/avatar/c2437e240644b1317a4a356c6d6253ee?s=70)](https://twitter.com/funnyzak 'Follow @funnyzak on Twitter') |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [funnyzak](https://yycc.me/)                                                                                                                           |
 
 ## License
 
