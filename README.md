@@ -1,10 +1,10 @@
 # <img src="https://raw.githubusercontent.com/funnyzak/tts-now/master/public/icon/256x256.png" width="60px" align="center" alt="阿里云语音合成助手 icon"> 阿里云语音合成助手
 
-应用基于阿里云语音合成 API 的语音合成助手。支持高达 99 种各种场景的语音合成，可单文本快速合成和批量语音合成。
+基于阿里云语音合成 API 的语音合成助手。支持高达 99 种各种场景的语音合成，可单文本快速合成和批量语音合成。
 
-编译版本支持 Windows32/64、Mac、Linux 版本。[点这里](https://github.com/funnyzak/tts-now/releases)可下载使用。
+目前编译版本包含 Windows32/64、Mac、Linux 版。[点这里](https://github.com/funnyzak/tts-now/releases)直接下载使用。
 
-> 使用前需要到阿里云创建语音合成 AppKey，以及阿里云账号 API Key。点这里 => [直达注册](https://ai.aliyun.com/nls/tts)。
+> 使用前需到阿里云创建语音合成 AppKey，以及阿里云账号 API Key。 => [直达注册](https://ai.aliyun.com/nls/tts)。
 
 ![合成演示](./public/_docs/assets/img/demo.gif)
 
@@ -14,9 +14,9 @@
 
 应用使用 Electron 并基于 React Typescript Webpack 构建。
 
-> 使用的 Node 的构建版本为 **^14.17.5**，为避免冲突，建议使用此版本。可以使用 **_nvm_** 管理 Node 版本。
+> 开发以及构建使用的 Node 的构建版本为 **^14.17.5**，为避免冲突，建议使用此版本。可以使用 **_nvm_** 管理 Node 版本。
 
-主要依赖库版本：
+项目主要依赖库：
 
 - electron: ^15.3.0
 - electron-builder: ^22.13.15
@@ -35,7 +35,7 @@
 - `electron.builder.js`: 打包配置
 - `public`：静态资源文件夹
 - `config`：webpack 打包配置
-- `src/background.ts`：electron main ，code here
+- `src/background.ts`：Electron Background Process
 
 ### 命令
 
@@ -50,10 +50,10 @@
 - 构建 Mac 二进制：`npm run build:mac`
 - 构建 Linux 二进制：`npm run build:linux`
 
-### 打包
+### 输出
 
-- 源构建输出：`./build/bundle`
-- 打包输出目录：`./build/binary`
+- bundle 构建输出：`./build/bundle`
+- 二进制构建输出：`./build/binary`
 
 ---
 
