@@ -1,5 +1,7 @@
 # <img src="https://raw.githubusercontent.com/funnyzak/tts-now/master/public/icon/256x256.png" width="60px" align="center" alt="阿里云语音合成助手 icon"> 阿里云语音合成助手
 
+[![Release Version](https://img.shields.io/github/release/funnyzak/tts-now.svg)](https://github.com/funnyzak/tts-now/releases/latest) [![Latest Release Download](https://img.shields.io/github/downloads/funnyzak/tts-now/latest/total.svg)](https://github.com/funnyzak/tts-now/releases/latest) [![Total Download](https://img.shields.io/github/downloads/funnyzak/tts-now/total.svg)](https://github.com/funnyzak/tts-now/releases)
+
 基于阿里云语音合成 API 的语音合成助手。支持高达 99 种各种场景的语音合成，可单文本快速合成和批量语音合成。
 
 目前编译版本包含 Windows32/64、Mac、Linux 版。[点这里](https://github.com/funnyzak/tts-now/releases)直接下载使用。
