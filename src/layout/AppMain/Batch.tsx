@@ -47,12 +47,12 @@ const Wrapper = styled.div`
 `;
 
 const MainWrapper = styled.div`
-  height: calc(100vh - 80px - 115px - 10px) !important;
+  height: calc(100vh - 80px - 115px - 15px) !important;
   border: 1px solid #f4f6fa;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 `;
 
 const tableStyle = css`
@@ -123,6 +123,7 @@ const SelectFilesComponent: React.FC<ICallBackFileListProp> = ({
 
   return (
     <MainWrapper
+      className="border-radius-base"
       css={css`
         align-items: center;
         justify-content: center;
@@ -163,6 +164,10 @@ const OutPutPathSelectComponent: React.FC<{
           <Button
             css={css`
               margin: 0;
+              border: 0;
+              color: #666;
+              border-radius: 0;
+              background: #eee;
             `}
             type="primary"
             size="large"
@@ -175,6 +180,9 @@ const OutPutPathSelectComponent: React.FC<{
           <Button
             css={css`
               margin: 0;
+              border: 0;
+              border-left: 1px solid #f4f6fa;
+              border-radius: 0;
             `}
             size="large"
             onClick={() => {

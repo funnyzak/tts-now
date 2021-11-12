@@ -35,7 +35,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
   return (
     <>
       <Modal
-        title="配置"
+        title="阿里云配置"
         centered
         okText="确定"
         cancelText="取消"

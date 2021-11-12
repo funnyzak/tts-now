@@ -34,8 +34,8 @@ function createWindow() {
   win = new BrowserWindow({
     show: isDevelopment,
     width: 1024,
-    height: 750,
-    minHeight: 750,
+    height: 745,
+    minHeight: 745,
     minWidth: 1024,
     fullscreenable: isDevelopment,
     maximizable: true,
@@ -175,7 +175,7 @@ const menuTemplate: any = [
         }
       },
       {
-        label: '下新版',
+        label: '检查更新',
         click: async () => {
           await shell.openExternal(
             'https://github.com/funnyzak/tts-now/releases'

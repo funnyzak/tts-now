@@ -37,11 +37,11 @@ const actionButtonStyle = css`
 `;
 
 const singleTxtStyle = {
-  height: 'calc(100vh - 80px - 115px - 10px) !important',
+  height: 'calc(100vh - 80px - 115px - 15px) !important',
   padding: '15px',
   margin: 0,
   overflow: 'hidden',
-  marginBottom: '10px',
+  marginBottom: '15px',
   lineHeight: '22px !important'
 };
 

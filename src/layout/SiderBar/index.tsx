@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 
 const Wrapper2 = styled.div`
   width: 280px;
-  height: calc(100vh - 60px - 80px - 60px);
+  height: calc(100vh - 80px - 80px - 60px);
   padding: 0 20px;
   overflow-y: auto;
   box-sizing: border-box;
@@ -26,7 +26,7 @@ const Wrapper2 = styled.div`
 const settingButtonStyle = css`
   width: 280px;
   height: 60px;
-  padding: 12px 20px 0;
+  padding: 7px 20px 0;
   border-right: 1px solid #f4f6fa;
   background-color: #fff;
 `;
