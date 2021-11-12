@@ -15,8 +15,8 @@
     <meta name="hash" content="<%= gitInfo.COMMITHASH %>" />
   </head>
 
-  <body>
-    <div id="root"></div>
+  <body onselectstart="return false">
+    <div id="root" style="cursor: default"></div>
     <script>
       function initTopDrag() {
         const topDiv = document.createElement('div');
