@@ -40,6 +40,7 @@ function createWindow() {
     fullscreenable: isDevelopment,
     maximizable: true,
     movable: true,
+    titleBarStyle: 'hiddenInset', // 无边框
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
