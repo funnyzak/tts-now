@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
 
-export { default as voiceTypeList } from './voiceType';
+export { default as voiceTypeList } from './voice/voiceType';
 // App 名称
 export const appName = '阿里云语音合成助手';
 
