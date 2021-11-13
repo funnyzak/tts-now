@@ -36,7 +36,7 @@ module.exports = {
   },
   rules: {
     // 代码长度
-    'max-len': ["error", { "code": 200, "ignoreComments": true, "ignoreUrls": true, "ignoreTemplateLiterals": true }],
+    'max-len': ["error", { "code": 1000, "ignoreComments": true, "ignoreUrls": true, "ignoreTemplateLiterals": true }],
     'semi': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
     'func-names': 'off',
