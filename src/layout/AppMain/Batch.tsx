@@ -315,13 +315,7 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
           key="wordCount"
           width={80}
           sorter={(a: APP.TtsFileInfo, b: APP.TtsFileInfo) => a.wordCount - b.wordCount}
-          render={(value: number) => (
-            <>
-              {value}
-              {' '}
-              个
-            </>
-          )}
+          render={(value: number) => <>{value}</>}
         />
         <Table.Column
           title="耗时"
