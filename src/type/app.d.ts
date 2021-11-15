@@ -14,6 +14,8 @@ declare global {
       customSetting: CustomSetting;
 
       aliSetting: AliSetting;
+
+      xfSetting: XfSetting;
     }
 
     export interface CustomSetting {
@@ -57,6 +59,15 @@ declare global {
       appKey?: string;
       accessKeyId?: string;
       accessKeySecret?: string;
+    }
+
+    /**
+     * 讯飞配置
+     */
+    export interface XfSetting {
+      APPID?: string;
+      APISecret?: string;
+      APIKey?: string;
     }
 
     /**

@@ -30,6 +30,11 @@ export const defaultAppSetting: APP.AppSetting = {
     accessKeyId: '',
     accessKeySecret: ''
   },
+  xfSetting: {
+    APIKey: '',
+    APISecret: '',
+    APPID: ''
+  },
   customSetting: {
     actionMode: 'SINGLE',
     singleTxt: ''
