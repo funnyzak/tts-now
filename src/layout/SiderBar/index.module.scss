@@ -1,0 +1,22 @@
+.wrapper {
+  width: 280px;
+  height: 100vh;
+  border-right: 1px solid #f4f6fa;
+  overflow: hidden;
+}
+
+.settingWrapper {
+  width: 280px;
+  height: calc(100vh - 80px - 80px - 60px);
+  padding: 0 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.settingButton {
+  width: 280px;
+  height: 60px;
+  padding: 7px 20px 0;
+  border-right: 1px solid #f4f6fa;
+  background-color: #fff;
+}

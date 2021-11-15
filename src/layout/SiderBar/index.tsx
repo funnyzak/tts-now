@@ -1,41 +1,18 @@
 import { Button, Affix } from 'antd';
 import { SettingOutlined } from '@ant-design/icons';
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { useState } from 'react';
 import Header from './Header';
 import Avatar from './Avatar';
 import AudioSet from './Audio';
 import { SetttingKeyDialog } from '../Dialog';
-
-const Wrapper = styled.div`
-  width: 280px;
-  height: 100vh;
-  border-right: 1px solid #f4f6fa;
-  overflow: hidden;
-`;
-
-const Wrapper2 = styled.div`
-  width: 280px;
-  height: calc(100vh - 80px - 80px - 60px);
-  padding: 0 20px;
-  overflow-y: auto;
-  box-sizing: border-box;
-`;
-
-const settingButtonStyle = css`
-  width: 280px;
-  height: 60px;
-  padding: 7px 20px 0;
-  border-right: 1px solid #f4f6fa;
-  background-color: #fff;
-`;
+import styles from './index.module.scss';
 
 const Index = () => {
   const [btnBottom] = useState(0);
-  const [showSetting, setShowSetting] = useState(false);
+  const [showSetting, setShowSetting] = useState(true);
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <Affix offsetTop={0}>
         <div>
           <Header />
@@ -44,11 +21,11 @@ const Index = () => {
           </div>
         </div>
       </Affix>
-      <Wrapper2>
+      <div className={styles.settingWrapper}>
         <AudioSet />
-      </Wrapper2>
+      </div>
       <Affix offsetBottom={btnBottom}>
-        <div css={settingButtonStyle}>
+        <div className={styles.settingButton}>
           <Button
             css={{ width: '100%' }}
             type="primary"
@@ -58,7 +35,7 @@ const Index = () => {
               setShowSetting(true);
             }}
           >
-            配置
+            平台配置
           </Button>
         </div>
       </Affix>
@@ -71,7 +48,7 @@ const Index = () => {
       ) : (
         <div />
       )}
-    </Wrapper>
+    </div>
   );
 };
 
