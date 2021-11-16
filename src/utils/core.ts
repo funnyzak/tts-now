@@ -2,6 +2,8 @@ import { message } from 'antd';
 import { App, ipcRenderer } from 'electron';
 import fs from 'fs';
 import AliTTS from '@/utils/aliyun/alitts';
+import XfTTS from '@/utils/xunfei/xftts';
+
 import { EventEmitter } from '@/config';
 
 const { DownloaderHelper } = require('node-downloader-helper');
@@ -107,7 +109,23 @@ export const checkAliSetting = (
     || isNullOrEmpty(aliSetting?.accessKeyId)
     || isNullOrEmpty(aliSetting?.accessKeySecret)
   ) {
-    if (warn) message.error('请先配置密钥');
+    if (warn) message.error('请先配置阿里云密钥');
+    return false;
+  }
+  return true;
+};
+
+export const checkXfSetting = (
+  xfSetting?: APP.XfSetting,
+  warn?: boolean
+): boolean => {
+  if (
+    isNullOrEmpty(xfSetting)
+    || isNullOrEmpty(xfSetting?.apiKey)
+    || isNullOrEmpty(xfSetting?.apiSecret)
+    || isNullOrEmpty(xfSetting?.appId)
+  ) {
+    if (warn) message.error('请先配置讯飞密钥');
     return false;
   }
   return true;
@@ -125,6 +143,19 @@ export const checkAliSettingNetwork = async (
   }
   return true;
 };
+
+// export const checkXfSettingNetwork = async (
+//   xfSetting: APP.XfSetting,
+//   warn?: boolean
+// ) => {
+//   if (!checkXfSetting(xfSetting, warn)) return false;
+
+//   if (!(await createAliTTS(xfSetting).checkConfig())) {
+//     message.error('讯飞配置貌似不可用哦。');
+//     return false;
+//   }
+//   return true;
+// };
 
 export const ttsUseEffectDeps = (ttsSetting: APP.TTSSetting) => [
   ttsSetting.speakerId,
