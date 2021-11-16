@@ -172,7 +172,7 @@ const Index = () => {
           value={appSetting.ttsSetting.format}
           name="format"
           title="导出格式"
-          options={uiConfig.outputFormatList}
+          options={uiConfig.outputFormatList(appSetting.ttsSetting.engine)}
         />
       </div>
     </Wrapper>

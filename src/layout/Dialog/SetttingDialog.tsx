@@ -70,15 +70,26 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
     );
 
     core.logger('ali setting:', aliSetting, 'xf setting:', xfSetting);
-    // return;
 
     setSpinning(true);
-    if (!(await core.checkAliSettingNetwork(aliSetting, true))) {
+    if (
+      (formValues.engine === TtsEngine.ALIYUN.toString()
+        && !(await core.checkAliSettingNetwork(aliSetting, true)))
+      || (formValues.engine === TtsEngine.XUNFEI.toString()
+        && !(await core.checkXfSetting(xfSetting, true)))
+    ) {
       setSpinning(false);
       return;
     }
 
-    setAppSetting({ aliSetting });
+    setAppSetting({
+      aliSetting,
+      xfSetting,
+      ttsSetting: {
+        ...appSetting.ttsSetting,
+        engine: formValues.engine as TtsEngine
+      }
+    });
     closeCallBack();
   };
 
@@ -147,7 +158,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
               >
                 <Form.Item
                   name={`${TtsEngine.XUNFEI.toString()}_appId`}
-                  label="appId"
+                  label="APPID"
                   required
                   tooltip="需要讯飞后台创建项目获取"
                 >
@@ -156,7 +167,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
                 <Form.Item
                   required
                   name={`${TtsEngine.XUNFEI.toString()}_apiSecret`}
-                  label="apiSecret"
+                  label="APISecret"
                   tooltip={{ title: '讯飞账号API密钥' }}
                 >
                   <Input placeholder="请输入APISecret" />
@@ -164,7 +175,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
                 <Form.Item
                   name={`${TtsEngine.XUNFEI.toString()}_apiKey`}
                   required
-                  label="apiKey"
+                  label="APIKey"
                   tooltip={{ title: '讯飞账号API Key' }}
                 >
                   <Input.Password placeholder="请输入APIKey" />

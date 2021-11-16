@@ -9,11 +9,19 @@ export const appName = '智能语音合成助手';
 // ui配置
 export const uiConfig = {
   // 导出格式
-  outputFormatList: [
-    { label: 'mp3', value: 'mp3' },
-    { label: 'wav', value: 'wav' },
-    { label: 'pcm', value: 'pcm' }
-  ]
+  outputFormatList: (_engine: TtsEngine) => (_engine === TtsEngine.ALIYUN
+    ? [
+      { label: 'mp3', value: 'mp3' },
+      { label: 'wav', value: 'wav' },
+      { label: 'pcm', value: 'pcm' }
+    ]
+    : _engine === TtsEngine.XUNFEI
+      ? [
+        { label: 'mp3', value: 'mp3' },
+        { label: 'speex', value: 'speex' },
+        { label: 'pcm', value: 'pcm' }
+      ]
+      : [{ label: 'mp3', value: 'mp3' }])
 };
 
 // 默认APP配置
