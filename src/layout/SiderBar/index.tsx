@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Header from './Header';
 import Avatar from './Avatar';
 import AudioSet from './Audio';
-import { SetttingKeyDialog } from '../Dialog';
+import { SetttingDialog } from '../Dialog';
 import styles from './index.module.scss';
 
 const Index = () => {
@@ -40,7 +40,7 @@ const Index = () => {
         </div>
       </Affix>
       {showSetting ? (
-        <SetttingKeyDialog
+        <SetttingDialog
           closeCallBack={() => {
             setShowSetting(false);
           }}

@@ -1,1 +1,1 @@
-export { default as SetttingKeyDialog } from './SetttingKeyDialog';
+export { default as SetttingDialog } from './SetttingDialog';

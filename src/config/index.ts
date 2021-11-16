@@ -63,6 +63,14 @@ if (!appSetting.ttsSetting.speakerId) {
   appSetting.ttsSetting.speakerId = voiceData[appSetting.ttsSetting.engine.toString()][0].speakerId;
 }
 
+if (!appSetting.xfSetting) {
+  appSetting.xfSetting = {
+    apiKey: '',
+    apiSecret: '',
+    appId: ''
+  };
+}
+
 export { appSetting };
 
 // 创建App Context
