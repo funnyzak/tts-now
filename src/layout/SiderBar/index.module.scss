@@ -20,3 +20,29 @@
   border-right: 1px solid #f4f6fa;
   background-color: #fff;
 }
+
+.avatarWrapper {
+  width: 100%;
+  margin: 20px auto;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scenePanel {
+  max-height: calc(100vh - 260px);
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  background: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .menus {
+    border: 0;
+    overflow-y: auto;
+  }
+}

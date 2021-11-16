@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Slider, Radio } from 'antd';
 import React, { useState, useEffect } from 'react';
-import useAppSetting from '@/hook/appHook';
-import { uiConfig, voiceTypeList } from '@/config';
+import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
+import { uiConfig } from '@/config';
 
 interface RadioGroupInterface {
   options: Array<any>;
@@ -129,24 +129,27 @@ const Index = () => {
 
   useEffect(() => {
     setPitchRateList(
-      voiceTypeList[appSetting.ttsSetting.voiceIndex].sampleRate
+      currentSpeaker(
+        appSetting.ttsSetting.speakerId,
+        appSetting.ttsSetting.engine
+      ).sampleRate
     );
-  }, [appSetting.ttsSetting.voiceIndex]);
+  }, [appSetting.ttsSetting.speakerId]);
   return (
     <Wrapper>
       <div css={{ paddingBottom: '30px', borderBottom: '1px solid #f2f9f2' }}>
         <SliderComponent
           value={appSetting.ttsSetting.speedRate}
           name="speedRate"
-          min={-500}
-          max={500}
+          min={0}
+          max={100}
           title="语速"
         />
         <SliderComponent
           value={appSetting.ttsSetting.pitchRate}
           name="pitchRate"
-          min={-500}
-          max={500}
+          min={0}
+          max={100}
           title="语调"
         />
         <SliderComponent

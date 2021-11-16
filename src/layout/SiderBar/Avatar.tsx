@@ -1,44 +1,16 @@
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { useState } from 'react';
 import {
   Menu, Dropdown, Typography, Tooltip
 } from 'antd';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
-import useAppSetting from '@/hook/appHook';
-import { voiceTypeList } from '@/config';
-
-const Wrapper = styled.div`
-  width: 100%;
-  margin: 20px auto;
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const scenePanelStyle = css`
-  max-height: calc(100vh - 260px);
-  overflow: hidden;
-  border-size: border-box;
-  border-radius: 5px;
-  border: 1px solid #eee;
-  background: #fff;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const sceneMenuStyle = css`
-  border: 0;
-  overflow-y: auto;
-`;
+import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
+import styles from './index.module.scss';
 
 const VoiceSelectComponent = (props: any) => {
   const { voiceIndex, voiceSetCallBack } = props;
   return (
-    <div css={scenePanelStyle}>
+    <div className={styles.scenePanel}>
       <Typography.Title
         css={css`
           padding: 10px 0 10px 10px;
@@ -49,13 +21,13 @@ const VoiceSelectComponent = (props: any) => {
         场景选择
       </Typography.Title>
       <Menu
-        css={sceneMenuStyle}
+        className={styles.menus}
         onClick={voiceSetCallBack}
-        selectedKeys={[voiceIndex.toString()]}
+        selectedKeys={[voiceIndex]}
       >
-        {voiceTypeList.map((voiceType, index) => (
+        {getVoiceTypeList().map((voiceType, index) => (
           <Menu.Item
-            key={index.toString()}
+            key={voiceType.speakerId}
             css={{
               borderBottom: '1px solid #eee',
               height: '45px !important',
@@ -69,7 +41,7 @@ const VoiceSelectComponent = (props: any) => {
             )}
           >
             <Tooltip
-              title={`${voiceType.scene}|${voiceType.language}|品质:${voiceType.quality}`}
+              title={`${voiceType.scene}|${voiceType.language}`}
               placement="right"
               color="gold"
             >
@@ -91,7 +63,7 @@ const Index = () => {
   const [menuShow, setMenuShow] = useState<boolean>(false);
 
   const changeVoice = ({ key: voiceSetIndex }) => {
-    appSetting.ttsSetting.voiceIndex = voiceSetIndex;
+    appSetting.ttsSetting.speakerId = voiceSetIndex;
     setAppSetting(appSetting);
   };
 
@@ -103,20 +75,20 @@ const Index = () => {
         }}
         overlay={(
           <VoiceSelectComponent
-            voiceIndex={appSetting.ttsSetting.voiceIndex}
+            voiceIndex={appSetting.ttsSetting.speakerId}
             voiceSetCallBack={changeVoice}
           />
         )}
         trigger={['hover']}
       >
-        <Wrapper>
+        <div className={styles.avatarWrapper}>
           <img
             css={{
               width: '80px',
               height: 'auto',
               marginRight: '20px'
             }}
-            src={voiceTypeList[appSetting.ttsSetting.voiceIndex].img}
+            src={currentSpeaker().img}
           />
           <div>
             <div
@@ -127,7 +99,7 @@ const Index = () => {
                 color: #000;
               `}
             >
-              {voiceTypeList[appSetting.ttsSetting.voiceIndex].speaker}
+              {currentSpeaker().speaker}
             </div>
             <div
               css={css`
@@ -136,11 +108,11 @@ const Index = () => {
                 color: #666;
               `}
             >
-              {voiceTypeList[appSetting.ttsSetting.voiceIndex].speechType}
+              {currentSpeaker().speechType}
             </div>
           </div>
           <div>{!menuShow ? <CaretDownOutlined /> : <CaretUpOutlined />}</div>
-        </Wrapper>
+        </div>
       </Dropdown>
     </>
   );
