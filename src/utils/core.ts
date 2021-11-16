@@ -1,20 +1,23 @@
 import { message } from 'antd';
 import { ipcRenderer } from 'electron';
 import fs from 'fs';
-import AliTTS from '@/utils/aliyun/AliyunTTS';
+import AliTTS, { AliTtsComplete } from '@/utils/aliyun/AliyunTTS';
 import XfWsTTS from '@/utils/xunfei/XunfeiWsTTS';
-
+import { TtsFileStatus, TtsEngine } from '@/type/enums';
+import voiceData from '@/config/voice';
 import { EventEmitter, fileCachePath } from '@/config';
 
 const { DownloaderHelper } = require('node-downloader-helper');
 
+const path = require('path');
+
 const ENV = process.env.NODE_ENV;
 
-export const delDirPath = (path) => {
-  if (fs.existsSync(path)) {
-    const files = fs.readdirSync(path);
+export const delDirPath = (_path) => {
+  if (fs.existsSync(_path)) {
+    const files = fs.readdirSync(_path);
     files.forEach((file) => {
-      const curPath = `${path}/${file}`;
+      const curPath = `${_path}/${file}`;
       if (fs.statSync(curPath).isDirectory()) {
         // recurse
         delDirPath(curPath);
@@ -23,11 +26,15 @@ export const delDirPath = (path) => {
         fs.unlinkSync(curPath);
       }
     });
-    fs.rmdirSync(path);
+    fs.rmdirSync(_path);
   }
 };
 
+/**
+ * 应用检查
+ */
 export const appReset = () => {
+  // 删除缓存文件夹
   delDirPath(fileCachePath);
 };
 
@@ -92,6 +99,38 @@ export const downloadFile = (
   dl.start();
 });
 
+export const checkAliSetting = (
+  aliSetting?: APP.AliSetting,
+  warn?: boolean
+): boolean => {
+  if (
+    isNullOrEmpty(aliSetting)
+    || isNullOrEmpty(aliSetting?.appKey)
+    || isNullOrEmpty(aliSetting?.accessKeyId)
+    || isNullOrEmpty(aliSetting?.accessKeySecret)
+  ) {
+    if (warn) message.error('请先配置阿里云密钥');
+    return false;
+  }
+  return true;
+};
+
+export const checkXfSetting = (
+  xfSetting?: APP.XfSetting,
+  warn?: boolean
+): boolean => {
+  if (
+    isNullOrEmpty(xfSetting)
+    || isNullOrEmpty(xfSetting?.apiKey)
+    || isNullOrEmpty(xfSetting?.apiSecret)
+    || isNullOrEmpty(xfSetting?.appId)
+  ) {
+    if (warn) message.error('请先配置讯飞密钥');
+    return false;
+  }
+  return true;
+};
+
 /**
  *创建阿里云音频合成class
  * @param aliSetting
@@ -132,38 +171,6 @@ export const isNullOrEmpty = (val: any): boolean => {
     return true;
   }
   return false;
-};
-
-export const checkAliSetting = (
-  aliSetting?: APP.AliSetting,
-  warn?: boolean
-): boolean => {
-  if (
-    isNullOrEmpty(aliSetting)
-    || isNullOrEmpty(aliSetting?.appKey)
-    || isNullOrEmpty(aliSetting?.accessKeyId)
-    || isNullOrEmpty(aliSetting?.accessKeySecret)
-  ) {
-    if (warn) message.error('请先配置阿里云密钥');
-    return false;
-  }
-  return true;
-};
-
-export const checkXfSetting = (
-  xfSetting?: APP.XfSetting,
-  warn?: boolean
-): boolean => {
-  if (
-    isNullOrEmpty(xfSetting)
-    || isNullOrEmpty(xfSetting?.apiKey)
-    || isNullOrEmpty(xfSetting?.apiSecret)
-    || isNullOrEmpty(xfSetting?.appId)
-  ) {
-    if (warn) message.error('请先配置讯飞密钥');
-    return false;
-  }
-  return true;
 };
 
 export const checkAliSettingNetwork = async (
@@ -225,4 +232,142 @@ export const logger = (...args): void => {
       console.log('PConsole:', ...args);
     }
   }
+};
+
+export const getVoiceTypeList = (_appSetting: APP.AppSetting) => {
+  const { ttsSetting } = _appSetting;
+  return voiceData[
+    ttsSetting?.engine
+      ? ttsSetting?.engine.toString()
+      : TtsEngine.ALIYUN.toString()
+  ];
+};
+
+export const currentSpeaker = (_appSetting: APP.AppSetting) => {
+  const { speakerId } = _appSetting.ttsSetting;
+
+  const voiceTypeList = getVoiceTypeList(_appSetting);
+
+  if (speakerId && speakerId.length === 0) {
+    return voiceTypeList[0];
+  }
+  const _findSpeakers = voiceTypeList.filter((v) => v.speakerId === speakerId);
+  return _findSpeakers.length > 0 ? _findSpeakers[0] : voiceTypeList[0];
+};
+
+/**
+ * 开始批量转换任务
+ * @param appSetting 应用配置
+ * @param ttsFiles 转换的文件列表
+ * @param callback 转换的文件
+ * @param download 是否需要下载
+ */
+export const ttsTasksRun = async (
+  appSetting: APP.AppSetting,
+  ttsFiles: Array<APP.TtsFileInfo>,
+  callback: (
+    current: APP.TtsFileInfo,
+    ttsFiles: Array<APP.TtsFileInfo>
+  ) => void,
+  download: boolean = false
+) => {
+  const aliTtsInstance = createAliyunTTS(appSetting.aliSetting);
+  const xfTtsInstance = createXunFeiTTS(appSetting.xfSetting);
+
+  const setError = (_info: APP.TtsFileInfo, error): APP.TtsFileInfo => {
+    logger(_info);
+    _info.taskId = '';
+    _info.status = TtsFileStatus.FAIL;
+    _info.error = error;
+    return _info;
+  };
+
+  const setSuccess = (_info: APP.TtsFileInfo): APP.TtsFileInfo => {
+    _info.status = TtsFileStatus.SUCCESS;
+    _info.ttsEnd = new Date().getTime();
+    _info.elapsed = _info.ttsStart ? _info.ttsEnd - _info.ttsStart : undefined;
+
+    if (download && _info.audioUrl) {
+      if (_info.audioUrl.startsWith('http')) {
+        downloadFile(_info.audioUrl, _info.savePath, {
+          fileName: _info.saveName
+        });
+      } else {
+        fs.copyFileSync(
+          _info.audioUrl,
+          path.join(_info.savePath, _info.saveName)
+        );
+      }
+    }
+    return _info;
+  };
+
+  // 开始所有转换任务
+  for (const finfo of ttsFiles) {
+    finfo.ttsSetting = appSetting.ttsSetting;
+    finfo.status = TtsFileStatus.READY;
+    finfo.ttsStart = new Date().getTime();
+    finfo.savePath = appSetting.customSetting.savePath;
+    finfo.saveName = `${
+      finfo.fileName?.split('.')[0]
+    }_${new Date().getTime()}.${finfo.ttsSetting.format}`;
+
+    try {
+      if (appSetting.ttsSetting.engine === TtsEngine.ALIYUN) {
+        finfo.taskId = await aliTtsInstance.task(finfo.textContent, {
+          format: appSetting.ttsSetting.format,
+          sample_rate: appSetting.ttsSetting.simpleRate,
+          voice: currentSpeaker(appSetting).code,
+          volume: appSetting.ttsSetting.volumn,
+          speech_rate: appSetting.ttsSetting.speedRate,
+          pitchRate: appSetting.ttsSetting.pitchRate
+        });
+        finfo.status = TtsFileStatus.PROCESS;
+      } else if (appSetting.ttsSetting.engine === TtsEngine.XUNFEI) {
+        finfo.taskId = await xfTtsInstance.send(finfo.textContent, {
+          aue: appSetting.ttsSetting.format === 'mp3' ? 'lame' : 'raw',
+          auf: `audio/L16;rate=${appSetting.ttsSetting.simpleRate}`,
+          vcn: currentSpeaker(appSetting).code,
+          volume: appSetting.ttsSetting.volumn,
+          speech: appSetting.ttsSetting.speedRate,
+          pitch: appSetting.ttsSetting.pitchRate
+        });
+        finfo.audioUrl = finfo.taskId;
+        setSuccess(finfo);
+      }
+    } catch (error) {
+      setError(finfo, error);
+    }
+    callback(finfo, ttsFiles);
+  }
+
+  const statusPull = async () => {
+    for (const finfo of ttsFiles) {
+      if (finfo.status !== TtsFileStatus.PROCESS) {
+        continue;
+      }
+      try {
+        if (appSetting.ttsSetting.engine === TtsEngine.ALIYUN) {
+          const aliTtsComplete: AliTtsComplete = await aliTtsInstance.status(
+            finfo.taskId
+          );
+
+          if (!isNullOrEmpty(aliTtsComplete.audio_address)) {
+            finfo.audioUrl = aliTtsComplete.audio_address;
+            setSuccess(finfo);
+          }
+        }
+
+        callback(finfo, ttsFiles);
+      } catch (error) {
+        setError(finfo, error);
+      }
+    }
+
+    if (ttsFiles.filter((v) => v.status === TtsFileStatus.PROCESS).length > 0) {
+      statusPull();
+    }
+  };
+
+  if ([TtsEngine.ALIYUN].includes(appSetting.ttsSetting.engine)) statusPull();
 };

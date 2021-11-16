@@ -4,8 +4,9 @@ import {
   Menu, Dropdown, Typography, Tooltip
 } from 'antd';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
-import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
+import useAppSetting from '@/hook/app';
 import styles from './index.module.scss';
+import * as core from '@/utils/core';
 
 const VoiceSelectComponent = (props: any) => {
   const { voiceIndex, voiceSetCallBack } = props;
@@ -27,7 +28,7 @@ const VoiceSelectComponent = (props: any) => {
         onClick={voiceSetCallBack}
         selectedKeys={[voiceIndex]}
       >
-        {getVoiceTypeList(appSetting).map((voiceType, index) => (
+        {core.getVoiceTypeList(appSetting).map((voiceType, index) => (
           <Menu.Item
             key={voiceType.speakerId}
             css={{
@@ -90,7 +91,7 @@ const Index = () => {
               height: '80px',
               marginRight: '20px'
             }}
-            src={currentSpeaker(appSetting).img}
+            src={core.currentSpeaker(appSetting).img}
           />
           <div>
             <div
@@ -101,7 +102,7 @@ const Index = () => {
                 color: #000;
               `}
             >
-              {currentSpeaker(appSetting).speaker}
+              {core.currentSpeaker(appSetting).speaker}
             </div>
             <div
               css={css`
@@ -110,7 +111,7 @@ const Index = () => {
                 color: #666;
               `}
             >
-              {currentSpeaker(appSetting).speechType}
+              {core.currentSpeaker(appSetting).speechType}
             </div>
           </div>
           <div>{!menuShow ? <CaretDownOutlined /> : <CaretUpOutlined />}</div>

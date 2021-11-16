@@ -2,9 +2,10 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Slider, Radio } from 'antd';
 import React, { useState, useEffect } from 'react';
-import useAppSetting, { currentSpeaker } from '@/hook/app';
+import useAppSetting from '@/hook/app';
 import { uiConfig } from '@/config';
 import { TtsEngine } from '@/type/enums';
+import * as core from '@/utils/core';
 
 interface RadioGroupInterface {
   options: Array<any>;
@@ -129,7 +130,7 @@ const Index = () => {
   ]);
 
   useEffect(() => {
-    setPitchRateList(currentSpeaker(appSetting).sampleRate);
+    setPitchRateList(core.currentSpeaker(appSetting).sampleRate);
   }, [appSetting.ttsSetting.speakerId]);
   return (
     <Wrapper>

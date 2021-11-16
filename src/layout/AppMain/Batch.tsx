@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import React, { useState } from 'react';
-
-import { App, ipcRenderer, shell } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import fs from 'fs';
 import path from 'path';
 import ReactAudioPlayer from 'react-audio-player';
@@ -30,11 +29,10 @@ import {
   Row,
   Col
 } from 'antd';
-import { IFIcon } from '@/config';
 import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
 import { EventEmitter } from '@/config';
-import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
+import useAppSetting from '@/hook/app';
 import { AliTtsComplete } from '@/utils/aliyun/AliyunTTS';
 
 const Wrapper = styled.div`
@@ -471,7 +469,7 @@ const Index = () => {
         finfo.taskId = await aliTtsInstance.task(finfo.textContent, {
           format: appSetting.ttsSetting.format,
           sample_rate: appSetting.ttsSetting.simpleRate,
-          voice: currentSpeaker(appSetting).code,
+          voice: core.currentSpeaker(appSetting).code,
           volume: appSetting.ttsSetting.volumn,
           speech_rate: appSetting.ttsSetting.speedRate,
           pitchRate: appSetting.ttsSetting.pitchRate

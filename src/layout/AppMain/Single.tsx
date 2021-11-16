@@ -1,5 +1,10 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import { useState, useEffect, useRef } from 'react';
+import { shell } from 'electron';
+import path from 'path';
+// https://github.com/justinmc/react-audio-player
+import ReactAudioPlayer from 'react-audio-player';
 import {
   Input, Button, Form, Space, message
 } from 'antd';
@@ -8,16 +13,10 @@ import {
   PlayCircleOutlined,
   LoadingOutlined
 } from '@ant-design/icons';
-import { useState, useEffect, useRef } from 'react';
-import { shell } from 'electron';
-import path from 'path';
-import ReactAudioPlayer from 'react-audio-player';
-import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
+import useAppSetting from '@/hook/app';
 import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
 import { AliTtsComplete } from '@/utils/aliyun/AliyunTTS';
-
-// https://github.com/justinmc/react-audio-player
 
 const Wrapper = styled.div`
   width: 100%;
@@ -50,9 +49,9 @@ const Index = () => {
   const getSingleTxt = () => (appSetting.customSetting.singleTxt
     && appSetting.customSetting.singleTxt !== null
     && appSetting.customSetting.singleTxt.length > 0
-    && currentSpeaker(appSetting).text !== appSetting.customSetting.singleTxt
+    && core.currentSpeaker(appSetting).text !== appSetting.customSetting.singleTxt
     ? appSetting.customSetting.singleTxt
-    : currentSpeaker(appSetting).text);
+    : core.currentSpeaker(appSetting).text);
 
   const [singleTxt] = useState(getSingleTxt());
   const singleFormRef: any = useRef(null);
@@ -106,10 +105,10 @@ const Index = () => {
       ttsStart: new Date().getTime()
     };
     setSingleTtsFile(ttsFileInfo);
-
     setProcessing(true);
 
     let rlt: AliTtsComplete;
+
     try {
       rlt = await aliTtsInstance.taskSync(
         txt,
@@ -117,7 +116,7 @@ const Index = () => {
         {
           format: appSetting.ttsSetting.format,
           sample_rate: appSetting.ttsSetting.simpleRate,
-          voice: currentSpeaker(appSetting).code,
+          voice: core.currentSpeaker(appSetting).code,
           volume: appSetting.ttsSetting.volumn,
           speech_rate: appSetting.ttsSetting.speedRate,
           pitchRate: appSetting.ttsSetting.pitchRate
