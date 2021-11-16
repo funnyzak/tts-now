@@ -1,7 +1,6 @@
 import RPCClient from '@alicloud/pop-core';
-import { nanoid } from 'nanoid';
 
-const request = require('request-promise');
+const Request = require('request-promise');
 
 /**
  * 长语音合成参数
@@ -173,7 +172,7 @@ class AliTTS {
             notify_url
           },
           context: {
-            device_id: nanoid()
+            device_id: (Math.random() + 1).toString(36).substring(7)
           },
           header: {
             appkey: appKey || this.appKey,
@@ -183,7 +182,7 @@ class AliTTS {
       };
       this.log(requestConfig);
 
-      request(requestConfig)
+      Request(requestConfig)
         .then((_rlt) => {
           this.log('task complete:', _rlt);
 
@@ -223,7 +222,7 @@ class AliTTS {
         json: true
       };
 
-      request(_config)
+      Request(_config)
         .then((rlt: any) => {
           this.log('task status:', rlt);
           if (rlt.error_code !== 20000000) {
