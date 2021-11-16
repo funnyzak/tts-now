@@ -12,8 +12,7 @@ import { useState, useEffect, useRef } from 'react';
 import { shell } from 'electron';
 import path from 'path';
 import ReactAudioPlayer from 'react-audio-player';
-import useAppSetting from '@/hook/appHook';
-import { voiceTypeList } from '@/config';
+import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
 import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
 import { AliTtsComplete } from '@/utils/aliyun/alitts';
@@ -51,10 +50,9 @@ const Index = () => {
   const getSingleTxt = () => (appSetting.customSetting.singleTxt
     && appSetting.customSetting.singleTxt !== null
     && appSetting.customSetting.singleTxt.length > 0
-    && voiceTypeList[appSetting.ttsSetting.voiceIndex].text
-      !== appSetting.customSetting.singleTxt
+    && currentSpeaker().text !== appSetting.customSetting.singleTxt
     ? appSetting.customSetting.singleTxt
-    : voiceTypeList[appSetting.ttsSetting.voiceIndex].text);
+    : currentSpeaker().text);
 
   const [singleTxt] = useState(getSingleTxt());
   const singleFormRef: any = useRef(null);
@@ -119,7 +117,7 @@ const Index = () => {
         {
           format: appSetting.ttsSetting.format,
           sample_rate: appSetting.ttsSetting.simpleRate,
-          voice: voiceTypeList[appSetting.ttsSetting.voiceIndex].speakerId,
+          voice: currentSpeaker().code,
           volume: appSetting.ttsSetting.volumn,
           speech_rate: appSetting.ttsSetting.speedRate,
           pitchRate: appSetting.ttsSetting.pitchRate

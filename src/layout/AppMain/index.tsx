@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import SingleTTS from './Single';
 import BatchTTS from './Batch';
-import useAppSetting from '@/hook/appHook';
+import useAppSetting from '@/hook/app';
 
 import './index.scss';
 
@@ -32,14 +32,10 @@ const Index = () => {
         size="large"
       >
         <Tabs.TabPane tab="文字" key="SINGLE">
-          <PanelWrapper>
-            <SingleTTS />
-          </PanelWrapper>
+          <PanelWrapper>{/* <SingleTTS /> */}</PanelWrapper>
         </Tabs.TabPane>
         <Tabs.TabPane tab="批量" key="BATCH">
-          <PanelWrapper>
-            <BatchTTS />
-          </PanelWrapper>
+          <PanelWrapper>{/* <BatchTTS /> */}</PanelWrapper>
         </Tabs.TabPane>
       </Tabs>
     </div>
