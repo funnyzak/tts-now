@@ -95,6 +95,7 @@ module.exports = {
     // 不允许嵌套的三元表达式
     "no-nested-ternary": "off",
     "no-await-in-loop": "off",
+    "prefer-promise-reject-errors": ["error", { "allowEmptyReject": true }],
     // 对象/数组 解构
     "prefer-destructuring": ["error", {
       "array": true,
