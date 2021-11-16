@@ -85,6 +85,7 @@
     "@emotion/styled": "^11.3.0",
     "antd": "^4.16.13",
     "core-js": "^3.18.3",
+    "crypto-js": "^4.1.1",
     "nanoid": "^3.1.30",
     "node-downloader-helper": "^1.0.19",
     "normalize.css": "^8.0.1",
