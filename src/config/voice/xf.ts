@@ -1,7 +1,7 @@
 export default [
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '印地语',
     style: '印地语女声',
     info: '亲切自然、年轻朴实',
@@ -16,7 +16,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '韩语',
     style: '韩语女声',
     info: '亲切自然、年轻朴实',
@@ -31,7 +31,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '俄语',
     style: '俄语女声',
     info: '亲切自然、年轻朴实',
@@ -46,7 +46,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '意大利语',
     style: '意大利语女声',
     info: '亲切自然、年轻朴实',
@@ -61,7 +61,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '西班牙语',
     style: '西班牙语女声',
     info: '亲切自然、年轻朴实',
@@ -76,7 +76,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '波兰语',
     style: '波兰女声',
     info: '亲切自然、年轻朴实',
@@ -91,7 +91,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '法语',
     style: '法语女声',
     info: '亲切自然、年轻朴实',
@@ -106,7 +106,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '泰语',
     style: '泰语女声',
     info: '亲切自然、年轻朴实',
@@ -121,7 +121,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '阅读场景',
+    scene: '阅读场景',
     style: '温婉女声',
     info: '亲切自然、年轻朴实',
     code: 'xiaowan',
@@ -132,7 +132,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '阅读场景',
+    scene: '阅读场景',
     style: '情感女声',
     info: '亲切自然、年轻朴实',
     code: 'qianxue2',
@@ -143,7 +143,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '日语',
     style: '日语女声',
     info: '亲切自然、年轻朴实',
@@ -158,7 +158,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '马来语',
     style: '马来女声',
     info: '亲切自然、年轻朴实',
@@ -173,7 +173,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '德语',
     style: '德语女声',
     info: '亲切自然、年轻朴实',
@@ -188,7 +188,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '新闻',
     domain: '阅读场景',
     age: '成年女声',
@@ -203,7 +203,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '内蒙古方言、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年男声',
@@ -217,7 +217,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '合肥方言、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年男声',
@@ -231,7 +231,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '新闻',
     domain: '阅读场景',
     age: '成年女声',
@@ -246,7 +246,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '河南方言、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年男声',
@@ -260,7 +260,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '山东方言、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年女声',
@@ -274,7 +274,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '东北方言、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年女声',
@@ -288,7 +288,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '四川方言、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年女声',
@@ -302,7 +302,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '湖北方言、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年男声',
@@ -316,7 +316,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '陕西方言、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年女声',
@@ -330,7 +330,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '湖南方言、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年男声',
@@ -344,7 +344,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景、阅读场景、中英混合',
+    scene: '通用场景、阅读场景、中英混合',
     type: '新闻',
     domain: '通用场景、阅读场景、阅读场景、中英混合',
     age: '成年男声',
@@ -358,7 +358,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景、交互场景',
+    scene: '通用场景、交互场景',
     type: '小说',
     domain: '通用场景、交互场景',
     age: '成年女声',
@@ -372,7 +372,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景、客服场景',
+    scene: '通用场景、客服场景',
     type: '小说',
     domain: '通用场景、客服场景',
     age: '成年女声',
@@ -386,7 +386,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '小说',
     domain: '交互场景',
     age: '成年女声',
@@ -401,7 +401,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景、阅读场景、中英混合',
+    scene: '通用场景、阅读场景、中英混合',
     type: '新闻',
     domain: '通用场景、阅读场景、中英混合',
     age: '成年男声',
@@ -415,7 +415,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '新闻',
     domain: '儿童读物、有声文章',
     age: '男童声',
@@ -429,7 +429,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '新闻',
     domain: '阅读场景、阅读场景、课件文本',
     age: '成年男声',
@@ -444,7 +444,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '客服场景',
+    scene: '客服场景',
     type: '客服',
     domain: '客服场景',
     age: '成年女声',
@@ -459,7 +459,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '有声文章、阅读场景、专题宣传',
     age: '成年男声',
@@ -473,7 +473,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '客服场景',
+    scene: '客服场景',
     type: '客服',
     domain: '客服场景',
     age: '成年女声',
@@ -488,7 +488,7 @@ export default [
   },
   {
     speaker: '精品发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '/',
     domain: '阅读场景',
     age: '成年男声',
@@ -503,7 +503,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '有声文章、专题宣传、纪录片',
     age: '成年男声',
@@ -518,7 +518,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景',
+    scene: '通用场景',
     type: '小说',
     domain: '通用场景',
     age: '成年男声',
@@ -533,7 +533,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '阅读场景、阅读场景、专题宣传',
     age: '成年男声',
@@ -547,7 +547,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '客服场景',
+    scene: '客服场景',
     type: '客服',
     domain: '客服场景',
     age: '成年女声',
@@ -562,7 +562,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景、交互场景',
+    scene: '通用场景、交互场景',
     type: '娱乐',
     domain: '声似明星、儿童读物、有声文章',
     age: '男童声',
@@ -576,7 +576,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景、客服场景、中英混合',
+    scene: '交互场景、客服场景、中英混合',
     type: '交互',
     domain: '阅读场景、客服场景、交互场景、有声文章',
     age: '成年女声',
@@ -590,7 +590,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '交互',
     domain: '儿童读物、有声文章',
     age: '男童声',
@@ -604,7 +604,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '客服场景',
+    scene: '客服场景',
     type: '交互',
     domain: '客服场景、交互场景、阅读场景',
     age: '成年女声',
@@ -618,7 +618,7 @@ export default [
   },
   {
     speaker: '精品发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '小说',
     domain: '交互场景',
     age: '女童声',
@@ -632,7 +632,7 @@ export default [
   },
   {
     speaker: '精品发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '/',
     domain: '阅读场景',
     age: '成年男声',
@@ -646,7 +646,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '客服场景',
+    scene: '客服场景',
     type: '客服',
     domain: '客服场景',
     age: '成年女声',
@@ -661,7 +661,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '小说',
     domain: '交互场景',
     age: '成年女声',
@@ -675,7 +675,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景、中英混合',
+    scene: '阅读场景、中英混合',
     type: '新闻',
     domain: '课件文本、阅读场景、阅读场景',
     age: '成年女声',
@@ -689,7 +689,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '多语种场景',
+    scene: '多语种场景',
     type: '新闻',
     domain: '课件文本、阅读场景、阅读场景',
     age: '成年女声',
@@ -703,7 +703,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '有声文章、专题宣传、纪录片',
     age: '成年男声',
@@ -718,7 +718,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '交互',
     domain: '儿童读物、有声文章',
     age: '女童声',
@@ -732,7 +732,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '交互',
     domain: '客服场景、交互场景、阅读场景',
     age: '成年男声',
@@ -747,7 +747,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '客服场景',
+    scene: '客服场景',
     type: '交互',
     domain: '客服场景、交互场景、阅读场景',
     age: '成年女声',
@@ -761,7 +761,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '新闻',
     domain: '阅读场景、有声文章、纪录片、幽默段子',
     age: '成年男声',
@@ -774,7 +774,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '新闻',
     domain: '阅读场景、阅读场景',
     age: '成年女声',
@@ -787,7 +787,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '有声文章、纪录片、专题宣传',
     age: '成年女声',
@@ -801,7 +801,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '纪录片、专题宣传、有声文章',
     age: '成年男声',
@@ -814,7 +814,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景',
+    scene: '通用场景',
     type: '新闻',
     domain: '声似明星、客服场景、交互场景、有声文章',
     age: '成年女声',
@@ -828,7 +828,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景',
+    scene: '通用场景',
     type: '新闻',
     domain: '声似明星、客服场景、交互场景、有声文章',
     age: '成年男声',
@@ -842,7 +842,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '客服',
     domain: '客服场景、交互场景',
     age: '成年女声',
@@ -856,7 +856,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '民族语言场景',
+    scene: '民族语言场景',
     languages: '维吾尔语',
     style: '维吾尔语女声',
     info: '亲切自然、年轻朴实',
@@ -870,7 +870,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '乌尔都语',
     style: '乌尔都语女声',
     info: '亲切自然、年轻朴实',
@@ -883,7 +883,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '意大利语',
     style: '意大利语女声',
     info: '亲切自然、年轻朴实',
@@ -896,7 +896,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '葡萄牙语',
     style: '葡萄牙语女声',
     info: '亲切自然、年轻朴实',
@@ -909,7 +909,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '巴西葡萄牙语',
     style: '巴西葡萄牙语女声',
     info: '亲切自然、年轻朴实',
@@ -922,7 +922,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '德语',
     style: '德语女声',
     info: '亲切自然、年轻朴实',
@@ -935,7 +935,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '故事',
     domain: '儿童读物、有声文章',
     age: '女童声',
@@ -948,7 +948,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '台湾普通话、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年女声',
@@ -961,7 +961,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '韩语',
     style: '韩语女声',
     info: '亲切自然、年轻朴实',
@@ -974,7 +974,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '日语',
     style: '日语女声',
     info: '亲切自然、年轻朴实',
@@ -987,7 +987,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '多语种场景',
+    scene: '多语种场景',
     type: '新闻',
     domain: '课件文本、阅读场景、阅读场景',
     age: '成年男声',
@@ -1001,7 +1001,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '多语种场景',
+    scene: '多语种场景',
     type: '对话',
     domain: '课件文本、阅读场景、阅读场景、有声文章、专题宣传',
     age: '成年男声',
@@ -1014,7 +1014,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '故事',
     domain: '儿童读物、有声文章',
     age: '女童声',
@@ -1027,7 +1027,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '越南语',
     style: '越南语女声',
     info: '亲切自然、年轻朴实',
@@ -1040,7 +1040,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '俄语',
     style: '俄语女声',
     info: '亲切自然、年轻朴实',
@@ -1053,7 +1053,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '西班牙语',
     style: '西班牙语女声',
     info: '亲切自然、年轻朴实',
@@ -1066,7 +1066,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '民族语言场景',
+    scene: '民族语言场景',
     languages: '维吾尔语',
     style: '维吾尔语女声',
     info: '亲切自然、年轻朴实',
@@ -1080,7 +1080,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '新闻',
     domain: '阅读场景、阅读场景',
     age: '成年女声',
@@ -1093,7 +1093,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景、阅读场景',
+    scene: '通用场景、阅读场景',
     type: '广告',
     domain: '广告促销、专题宣传、阅读场景',
     age: '成年女声',
@@ -1107,7 +1107,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '哈萨克(西里尔)',
     style: '哈萨克(西里尔)女',
     info: '亲切自然、年轻朴实',
@@ -1121,7 +1121,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '阅读场景',
     age: '成年男声',
@@ -1135,7 +1135,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '阅读场景',
     age: '成年男声',
@@ -1149,7 +1149,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '阅读场景',
     age: '成年男声',
@@ -1163,7 +1163,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景',
+    scene: '通用场景',
     type: '广告',
     domain: '广告促销',
     age: '成年男声',
@@ -1177,7 +1177,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '台湾普通话、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年女声',
@@ -1190,7 +1190,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '新闻',
     domain: '粤语文本、纪录片、阅读场景、阅读场景、课件文本',
     age: '成年女声',
@@ -1203,7 +1203,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景',
+    scene: '通用场景',
     type: '广告',
     domain: '有声文章、纪录片、专题宣传、阅读场景',
     age: '成年女声',
@@ -1217,7 +1217,7 @@ export default [
   },
   {
     speaker: '精品发音人',
-    sence: '',
+    scene: '',
     type: '/',
     domain: '',
     age: '成年女声',
@@ -1230,7 +1230,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '民族语言场景',
+    scene: '民族语言场景',
     languages: '藏语',
     style: '藏语女声',
     info: '亲切自然、年轻朴实',
@@ -1243,7 +1243,7 @@ export default [
   },
   {
     age: '成年女声',
-    sence: '多语种场景',
+    scene: '多语种场景',
     languages: '阿拉伯语',
     style: '阿拉伯女声',
     info: '亲切自然、年轻朴实',
@@ -1257,7 +1257,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '方言场景',
+    scene: '方言场景',
     type: '方言',
     domain: '方言场景',
     age: '成年女声',
@@ -1271,7 +1271,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '客服场景',
+    scene: '客服场景',
     type: '小说',
     domain: '有声文章、纪录片、专题宣传',
     age: '成年女声',
@@ -1284,7 +1284,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '广告',
     domain: '广告促销、课件文本',
     age: '成年男声',
@@ -1297,7 +1297,7 @@ export default [
   },
   {
     speaker: '精品发音人',
-    sence: '',
+    scene: '',
     type: '/',
     domain: '',
     age: '成年女声',
@@ -1310,7 +1310,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '故事',
     domain: '有声文章',
     age: '成年女声',
@@ -1323,7 +1323,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '小说',
     domain: '交互场景',
     age: '成年女声',
@@ -1336,7 +1336,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '客服场景',
+    scene: '客服场景',
     type: '客服',
     domain: '客服场景、交互场景',
     age: '成年女声',
@@ -1350,7 +1350,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '交互',
     domain: '客服场景、交互场景',
     age: '成年女声',
@@ -1364,7 +1364,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '交互',
     domain: '客服场景、交互场景、阅读场景',
     age: '成年女声',
@@ -1379,7 +1379,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '/',
     domain: '阅读场景',
     age: '成年男声',
@@ -1394,7 +1394,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景',
+    scene: '通用场景',
     type: '广告',
     domain: '广告促销',
     age: '成年女声',
@@ -1408,7 +1408,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '情感',
     domain: '儿童读物',
     age: '女童声',
@@ -1421,7 +1421,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '通用场景、阅读场景',
+    scene: '通用场景、阅读场景',
     type: '广告',
     domain: '广告促销、专题宣传、阅读场景、纪录片',
     age: '成年女声',
@@ -1435,7 +1435,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '有声文章、纪录片、专题宣传',
     age: '成年女声',
@@ -1449,7 +1449,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '情感',
     domain: '儿童读物、有声文章',
     age: '女童声',
@@ -1462,7 +1462,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '小说',
     domain: '有声文章、纪录片、专题宣传',
     age: '成年女声',
@@ -1475,7 +1475,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '阅读场景',
+    scene: '阅读场景',
     type: '故事',
     domain: '儿童读物、纪录片、专题宣传',
     age: '成年男声',
@@ -1488,7 +1488,7 @@ export default [
   },
   {
     speaker: '特色发音人',
-    sence: '交互场景',
+    scene: '交互场景',
     type: '情感',
     domain: '儿童读物、有声文章',
     age: '女童声',

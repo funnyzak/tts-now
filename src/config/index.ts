@@ -1,9 +1,9 @@
 import React from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
+import { TtsEngine } from '@/type/enums';
 
-export { default as voiceTypeList } from './voice/voiceType';
 // App 名称
-export const appName = '阿里云语音合成助手';
+export const appName = '智能语音合成助手';
 
 // ui配置
 export const uiConfig = {
@@ -18,11 +18,11 @@ export const uiConfig = {
 // 默认APP配置
 export const defaultAppSetting: APP.AppSetting = {
   ttsSetting: {
-    voiceIndex: 0,
+    engine: TtsEngine.ALIYUN,
     simpleRate: 16000,
     format: 'mp3',
-    pitchRate: 0,
-    speedRate: 0,
+    pitchRate: 50,
+    speedRate: 50,
     volumn: 50
   },
   aliSetting: {
