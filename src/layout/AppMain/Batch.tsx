@@ -422,9 +422,6 @@ const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
   const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>();
-  const [aliTtsInstance] = useState(
-    core.createAliyunTTS(appSetting.aliSetting)
-  );
   const [processing, setProcessing] = useState<boolean>(false);
 
   const runTask = async () => {
@@ -453,21 +450,23 @@ const Index = () => {
     }
 
     setProcessing(true);
-    setFileList(fileList.map((v) => ({ ...v, status: TtsFileStatus.READY })));
 
     core.ttsTasksRun(
       appSetting,
-      fileList,
+      fileList.map((v) => ({ ...v, status: TtsFileStatus.READY })),
       (_current: APP.TtsFileInfo, _fileList: Array<APP.TtsFileInfo>) => {
+        core.logger(_current, _fileList);
+
+        setFileList(_fileList);
+
         if (
-          fileList.filter(
+          _fileList.filter(
             (v) => v.status !== TtsFileStatus.PROCESS
               && v.status !== TtsFileStatus.READY
           ).length === 0
         ) {
           setProcessing(false);
         }
-        setFileList(_fileList);
       },
       true
     );
