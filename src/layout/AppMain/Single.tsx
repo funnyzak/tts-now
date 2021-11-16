@@ -15,7 +15,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
 import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
-import { AliTtsComplete } from '@/utils/aliyun/alitts';
+import { AliTtsComplete } from '@/utils/aliyun/AliyunTTS';
 
 // https://github.com/justinmc/react-audio-player
 

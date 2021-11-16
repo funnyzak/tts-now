@@ -1,8 +1,8 @@
 import { message } from 'antd';
 import { App, ipcRenderer } from 'electron';
 import fs from 'fs';
-import AliTTS from '@/utils/aliyun/alitts';
-import XfWsTTS from '@/utils/xunfei/xftts';
+import AliTTS from '@/utils/aliyun/AliyunTTS';
+import XfWsTTS from '@/utils/xunfei/XfWsTTS';
 
 import { EventEmitter } from '@/config';
 

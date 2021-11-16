@@ -16,7 +16,7 @@ export interface XfWsConfig {
 }
 
 /**
- * 合成选项
+ * Business Option
  * https://www.xfyun.cn/doc/tts/online_tts/API.html#%E6%8E%A5%E5%8F%A3%E8%A6%81%E6%B1%82
  */
 export interface XfTtsBusinessOption {
@@ -98,13 +98,10 @@ export interface XfTtsBusinessOption {
  */
 class XfWsTTS {
   // 是否debug
-  debug: boolean = false;
+  private debug: boolean = false;
 
   // 声明一个Socket
-  ws: WebSocket;
-
-  // 获取当前时间 RFC1123格式
-  rfcNow: string = new Date().toUTCString();
+  private ws: WebSocket;
 
   /**
    *讯飞配置
@@ -115,7 +112,7 @@ class XfWsTTS {
   config: XfWsConfig;
 
   // 临时文件缓存路径
-  cachePath: string = __dirname;
+  private cachePath: string = process.cwd();
 
   /**
    *默认配置
@@ -139,30 +136,69 @@ class XfWsTTS {
   constructor(
     xfwsConfig: XfWsConfig,
     cachePath: string,
-    debug: boolean = false
+    debug: boolean = true
   ) {
     this.config = xfwsConfig;
     this.debug = debug;
     this.cachePath = cachePath;
-    this.checkConfig();
+    this.fixConfig();
+  }
 
+  static rtcNow() {
+    // 获取当前时间 RFC1123格式
+    return new Date().toUTCString();
+  }
+
+  private create() {
+    const _rtcNow = XfWsTTS.rtcNow();
     const wssUrl = `${this.config.hostUrl}?authorization=${this.signature(
-      this.rfcNow
-    )}&date=${this.rfcNow}&host=${this.config.host}`;
+      _rtcNow
+    )}&date=${_rtcNow}&host=${this.config.host}`;
     this.log('Wss URL', wssUrl);
     this.ws = new WebSocket(wssUrl);
   }
 
-  receive(): Promise<string> {
+  /**
+   * 检查配置
+   */
+  private fixConfig() {
+    if (!this.config.host) {
+      this.config.host = 'tts-api.xfyun.cn';
+    }
+    if (!this.config.uri) {
+      this.config.uri = '/v2/tts';
+    }
+    if (!this.config.hostUrl) {
+      this.config.hostUrl = `wss://${this.config.host}${this.config.uri}`;
+    }
+  }
+
+  /**
+   * 网络检查配置是否正确
+   * @returns
+   */
+  async checkConfig(): Promise<boolean> {
+    try {
+      await this.send('Hello');
+      return true;
+    } catch (e) {
+      this.log(e);
+      return false;
+    }
+  }
+
+  private receive(): Promise<string> {
     const fileCachePath = path.join(
       this.cachePath,
       `${(Math.random() + 1).toString(36).substring(7)}.audio`
     );
+    this.log('seted auto cache path=>', fileCachePath);
+
     return new Promise<string>((resolve, reject) => {
       this.ws.onmessage = (ev: MessageEvent) => {
-        this.log('ws receive... and ev:', ev);
+        this.log('ws received.  data=>', ev.data);
 
-        const res = JSON.parse(ev.origin);
+        const res = JSON.parse(ev.data);
 
         if (res.code !== 0) {
           this.log(`${res.code}: ${res.message}`);
@@ -195,43 +231,55 @@ class XfWsTTS {
    * @param text 要合成的文本
    * @param options 转换选项
    */
-  send(text: string, options?: XfTtsBusinessOption) {
-    this.ws.onopen = (ev) => {
-      this.log('ws open. ev:', ev);
+  send(text: string, options?: XfTtsBusinessOption): Promise<string> {
+    this.create();
+    return new Promise<string>((resolve, reject) => {
+      this.ws.onopen = () => {
+        this.log('ws opened.');
 
-      const business = {
-        ...this.defXfTtsBusinessOption,
-        ...options
+        const business = {
+          ...this.defXfTtsBusinessOption,
+          ...options
+        };
+
+        const frame = {
+          common: {
+            app_id: this.config.appId
+          },
+          business,
+          data: {
+            text: Buffer.from(text).toString('base64'),
+            status: 2
+          }
+        };
+        this.log('send data:', frame);
+        this.ws.send(JSON.stringify(frame));
       };
 
-      const frame = {
-        common: {
-          app_id: this.config.appId
-        },
-        business,
-        data: {
-          text: Buffer.from(text).toString('base64'),
-          status: 2
-        }
+      this.ws.onclose = () => {
+        this.log('ws close.');
       };
-      this.log('send data:', frame);
-      this.ws.send(JSON.stringify(frame));
-    };
 
-    this.ws.onclose = (ev) => {
-      this.log('ws close. ev:', ev);
-    };
+      this.ws.onerror = (ev) => {
+        this.log('ws error. data=>', ev);
+        reject(new Error('ws error'));
+      };
 
-    this.ws.onerror = (ev) => {
-      this.log('ws error. ev:', ev);
-    };
+      this.receive()
+        .then((_path) => {
+          resolve(_path);
+        })
+        .catch((_err) => {
+          reject(_err);
+        });
+    });
   }
 
   /**
    * @param date  鉴权签名
    * @returns
    */
-  signature(date) {
+  private signature(date) {
     const signatureOrigin = `host: ${this.config.host}\ndate: ${date}\nGET ${this.config.uri} HTTP/1.1`;
     const signatureSha = CryptoJS.HmacSHA256(
       signatureOrigin,
@@ -245,22 +293,7 @@ class XfWsTTS {
     return authStr;
   }
 
-  /**
-   * 检查配置
-   */
-  checkConfig() {
-    if (!this.config.host) {
-      this.config.host = 'tts-api.xfyun.cn';
-    }
-    if (!this.config.uri) {
-      this.config.uri = '/v2/tts';
-    }
-    if (!this.config.hostUrl) {
-      this.config.hostUrl = `wss://${this.config.host}${this.config.uri}`;
-    }
-  }
-
-  log(...args): void {
+  private log(...args): void {
     if (this.debug) {
       console.log('xftts debug:', ...args);
     }
@@ -268,3 +301,28 @@ class XfWsTTS {
 }
 
 export default XfWsTTS;
+
+/**
+ * demo code
+ */
+// (async () => {
+//   const xfWsTTS = new XfWsTTS(
+//     {
+//       appId: 'appid',
+//       apiSecret: 'apisecret',
+//       apiKey: 'apikey'
+//     },
+//     process.cwd()
+//   );
+
+//   if (await xfWsTTS.checkConfig()) {
+//     xfWsTTS
+//       .send('你好，我的朋友！')
+//       .then((_path) => {
+//         console.log('audio save path=>', _path);
+//       })
+//       .catch((err) => {
+//         console.error('audio error =>', err);
+//       });
+//   }
+// })();

@@ -35,7 +35,7 @@ import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
 import { EventEmitter } from '@/config';
 import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
-import { AliTtsComplete } from '@/utils/aliyun/alitts';
+import { AliTtsComplete } from '@/utils/aliyun/AliyunTTS';
 
 const Wrapper = styled.div`
   width: 100%;
