@@ -298,3 +298,21 @@ class AliTTS {
 }
 
 export default AliTTS;
+
+/**
+ * class test
+ */
+// !(async () => {
+//   const aliTTS = new AliTTS(
+//     'this is app key',
+//     {
+//       accessKeyId: 'this is accessKeyId',
+//       accessKeySecret: 'this is accessKeySecret',
+//       endpoint: 'http://nls-meta.cn-shanghai.aliyuncs.com',
+//       apiVersion: '2019-02-28'
+//     },
+//     true
+//   );
+//   // test aliyun setting
+//   console.log(await aliTTS.checkConfig());
+// })();
