@@ -142,6 +142,10 @@ class XfWsTTS {
     this.debug = debug;
     this.cachePath = cachePath;
     this.fixConfig();
+
+    if (!fs.existsSync(cachePath)) {
+      fs.mkdirSync(this.cachePath);
+    }
   }
 
   static rtcNow() {

@@ -2,9 +2,9 @@ import { message } from 'antd';
 import { App, ipcRenderer } from 'electron';
 import fs from 'fs';
 import AliTTS from '@/utils/aliyun/AliyunTTS';
-import XfWsTTS from '@/utils/xunfei/XfWsTTS';
+import XfWsTTS from '@/utils/xunfei/XunfeiWsTTS';
 
-import { EventEmitter } from '@/config';
+import { EventEmitter, fileCachePath } from '@/config';
 
 const { DownloaderHelper } = require('node-downloader-helper');
 
@@ -76,7 +76,7 @@ export const downloadFile = (
  * @param aliSetting
  * @returns
  */
-export const createAliTTS = (aliSetting: APP.AliSetting): any => (checkAliSetting(aliSetting)
+export const createAliyunTTS = (aliSetting: APP.AliSetting): any => (checkAliSetting(aliSetting)
   ? new AliTTS(
     aliSetting.appKey || '',
     {
@@ -85,6 +85,20 @@ export const createAliTTS = (aliSetting: APP.AliSetting): any => (checkAliSettin
       endpoint: 'http://nls-meta.cn-shanghai.aliyuncs.com',
       apiVersion: '2019-02-28'
     },
+    ENV === 'development'
+  )
+  : null);
+
+export const createXunFeiTTS = (xfSetting: APP.XfSetting): any => (checkXfSetting(xfSetting)
+  ? new XfWsTTS(
+    {
+      appId: xfSetting.appId || '',
+      apiSecret: xfSetting.apiSecret || '',
+      apiKey: xfSetting.apiKey || '',
+      host: 'tts-api.xfyun.cn',
+      uri: '/v2/tts'
+    },
+    fileCachePath,
     ENV === 'development'
   )
   : null);
@@ -137,7 +151,7 @@ export const checkAliSettingNetwork = async (
 ) => {
   if (!checkAliSetting(aliSetting, warn)) return false;
 
-  if (!(await createAliTTS(aliSetting).checkConfig())) {
+  if (!(await createAliyunTTS(aliSetting).checkConfig())) {
     message.error('密钥、AppKey貌似不可用哦。');
     return false;
   }

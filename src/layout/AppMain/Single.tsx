@@ -57,7 +57,7 @@ const Index = () => {
   const [singleTxt] = useState(getSingleTxt());
   const singleFormRef: any = useRef(null);
   const [aliTtsInstance, setAliTtsInstance] = useState(
-    core.createAliTTS(appSetting.aliSetting)
+    core.createAliyunTTS(appSetting.aliSetting)
   );
   const [singleTtsFile, setSingleTtsFile] = useState<APP.TtsFileInfo>();
   const [audioPlayer, setAudioPlayer] = useState<any>();
@@ -193,7 +193,7 @@ const Index = () => {
   }, core.ttsUseEffectDeps(appSetting.ttsSetting));
 
   useEffect(() => {
-    setAliTtsInstance(core.createAliTTS(appSetting.aliSetting));
+    setAliTtsInstance(core.createAliyunTTS(appSetting.aliSetting));
   }, core.aliUseEffectDeps(appSetting.aliSetting));
 
   return (

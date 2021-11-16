@@ -3,8 +3,15 @@ import { createFromIconfontCN } from '@ant-design/icons';
 import { TtsEngine } from '@/type/enums';
 import voiceData from './voice';
 
+const path = require('path');
+
 // App 名称
 export const appName = '智能语音合成助手';
+
+/**
+ * 缓存路径
+ */
+export const fileCachePath = path(process.cwd(), '_cache');
 
 // ui配置
 export const uiConfig = {

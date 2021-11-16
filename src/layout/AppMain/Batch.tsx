@@ -424,7 +424,9 @@ const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting();
   const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>();
-  const [aliTtsInstance] = useState(core.createAliTTS(appSetting.aliSetting));
+  const [aliTtsInstance] = useState(
+    core.createAliyunTTS(appSetting.aliSetting)
+  );
   const [processing, setProcessing] = useState<boolean>(false);
 
   const runTask = async () => {
