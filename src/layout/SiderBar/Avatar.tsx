@@ -85,7 +85,7 @@ const Index = () => {
           <img
             css={{
               width: '80px',
-              height: 'auto',
+              height: '80px',
               marginRight: '20px'
             }}
             src={currentSpeaker().img}
