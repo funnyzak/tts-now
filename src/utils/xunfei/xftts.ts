@@ -1,6 +1,8 @@
 const CryptoJS = require('crypto-js');
 const WebSocket = require('ws');
+const path = require('path');
 const fs = require('fs');
+
 /**
  * 讯飞语音配置
  */
@@ -17,7 +19,7 @@ export interface XfWsConfig {
  * 合成选项
  * https://www.xfyun.cn/doc/tts/online_tts/API.html#%E6%8E%A5%E5%8F%A3%E8%A6%81%E6%B1%82
  */
-export interface XfTtsOption {
+export interface XfTtsBusinessOption {
   /**
    * 文本编码格式
    * GB2312
@@ -104,61 +106,125 @@ class XfWsTTS {
   // 获取当前时间 RFC1123格式
   rfcNow: string = new Date().toUTCString();
 
-  // 讯飞配置
+  /**
+   *讯飞配置
+   *
+   * @type {XfWsConfig}
+   * @memberof XfWsTTS
+   */
   config: XfWsConfig;
 
-  constructor(xfwsConfig: XfWsConfig, debug: boolean = false) {
+  // 临时文件缓存路径
+  cachePath: string = __dirname;
+
+  /**
+   *默认配置
+   *
+   * @type {XfTtsBusinessOption}
+   * @memberof XfWsTTS
+   */
+  readonly defXfTtsBusinessOption: XfTtsBusinessOption = {
+    aue: 'lame',
+    sfl: 1,
+    auf: 'audio/L16;rate=16000',
+    vcn: 'xiaoyan',
+    speed: 50,
+    volume: 50,
+    pitch: 50,
+    bgs: 0,
+    tte: 'UTF8',
+    rdn: '0'
+  };
+
+  constructor(
+    xfwsConfig: XfWsConfig,
+    cachePath: string,
+    debug: boolean = false
+  ) {
     this.config = xfwsConfig;
     this.debug = debug;
+    this.cachePath = cachePath;
     this.checkConfig();
 
-    const wssUrl = `${this.config.hostUrl
-    }?authorization=${
-      this.signature(this.rfcNow)
-    }&date=${
+    const wssUrl = `${this.config.hostUrl}?authorization=${this.signature(
       this.rfcNow
-    }&host=${
-      this.config.host}`;
+    )}&date=${this.rfcNow}&host=${this.config.host}`;
     this.log('Wss URL', wssUrl);
     this.ws = new WebSocket(wssUrl);
   }
 
-  /**
-   *
-   * @param text 要合成的文本
-   */
-  send(text: string) {
-    const frame = {
-      // 填充common
-      common: {
-        app_id: this.config.appId
-      },
-      // 填充business
-      business: {
-        aue: 'raw',
-        auf: 'audio/L16;rate=16000',
-        vcn: 'xiaoyan',
-        tte: 'UTF8'
-      },
-      // 填充data
-      data: {
-        text: Buffer.from(text).toString('base64'),
-        status: 2
-      }
-    };
-    this.ws.send(JSON.stringify(frame));
+  receive(): Promise<string> {
+    const fileCachePath = path.join(
+      this.cachePath,
+      `${(Math.random() + 1).toString(36).substring(7)}.audio`
+    );
+    return new Promise<string>((resolve, reject) => {
+      this.ws.onmessage = (ev: MessageEvent) => {
+        this.log('ws receive... and ev:', ev);
+
+        const res = JSON.parse(ev.origin);
+
+        if (res.code !== 0) {
+          this.log(`${res.code}: ${res.message}`);
+          this.ws.close();
+          reject(res);
+          return;
+        }
+
+        const { audio } = res.data;
+        const audioBuf = Buffer.from(audio, 'base64');
+
+        fs.writeFile(fileCachePath, audioBuf, { flag: 'a' }, (err) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          this.log('file append done.');
+        });
+
+        if (res.code === 0 && res.data.status === 2) {
+          this.ws.close();
+          this.log('file write done.');
+          resolve(fileCachePath);
+        }
+      };
+    });
   }
 
-  // 保存文件
-  save(data) {
-    fs.writeFile('./test.pcm', data, { flag: 'a' }, (err) => {
-      if (err) {
-        this.log(`save error: ${err}`);
-        return;
-      }
+  /**
+   * @param text 要合成的文本
+   * @param options 转换选项
+   */
+  send(text: string, options?: XfTtsBusinessOption) {
+    this.ws.onopen = (ev) => {
+      this.log('ws open. ev:', ev);
 
-      this.log('文件保存成功');
-    });
+      const business = {
+        ...this.defXfTtsBusinessOption,
+        ...options
+      };
+
+      const frame = {
+        common: {
+          app_id: this.config.appId
+        },
+        business,
+        data: {
+          text: Buffer.from(text).toString('base64'),
+          status: 2
+        }
+      };
+      this.log('send data:', frame);
+      this.ws.send(JSON.stringify(frame));
+    };
+
+    this.ws.onclose = (ev) => {
+      this.log('ws close. ev:', ev);
+    };
+
+    this.ws.onerror = (ev) => {
+      this.log('ws error. ev:', ev);
+    };
   }
 
   /**

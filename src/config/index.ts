@@ -13,11 +13,7 @@ export const uiConfig = {
     { label: 'mp3', value: 'mp3' },
     { label: 'pcm', value: 'pcm' }
   ].concat(
-    _engine === TtsEngine.ALIYUN
-      ? [{ label: 'wav', value: 'wav' }]
-      : _engine === TtsEngine.XUNFEI
-        ? [{ label: 'speex', value: 'speex' }]
-        : []
+    _engine === TtsEngine.ALIYUN ? [{ label: 'wav', value: 'wav' }] : []
   )
 };
 
