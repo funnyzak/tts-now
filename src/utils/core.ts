@@ -13,6 +13,16 @@ const path = require('path');
 
 const ENV = process.env.NODE_ENV;
 
+export const isNullOrEmpty = (val: any): boolean => {
+  if (!val || val === null) {
+    return true;
+  }
+  if (typeof val === 'string' && val.length === 0) {
+    return true;
+  }
+  return false;
+};
+
 export const delDirPath = (_path) => {
   if (fs.existsSync(_path)) {
     const files = fs.readdirSync(_path);
@@ -163,16 +173,6 @@ export const createXunFeiTTS = (xfSetting: APP.XfSetting): any => (checkXfSettin
   )
   : null);
 
-export const isNullOrEmpty = (val: any): boolean => {
-  if (!val || val === null) {
-    return true;
-  }
-  if (typeof val === 'string' && val.length === 0) {
-    return true;
-  }
-  return false;
-};
-
 export const checkAliSettingNetwork = async (
   aliSetting: APP.AliSetting,
   warn?: boolean
@@ -256,6 +256,21 @@ export const currentSpeaker = (_appSetting: APP.AppSetting) => {
 };
 
 /**
+ * 运行转换任务时检查
+ * @param appSetting
+ * @returns
+ */
+export const ttsRunCheck = (appSetting: APP.AppSetting) => {
+  let checkRlt = true;
+  if (appSetting.ttsSetting.engine === TtsEngine.ALIYUN) {
+    checkRlt = checkAliSetting(appSetting.aliSetting, true);
+  } else if (appSetting.ttsSetting.engine === TtsEngine.XUNFEI) {
+    checkRlt = checkXfSetting(appSetting.xfSetting, true);
+  }
+  return checkRlt;
+};
+
+/**
  * 开始批量转换任务
  * @param appSetting 应用配置
  * @param ttsFiles 转换的文件列表
@@ -271,14 +286,28 @@ export const ttsTasksRun = async (
   ) => void,
   download: boolean = false
 ) => {
+  if (!ttsRunCheck(appSetting)) return;
+
   const aliTtsInstance = createAliyunTTS(appSetting.aliSetting);
   const xfTtsInstance = createXunFeiTTS(appSetting.xfSetting);
 
-  const setError = (_info: APP.TtsFileInfo, error): APP.TtsFileInfo => {
-    logger(_info);
+  const setStart = (_info: APP.TtsFileInfo): APP.TtsFileInfo => {
+    _info.ttsSetting = appSetting.ttsSetting;
+    _info.status = TtsFileStatus.PROCESS;
+    _info.wordCount = _info.textContent.length;
+    _info.ttsStart = new Date().getTime();
+    _info.savePath = appSetting.customSetting.savePath;
+    _info.saveName = `${
+      _info.fileName?.split('.')[0]
+    }_${new Date().getTime()}.${_info.ttsSetting.format}`;
+    return _info;
+  };
+
+  const setError = (_info: APP.TtsFileInfo, _error): APP.TtsFileInfo => {
     _info.taskId = '';
     _info.status = TtsFileStatus.FAIL;
-    _info.error = error;
+    _info.error = _error;
+    logger(_info, _error);
     return _info;
   };
 
@@ -303,14 +332,9 @@ export const ttsTasksRun = async (
   };
 
   // 开始所有转换任务
-  for (const finfo of ttsFiles) {
-    finfo.ttsSetting = appSetting.ttsSetting;
-    finfo.status = TtsFileStatus.READY;
-    finfo.ttsStart = new Date().getTime();
-    finfo.savePath = appSetting.customSetting.savePath;
-    finfo.saveName = `${
-      finfo.fileName?.split('.')[0]
-    }_${new Date().getTime()}.${finfo.ttsSetting.format}`;
+  for (let finfo of ttsFiles) {
+    finfo = setStart(finfo);
+    callback(finfo, ttsFiles);
 
     try {
       if (appSetting.ttsSetting.engine === TtsEngine.ALIYUN) {
@@ -329,7 +353,7 @@ export const ttsTasksRun = async (
           auf: `audio/L16;rate=${appSetting.ttsSetting.simpleRate}`,
           vcn: currentSpeaker(appSetting).code,
           volume: appSetting.ttsSetting.volumn,
-          speech: appSetting.ttsSetting.speedRate,
+          speed: appSetting.ttsSetting.speedRate,
           pitch: appSetting.ttsSetting.pitchRate
         });
         finfo.audioUrl = finfo.taskId;
@@ -365,7 +389,7 @@ export const ttsTasksRun = async (
     }
 
     if (ttsFiles.filter((v) => v.status === TtsFileStatus.PROCESS).length > 0) {
-      statusPull();
+      setTimeout(statusPull, 1000);
     }
   };
 

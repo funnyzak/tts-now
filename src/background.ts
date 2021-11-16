@@ -186,7 +186,10 @@ const menuTemplate: any = [
   }
 ];
 const menu = Menu.buildFromTemplate(menuTemplate);
-Menu.setApplicationMenu(menu);
+
+if (!isDevelopment) {
+  Menu.setApplicationMenu(menu);
+}
 
 // 选择要转换的文件或其他选择
 ipcMain.on('select_files', (event, arg) => {

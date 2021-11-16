@@ -312,7 +312,7 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
           dataIndex="wordCount"
           key="wordCount"
           width={80}
-          sorter={(a: APP.TtsFileInfo, b: APP.TtsFileInfo) => a.wordCount - b.wordCount}
+          sorter={(a: APP.TtsFileInfo, b: APP.TtsFileInfo) => (a.wordCount || 0) - (b.wordCount || 0)}
           render={(value: number) => <>{value}</>}
         />
         <Table.Column
@@ -428,7 +428,7 @@ const Index = () => {
   const [processing, setProcessing] = useState<boolean>(false);
 
   const runTask = async () => {
-    if (!core.checkAliSetting(appSetting.aliSetting, true)) return;
+    if (!core.ttsRunCheck(appSetting)) return;
 
     if (core.isNullOrEmpty(appSetting.customSetting.savePath)) {
       message.warn('请选择输出文件夹');
@@ -455,75 +455,22 @@ const Index = () => {
     setProcessing(true);
     setFileList(fileList.map((v) => ({ ...v, status: TtsFileStatus.READY })));
 
-    // 开始所有转换任务
-    for (const finfo of fileList) {
-      finfo.ttsSetting = appSetting.ttsSetting;
-      finfo.status = TtsFileStatus.READY;
-      finfo.ttsStart = new Date().getTime();
-      finfo.savePath = appSetting.customSetting.savePath;
-      finfo.saveName = `${
-        finfo.fileName?.split('.')[0]
-      }_${new Date().getTime()}.${finfo.ttsSetting.format}`;
-
-      try {
-        finfo.taskId = await aliTtsInstance.task(finfo.textContent, {
-          format: appSetting.ttsSetting.format,
-          sample_rate: appSetting.ttsSetting.simpleRate,
-          voice: core.currentSpeaker(appSetting).code,
-          volume: appSetting.ttsSetting.volumn,
-          speech_rate: appSetting.ttsSetting.speedRate,
-          pitchRate: appSetting.ttsSetting.pitchRate
-        });
-        finfo.status = TtsFileStatus.PROCESS;
-      } catch (error) {
-        core.logger(error);
-        finfo.taskId = '';
-        finfo.status = TtsFileStatus.FAIL;
-        finfo.error = error;
-      }
-    }
-    setFileList(fileList);
-
-    const statusPull = async () => {
-      for (const finfo of fileList) {
-        if (finfo.status !== TtsFileStatus.PROCESS) {
-          continue;
+    core.ttsTasksRun(
+      appSetting,
+      fileList,
+      (_current: APP.TtsFileInfo, _fileList: Array<APP.TtsFileInfo>) => {
+        if (
+          fileList.filter(
+            (v) => v.status !== TtsFileStatus.PROCESS
+              && v.status !== TtsFileStatus.READY
+          ).length === 0
+        ) {
+          setProcessing(false);
         }
-        try {
-          const aliTtsComplete: AliTtsComplete = await aliTtsInstance.status(
-            finfo.taskId
-          );
-
-          if (!core.isNullOrEmpty(aliTtsComplete.audio_address)) {
-            finfo.status = TtsFileStatus.SUCCESS;
-            finfo.ttsEnd = new Date().getTime();
-            finfo.audioUrl = aliTtsComplete.audio_address;
-            finfo.elapsed = finfo.ttsStart
-              ? finfo.ttsEnd - finfo.ttsStart
-              : undefined;
-            core.downloadFile(finfo.audioUrl, finfo.savePath, {
-              fileName: finfo.saveName
-            });
-          }
-        } catch (error) {
-          core.logger(error);
-          finfo.taskId = '';
-          finfo.status = TtsFileStatus.FAIL;
-          finfo.error = error;
-        }
-      }
-      setFileList(fileList);
-
-      if (
-        fileList.filter((v) => v.status === TtsFileStatus.PROCESS).length > 0
-      ) {
-        statusPull();
-      } else {
-        setProcessing(false);
-      }
-    };
-
-    statusPull();
+        setFileList(_fileList);
+      },
+      true
+    );
   };
 
   return (

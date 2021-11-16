@@ -97,11 +97,11 @@ declare global {
       /**
        *  状态
        */
-      status: TtsFileStatus;
+      status?: TtsFileStatus;
       /**
        * 字符数
        */
-      wordCount: number;
+      wordCount?: number;
       /**
        * 转换错误原因
        */

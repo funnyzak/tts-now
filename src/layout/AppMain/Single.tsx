@@ -55,9 +55,6 @@ const Index = () => {
 
   const [singleTxt] = useState(getSingleTxt());
   const singleFormRef: any = useRef(null);
-  const [aliTtsInstance, setAliTtsInstance] = useState(
-    core.createAliyunTTS(appSetting.aliSetting)
-  );
   const [singleTtsFile, setSingleTtsFile] = useState<APP.TtsFileInfo>();
   const [audioPlayer, setAudioPlayer] = useState<any>();
 
@@ -77,7 +74,7 @@ const Index = () => {
 
   const [processing, setProcessing] = useState<boolean>(false);
   const playHandle = async () => {
-    if (!core.checkAliSetting(appSetting.aliSetting, true)) return;
+    if (!core.ttsRunCheck(appSetting)) return;
 
     if (singleTtsFile?.audioUrl) {
       core.logger(audioPlayer);
@@ -97,47 +94,21 @@ const Index = () => {
       message.warn('正在准备播放..');
     }
 
-    const ttsFileInfo: APP.TtsFileInfo = {
-      ttsSetting: appSetting.ttsSetting,
-      textContent: txt,
-      status: TtsFileStatus.PROCESS,
-      wordCount: txt.length,
-      ttsStart: new Date().getTime()
-    };
-    setSingleTtsFile(ttsFileInfo);
     setProcessing(true);
 
-    let rlt: AliTtsComplete;
+    core.ttsTasksRun(
+      appSetting,
+      [{ textContent: txt, status: TtsFileStatus.READY }],
+      (current: APP.TtsFileInfo) => {
+        setSingleTtsFile(current);
+        if (current.status === TtsFileStatus.PROCESS) return;
 
-    try {
-      rlt = await aliTtsInstance.taskSync(
-        txt,
-        2,
-        {
-          format: appSetting.ttsSetting.format,
-          sample_rate: appSetting.ttsSetting.simpleRate,
-          voice: core.currentSpeaker(appSetting).code,
-          volume: appSetting.ttsSetting.volumn,
-          speech_rate: appSetting.ttsSetting.speedRate,
-          pitchRate: appSetting.ttsSetting.pitchRate
-        },
-        2
-      );
-    } catch (err) {
-      core.logger('single error:', err);
-      message.error(err);
-      ttsFileInfo.status = TtsFileStatus.FAIL;
-      setProcessing(false);
-      return;
-    }
-
-    ttsFileInfo.ttsEnd = new Date().getTime();
-    ttsFileInfo.audioUrl = rlt.audio_address;
-    ttsFileInfo.status = TtsFileStatus.SUCCESS;
-    ttsFileInfo.taskId = rlt.task_id;
-
-    setSingleTtsFile(ttsFileInfo);
-    setProcessing(false);
+        setProcessing(false);
+        if (current.status === TtsFileStatus.FAIL) {
+          message.error(current.error);
+        }
+      }
+    );
   };
 
   const exportHandle = () => {
@@ -190,10 +161,6 @@ const Index = () => {
       });
     }
   }, core.ttsUseEffectDeps(appSetting.ttsSetting));
-
-  useEffect(() => {
-    setAliTtsInstance(core.createAliyunTTS(appSetting.aliSetting));
-  }, core.aliUseEffectDeps(appSetting.aliSetting));
 
   return (
     <Wrapper>
