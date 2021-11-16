@@ -15,7 +15,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
 
   const { appSetting, setAppSetting } = useAppSetting();
   const [spinning, setSpinning] = useState<boolean>(false);
-  const [engine] = useState<string>(
+  const [engine, setEngine] = useState<string>(
     appSetting.ttsSetting.engine
       ? appSetting.ttsSetting.engine.toString()
       : TtsEngine.ALIYUN.toString()
@@ -46,6 +46,10 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
 
   const valuesChange = (_formValues, _allFormValues) => {
     core.logger('_formValues', _formValues, '_allFormValues', _allFormValues);
+  };
+
+  const engineChange = (e) => {
+    setEngine(e.target.value);
   };
 
   const formPlatformSetting = (_engine: TtsEngine, _allFormValues) => {
@@ -120,9 +124,17 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
               required
               tooltip="语音合成所使用的引擎"
             >
-              <Radio.Group options={engineOptions} value={engine} />
+              <Radio.Group
+                options={engineOptions}
+                value={engine}
+                onChange={engineChange}
+              />
             </Form.Item>
-            <Tabs defaultActiveKey={engine} tabPosition="top">
+            <Tabs
+              defaultActiveKey={engine}
+              activeKey={engine}
+              tabPosition="top"
+            >
               <Tabs.TabPane
                 tab={<span>阿里云</span>}
                 key={TtsEngine.ALIYUN.toString()}
