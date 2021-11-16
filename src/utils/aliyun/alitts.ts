@@ -165,8 +165,8 @@ class AliTTS {
               sample_rate: sample_rate || 16000,
               voice,
               volume,
-              speech_rate,
-              pitch_rate,
+              speech_rate: speech_rate ? (speech_rate - 50) * 10 : 0, // 0-100转换为阿里云-500-500值范围
+              pitch_rate: pitch_rate ? (pitch_rate - 50) * 10 : 0,
               enable_subtitle
             },
             enable_notify: enable_notify || false,
