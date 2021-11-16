@@ -3,6 +3,9 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 import Index from './layout';
 import { AppContext, appSetting, appSettingCacheKey } from '@/config';
+import { appReset } from '@/utils/core';
+
+appReset();
 
 export default () => {
   const [setting, setSetting] = useState(appSetting);

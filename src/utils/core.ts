@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { App, ipcRenderer } from 'electron';
+import { ipcRenderer } from 'electron';
 import fs from 'fs';
 import AliTTS from '@/utils/aliyun/AliyunTTS';
 import XfWsTTS from '@/utils/xunfei/XunfeiWsTTS';
@@ -9,6 +9,27 @@ import { EventEmitter, fileCachePath } from '@/config';
 const { DownloaderHelper } = require('node-downloader-helper');
 
 const ENV = process.env.NODE_ENV;
+
+export const delDirPath = (path) => {
+  if (fs.existsSync(path)) {
+    const files = fs.readdirSync(path);
+    files.forEach((file) => {
+      const curPath = `${path}/${file}`;
+      if (fs.statSync(curPath).isDirectory()) {
+        // recurse
+        delDirPath(curPath);
+      } else {
+        // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
+};
+
+export const appReset = () => {
+  delDirPath(fileCachePath);
+};
 
 export const checkDirExist = (
   _path?: string,

@@ -166,7 +166,7 @@ const Index = () => {
         <RadioGroupComponent
           value={appSetting.ttsSetting.format}
           name="format"
-          title="导出格式"
+          title="合成格式"
           options={uiConfig.outputFormatList(appSetting.ttsSetting.engine)}
         />
       </div>
