@@ -1,6 +1,7 @@
 import React from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
 import { TtsEngine } from '@/type/enums';
+import voiceData from './voice';
 
 // App 名称
 export const appName = '智能语音合成助手';
@@ -48,9 +49,21 @@ export const appSettingCacheKey = 'AppSetting';
 export const cacheAppSetting = localStorage.getItem(appSettingCacheKey);
 
 // 读取当前配置
-export const appSetting: APP.AppSetting = cacheAppSetting && JSON.parse(cacheAppSetting).customSetting
-  ? JSON.parse(cacheAppSetting)
-  : defaultAppSetting;
+const appSetting: APP.AppSetting = {
+  ...(cacheAppSetting && JSON.parse(cacheAppSetting).customSetting
+    ? JSON.parse(cacheAppSetting)
+    : defaultAppSetting)
+};
+
+if (!appSetting.ttsSetting.engine) {
+  appSetting.ttsSetting.engine = TtsEngine.ALIYUN;
+}
+
+if (!appSetting.ttsSetting.speakerId) {
+  appSetting.ttsSetting.speakerId = voiceData[appSetting.ttsSetting.engine.toString()][0].speakerId;
+}
+
+export { appSetting };
 
 // 创建App Context
 export const AppContext = React.createContext({

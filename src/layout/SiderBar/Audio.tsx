@@ -4,6 +4,7 @@ import { Slider, Radio } from 'antd';
 import React, { useState, useEffect } from 'react';
 import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
 import { uiConfig } from '@/config';
+import { TtsEngine } from '@/type/enums';
 
 interface RadioGroupInterface {
   options: Array<any>;
@@ -122,7 +123,7 @@ const Wrapper = styled.div`
 const parsePitchRateOptions = (list) => list.map((v) => ({ label: `${v / 1000}k`, value: v }));
 
 const Index = () => {
-  const { appSetting, setAppSetting } = useAppSetting();
+  const { appSetting } = useAppSetting();
   const [pitchRateList, setPitchRateList] = useState<Array<number>>([
     8000, 16000
   ]);
