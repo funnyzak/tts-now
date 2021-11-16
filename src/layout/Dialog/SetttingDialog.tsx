@@ -153,7 +153,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
                   label="AccessKeyId"
                   tooltip={{ title: '阿里云账号API密钥' }}
                 >
-                  <Input placeholder="请输入AccessKeyId" />
+                  <Input.Password placeholder="请输入AccessKeyId" />
                 </Form.Item>
                 <Form.Item
                   name={`${TtsEngine.ALIYUN.toString()}_accessKeySecret`}
@@ -177,20 +177,20 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
                   <Input placeholder="请输入APPID" />
                 </Form.Item>
                 <Form.Item
-                  required
-                  name={`${TtsEngine.XUNFEI.toString()}_apiSecret`}
-                  label="APISecret"
-                  tooltip={{ title: '讯飞账号API密钥' }}
-                >
-                  <Input placeholder="请输入APISecret" />
-                </Form.Item>
-                <Form.Item
                   name={`${TtsEngine.XUNFEI.toString()}_apiKey`}
                   required
                   label="APIKey"
                   tooltip={{ title: '讯飞账号API Key' }}
                 >
                   <Input.Password placeholder="请输入APIKey" />
+                </Form.Item>
+                <Form.Item
+                  required
+                  name={`${TtsEngine.XUNFEI.toString()}_apiSecret`}
+                  label="APISecret"
+                  tooltip={{ title: '讯飞账号API密钥' }}
+                >
+                  <Input.Password placeholder="请输入APISecret" />
                 </Form.Item>
               </Tabs.TabPane>
             </Tabs>
