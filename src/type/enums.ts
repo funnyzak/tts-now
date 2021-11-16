@@ -8,4 +8,12 @@ export enum TtsFileStatus {
   SUCCESS = '成功'
 }
 
+/**
+ * 语音识别引擎
+ */
+export enum TtsEngine {
+  ALIYUN = 'aliyun',
+  XUNFEI = 'xf'
+}
+
 export default {};

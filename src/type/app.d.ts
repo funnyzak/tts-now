@@ -1,4 +1,4 @@
-import { TtsFileStatus } from './enums';
+import { TtsFileStatus, TtsEngine } from './enums';
 
 // https://stackoverflow.com/questions/57132428/augmentations-for-the-global-scope-can-only-be-directly-nested-in-external-modul
 export {};
@@ -33,16 +33,19 @@ declare global {
      * TTS 配置
      */
     export interface TTSSetting {
-      // 场景索引
-      voiceIndex: number;
+      // 使用的引擎
+      engine: TtsEngine;
 
-      // 音量
+      // 场景索引
+      speakerId?: string;
+
+      // 音量0-100
       volumn: number;
 
-      // 语速
+      // 语速0-100
       speedRate: number;
 
-      // 语调，范围是-500~500，默认是0。
+      // 语调0-100
       pitchRate: number;
 
       // 音频采样率，支持16000Hz和8000Hz

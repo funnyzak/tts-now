@@ -127,7 +127,7 @@ export const checkAliSettingNetwork = async (
 };
 
 export const ttsUseEffectDeps = (ttsSetting: APP.TTSSetting) => [
-  ttsSetting.voiceIndex,
+  ttsSetting.speakerId,
   ttsSetting.pitchRate,
   ttsSetting.simpleRate,
   ttsSetting.speedRate,
@@ -142,7 +142,7 @@ export const aliUseEffectDeps = (aliSetting: APP.AliSetting) => [
 ];
 
 export const settingUseEffectDeps = (appSetting: APP.AppSetting) => [
-  appSetting.ttsSetting.voiceIndex,
+  appSetting.ttsSetting.speakerId,
   appSetting.ttsSetting.pitchRate,
   appSetting.ttsSetting.simpleRate,
   appSetting.ttsSetting.speedRate,
