@@ -50,9 +50,9 @@ const Index = () => {
   const getSingleTxt = () => (appSetting.customSetting.singleTxt
     && appSetting.customSetting.singleTxt !== null
     && appSetting.customSetting.singleTxt.length > 0
-    && currentSpeaker().text !== appSetting.customSetting.singleTxt
+    && currentSpeaker(appSetting).text !== appSetting.customSetting.singleTxt
     ? appSetting.customSetting.singleTxt
-    : currentSpeaker().text);
+    : currentSpeaker(appSetting).text);
 
   const [singleTxt] = useState(getSingleTxt());
   const singleFormRef: any = useRef(null);
@@ -117,7 +117,7 @@ const Index = () => {
         {
           format: appSetting.ttsSetting.format,
           sample_rate: appSetting.ttsSetting.simpleRate,
-          voice: currentSpeaker().code,
+          voice: currentSpeaker(appSetting).code,
           volume: appSetting.ttsSetting.volumn,
           speech_rate: appSetting.ttsSetting.speedRate,
           pitchRate: appSetting.ttsSetting.pitchRate

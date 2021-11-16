@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Slider, Radio } from 'antd';
 import React, { useState, useEffect } from 'react';
-import useAppSetting, { getVoiceTypeList, currentSpeaker } from '@/hook/app';
+import useAppSetting, { currentSpeaker } from '@/hook/app';
 import { uiConfig } from '@/config';
 import { TtsEngine } from '@/type/enums';
 
@@ -129,12 +129,7 @@ const Index = () => {
   ]);
 
   useEffect(() => {
-    setPitchRateList(
-      currentSpeaker(
-        appSetting.ttsSetting.speakerId,
-        appSetting.ttsSetting.engine
-      ).sampleRate
-    );
+    setPitchRateList(currentSpeaker(appSetting).sampleRate);
   }, [appSetting.ttsSetting.speakerId]);
   return (
     <Wrapper>

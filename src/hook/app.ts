@@ -5,21 +5,19 @@ import { TtsEngine } from '@/type/enums';
 
 const SettingContext = () => useContext(AppContext);
 
-const getVoiceTypeList = (_engine?: TtsEngine) => {
-  const ttsSetting = !_engine ? SettingContext().appSetting.ttsSetting : null;
+const getVoiceTypeList = (_appSetting: APP.AppSetting) => {
+  const { ttsSetting } = _appSetting;
   return voiceData[
-    _engine
-      ? _engine.toString()
-      : ttsSetting?.engine
-        ? ttsSetting?.engine.toString()
-        : TtsEngine.ALIYUN.toString()
+    ttsSetting?.engine
+      ? ttsSetting?.engine.toString()
+      : TtsEngine.ALIYUN.toString()
   ];
 };
 
-const currentSpeaker = (_speakerId?: string, _engine?: TtsEngine) => {
-  const speakerId = _speakerId || SettingContext().appSetting.ttsSetting.speakerId;
+const currentSpeaker = (_appSetting: APP.AppSetting) => {
+  const { speakerId } = _appSetting.ttsSetting;
 
-  const voiceTypeList = getVoiceTypeList(_engine);
+  const voiceTypeList = getVoiceTypeList(_appSetting);
 
   if (speakerId && speakerId.length === 0) {
     return voiceTypeList[0];

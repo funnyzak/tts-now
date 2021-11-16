@@ -469,7 +469,7 @@ const Index = () => {
         finfo.taskId = await aliTtsInstance.task(finfo.textContent, {
           format: appSetting.ttsSetting.format,
           sample_rate: appSetting.ttsSetting.simpleRate,
-          voice: currentSpeaker().code,
+          voice: currentSpeaker(appSetting).code,
           volume: appSetting.ttsSetting.volumn,
           speech_rate: appSetting.ttsSetting.speedRate,
           pitchRate: appSetting.ttsSetting.pitchRate

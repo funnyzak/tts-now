@@ -9,6 +9,8 @@ import styles from './index.module.scss';
 
 const VoiceSelectComponent = (props: any) => {
   const { voiceIndex, voiceSetCallBack } = props;
+  const { appSetting } = useAppSetting();
+
   return (
     <div className={styles.scenePanel}>
       <Typography.Title
@@ -25,7 +27,7 @@ const VoiceSelectComponent = (props: any) => {
         onClick={voiceSetCallBack}
         selectedKeys={[voiceIndex]}
       >
-        {getVoiceTypeList().map((voiceType, index) => (
+        {getVoiceTypeList(appSetting).map((voiceType, index) => (
           <Menu.Item
             key={voiceType.speakerId}
             css={{
@@ -88,7 +90,7 @@ const Index = () => {
               height: '80px',
               marginRight: '20px'
             }}
-            src={currentSpeaker().img}
+            src={currentSpeaker(appSetting).img}
           />
           <div>
             <div
@@ -99,7 +101,7 @@ const Index = () => {
                 color: #000;
               `}
             >
-              {currentSpeaker().speaker}
+              {currentSpeaker(appSetting).speaker}
             </div>
             <div
               css={css`
@@ -108,7 +110,7 @@ const Index = () => {
                 color: #666;
               `}
             >
-              {currentSpeaker().speechType}
+              {currentSpeaker(appSetting).speechType}
             </div>
           </div>
           <div>{!menuShow ? <CaretDownOutlined /> : <CaretUpOutlined />}</div>

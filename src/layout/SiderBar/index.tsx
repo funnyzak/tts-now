@@ -10,7 +10,7 @@ import styles from './index.module.scss';
 
 const Index = () => {
   const [btnBottom] = useState(0);
-  const [showSetting, setShowSetting] = useState(true);
+  const [showSetting, setShowSetting] = useState(false);
   return (
     <div className={styles.wrapper}>
       <Affix offsetTop={0}>
