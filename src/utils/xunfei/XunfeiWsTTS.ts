@@ -107,9 +107,24 @@ class XfWsTTS {
    * @type {XfWsConfig}
    * @memberof XfWsTTS
    */
-  config: XfWsConfig;
+  xfConfig: XfWsConfig;
 
-  // 临时文件缓存路径
+  /**
+   * 转换业务选项
+   *
+   * @private
+   * @type {XfTtsBusinessOption}
+   * @memberof XfWsTTS
+   */
+  private businessOption?: XfTtsBusinessOption;
+
+  /**
+   *临时文件缓存路径
+   *
+   * @private
+   * @type {string}
+   * @memberof XfWsTTS
+   */
   private cachePath: string = process.cwd();
 
   /**
@@ -136,7 +151,7 @@ class XfWsTTS {
     cachePath: string,
     debug: boolean = true
   ) {
-    this.config = xfwsConfig;
+    this.xfConfig = xfwsConfig;
     this.debug = debug;
     this.cachePath = cachePath;
     this.fixConfig();
@@ -153,9 +168,9 @@ class XfWsTTS {
 
   private getWssUrl() {
     const _rtcNow = XfWsTTS.rtcNow();
-    const wssUrl = `${this.config.hostUrl}?authorization=${this.signature(
+    const wssUrl = `${this.xfConfig.hostUrl}?authorization=${this.signature(
       _rtcNow
-    )}&date=${_rtcNow}&host=${this.config.host}`;
+    )}&date=${_rtcNow}&host=${this.xfConfig.host}`;
     this.log('Wss URL', wssUrl);
     return wssUrl;
   }
@@ -164,14 +179,14 @@ class XfWsTTS {
    * 检查配置
    */
   private fixConfig() {
-    if (!this.config.host) {
-      this.config.host = 'tts-api.xfyun.cn';
+    if (!this.xfConfig.host) {
+      this.xfConfig.host = 'tts-api.xfyun.cn';
     }
-    if (!this.config.uri) {
-      this.config.uri = '/v2/tts';
+    if (!this.xfConfig.uri) {
+      this.xfConfig.uri = '/v2/tts';
     }
-    if (!this.config.hostUrl) {
-      this.config.hostUrl = `wss://${this.config.host}${this.config.uri}`;
+    if (!this.xfConfig.hostUrl) {
+      this.xfConfig.hostUrl = `wss://${this.xfConfig.host}${this.xfConfig.uri}`;
     }
   }
 
@@ -192,7 +207,13 @@ class XfWsTTS {
   private receive(): Promise<string> {
     const fileCachePath = path.join(
       this.cachePath,
-      `${(Math.random() + 1).toString(36).substring(7)}.audio`
+      `${(Math.random() + 1).toString(36).substring(7)}.${
+        this.businessOption?.aue === 'raw'
+          ? 'pcm'
+          : this.businessOption?.aue === 'lame'
+            ? 'mp3'
+            : 'audio'
+      }`
     );
     this.log('seted auto cache path=>', fileCachePath);
 
@@ -250,16 +271,16 @@ class XfWsTTS {
       this.ws.onopen = () => {
         this.log('ws opened.');
 
-        const business = {
+        this.businessOption = {
           ...this.defXfTtsBusinessOption,
           ...options
         };
 
         const frame = {
           common: {
-            app_id: this.config.appId
+            app_id: this.xfConfig.appId
           },
-          business,
+          business: { ...this.businessOption },
           data: {
             text: Buffer.from(text).toString('base64'),
             status: 2
@@ -293,13 +314,13 @@ class XfWsTTS {
    * @returns
    */
   private signature(date) {
-    const signatureOrigin = `host: ${this.config.host}\ndate: ${date}\nGET ${this.config.uri} HTTP/1.1`;
+    const signatureOrigin = `host: ${this.xfConfig.host}\ndate: ${date}\nGET ${this.xfConfig.uri} HTTP/1.1`;
     const signatureSha = CryptoJS.HmacSHA256(
       signatureOrigin,
-      this.config.apiSecret
+      this.xfConfig.apiSecret
     );
     const signature = CryptoJS.enc.Base64.stringify(signatureSha);
-    const authorizationOrigin = `api_key="${this.config.apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${signature}"`;
+    const authorizationOrigin = `api_key="${this.xfConfig.apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${signature}"`;
     const authStr = CryptoJS.enc.Base64.stringify(
       CryptoJS.enc.Utf8.parse(authorizationOrigin)
     );
