@@ -35,7 +35,7 @@ const Index = () => {
               setShowSetting(true);
             }}
           >
-            平台配置
+            配置
           </Button>
         </div>
       </Affix>
