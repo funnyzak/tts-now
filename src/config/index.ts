@@ -11,7 +11,7 @@ export const appName = '智能语音合成助手';
 /**
  * 缓存路径
  */
-export const fileCachePath = path(process.cwd(), '_cache');
+export const fileCachePath = path.join(process.cwd(), '_cache');
 
 // ui配置
 export const uiConfig = {

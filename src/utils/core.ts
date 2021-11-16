@@ -158,18 +158,18 @@ export const checkAliSettingNetwork = async (
   return true;
 };
 
-// export const checkXfSettingNetwork = async (
-//   xfSetting: APP.XfSetting,
-//   warn?: boolean
-// ) => {
-//   if (!checkXfSetting(xfSetting, warn)) return false;
+export const checkXfSettingNetwork = async (
+  xfSetting: APP.XfSetting,
+  warn?: boolean
+) => {
+  if (!checkXfSetting(xfSetting, warn)) return false;
 
-//   if (!(await createAliTTS(xfSetting).checkConfig())) {
-//     message.error('讯飞配置貌似不可用哦。');
-//     return false;
-//   }
-//   return true;
-// };
+  if (!(await createXunFeiTTS(xfSetting).checkConfig())) {
+    message.error('讯飞配置貌似不可用哦。');
+    return false;
+  }
+  return true;
+};
 
 export const ttsUseEffectDeps = (ttsSetting: APP.TTSSetting) => [
   ttsSetting.speakerId,

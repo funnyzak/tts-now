@@ -97,11 +97,9 @@ export interface XfTtsBusinessOption {
  * 讯飞语音合成
  */
 class XfWsTTS {
-  // 是否debug
   private debug: boolean = false;
 
-  // 声明一个Socket
-  private ws: WebSocket;
+  private ws?: WebSocket;
 
   /**
    *讯飞配置
@@ -153,13 +151,13 @@ class XfWsTTS {
     return new Date().toUTCString();
   }
 
-  private create() {
+  private getWssUrl() {
     const _rtcNow = XfWsTTS.rtcNow();
     const wssUrl = `${this.config.hostUrl}?authorization=${this.signature(
       _rtcNow
     )}&date=${_rtcNow}&host=${this.config.host}`;
     this.log('Wss URL', wssUrl);
-    this.ws = new WebSocket(wssUrl);
+    return wssUrl;
   }
 
   /**
@@ -199,6 +197,11 @@ class XfWsTTS {
     this.log('seted auto cache path=>', fileCachePath);
 
     return new Promise<string>((resolve, reject) => {
+      if (!this.ws) {
+        reject(new Error('ws is null.'));
+        return;
+      }
+
       this.ws.onmessage = (ev: MessageEvent) => {
         this.log('ws received.  data=>', ev.data);
 
@@ -206,7 +209,7 @@ class XfWsTTS {
 
         if (res.code !== 0) {
           this.log(`${res.code}: ${res.message}`);
-          this.ws.close();
+          this.ws?.close();
           reject(res);
           return;
         }
@@ -223,7 +226,7 @@ class XfWsTTS {
         });
 
         if (res.code === 0 && res.data.status === 2) {
-          this.ws.close();
+          this.ws?.close();
           this.log('file write done.');
           resolve(fileCachePath);
         }
@@ -236,8 +239,14 @@ class XfWsTTS {
    * @param options 转换选项
    */
   send(text: string, options?: XfTtsBusinessOption): Promise<string> {
-    this.create();
+    this.ws = new WebSocket(this.getWssUrl());
+
     return new Promise<string>((resolve, reject) => {
+      if (!this.ws) {
+        reject(new Error('ws is null.'));
+        return;
+      }
+
       this.ws.onopen = () => {
         this.log('ws opened.');
 
@@ -257,7 +266,7 @@ class XfWsTTS {
           }
         };
         this.log('send data:', frame);
-        this.ws.send(JSON.stringify(frame));
+        this.ws?.send(JSON.stringify(frame));
       };
 
       this.ws.onclose = () => {

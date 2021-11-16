@@ -80,7 +80,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
       (formValues.engine === TtsEngine.ALIYUN.toString()
         && !(await core.checkAliSettingNetwork(aliSetting, true)))
       || (formValues.engine === TtsEngine.XUNFEI.toString()
-        && !(await core.checkXfSetting(xfSetting, true)))
+        && !(await core.checkXfSettingNetwork(xfSetting, true)))
     ) {
       setSpinning(false);
       return;
