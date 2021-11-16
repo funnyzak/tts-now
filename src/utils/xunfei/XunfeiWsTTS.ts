@@ -231,7 +231,7 @@ class XfWsTTS {
         if (res.code !== 0) {
           this.log(`${res.code}: ${res.message}`);
           this.ws?.close();
-          reject(res);
+          reject(new Error(res.message));
           return;
         }
 
@@ -299,13 +299,7 @@ class XfWsTTS {
         reject(new Error('ws error'));
       };
 
-      this.receive()
-        .then((_path) => {
-          resolve(_path);
-        })
-        .catch((_err) => {
-          reject(_err);
-        });
+      this.receive().then(resolve).catch(reject);
     });
   }
 
