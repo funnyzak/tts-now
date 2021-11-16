@@ -31,9 +31,9 @@ export const defaultAppSetting: APP.AppSetting = {
     accessKeySecret: ''
   },
   xfSetting: {
-    APIKey: '',
-    APISecret: '',
-    APPID: ''
+    apiKey: '',
+    apiSecret: '',
+    appId: ''
   },
   customSetting: {
     actionMode: 'SINGLE',

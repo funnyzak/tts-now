@@ -65,9 +65,9 @@ declare global {
      * 讯飞配置
      */
     export interface XfSetting {
-      APPID?: string;
-      APISecret?: string;
-      APIKey?: string;
+      appId?: string;
+      apiSecret?: string;
+      apiKey?: string;
     }
 
     /**
