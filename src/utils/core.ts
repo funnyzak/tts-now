@@ -270,6 +270,22 @@ export const ttsRunCheck = (appSetting: APP.AppSetting) => {
   return checkRlt;
 };
 
+export const exportAudioFile = (_info: APP.TtsFileInfo) => {
+  logger('export audio file =>', _info);
+  if (_info.audioUrl) {
+    if (_info.audioUrl.startsWith('http')) {
+      downloadFile(_info.audioUrl, _info.savePath, {
+        fileName: _info.saveName
+      });
+    } else {
+      const _path = _info.audioUrl.replace('file://', '');
+      if (fs.existsSync(_path)) {
+        fs.copyFileSync(_path, path.join(_info.savePath, _info.saveName));
+      }
+    }
+  }
+};
+
 /**
  * 开始批量转换任务
  * @param appSetting 应用配置
@@ -316,17 +332,8 @@ export const ttsTasksRun = async (
     _info.ttsEnd = new Date().getTime();
     _info.elapsed = _info.ttsStart ? _info.ttsEnd - _info.ttsStart : undefined;
 
-    if (download && _info.audioUrl) {
-      if (_info.audioUrl.startsWith('http')) {
-        downloadFile(_info.audioUrl, _info.savePath, {
-          fileName: _info.saveName
-        });
-      } else if (fs.existsSync(_info.audioUrl)) {
-        fs.copyFileSync(
-          _info.audioUrl,
-          path.join(_info.savePath, _info.saveName)
-        );
-      }
+    if (download) {
+      exportAudioFile(_info);
     }
     return _info;
   };

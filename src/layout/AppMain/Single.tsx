@@ -128,22 +128,7 @@ const Index = () => {
         7
       )}_${new Date().getTime()}.${singleTtsFile.ttsSetting?.format || 'mp3'}`;
       setSingleTtsFile(singleTtsFile);
-
-      core.logger(singleTtsFile);
-
-      core
-        .downloadFile(singleTtsFile?.audioUrl || '', outPath, {
-          fileName: singleTtsFile?.saveName
-        })
-        .then(() => {
-          message.success('已成功导出');
-          shell.showItemInFolder(
-            path.join(
-              singleTtsFile?.savePath || '',
-              singleTtsFile?.saveName || ''
-            )
-          );
-        });
+      core.exportAudioFile(singleTtsFile);
     });
   };
 
