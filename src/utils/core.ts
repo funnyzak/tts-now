@@ -356,7 +356,7 @@ export const ttsTasksRun = async (
           speed: appSetting.ttsSetting.speedRate,
           pitch: appSetting.ttsSetting.pitchRate
         });
-        finfo.audioUrl = finfo.taskId;
+        finfo.audioUrl = `file://${finfo.taskId}`;
         setSuccess(finfo);
       }
     } catch (error) {

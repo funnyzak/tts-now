@@ -119,6 +119,15 @@ class XfWsTTS {
   private businessOption?: XfTtsBusinessOption;
 
   /**
+   * 接受数据次数
+   *
+   * @private
+   * @type {number}
+   * @memberof XfWsTTS
+   */
+  private receiveCount: number = 0;
+
+  /**
    *临时文件缓存路径
    *
    * @private
@@ -237,7 +246,7 @@ class XfWsTTS {
           return;
         }
 
-        const { audio, status } = res.data;
+        const { audio } = res.data;
 
         if (audio !== null) {
           const audioBuf = Buffer.from(audio, 'base64');
@@ -248,12 +257,17 @@ class XfWsTTS {
             }
             this.log('file append done.');
           });
+          this.receiveCount++;
         }
 
         if (res.code === 0 && res.data.status === 2) {
           this.ws?.close();
-          this.log('file write done.');
-          resolve(fileCachePath);
+          if (this.receiveCount > 0) {
+            this.log('file write done.');
+            resolve(fileCachePath);
+          } else {
+            reject(new Error('write error, check speakerType.'));
+          }
         }
       };
     });
