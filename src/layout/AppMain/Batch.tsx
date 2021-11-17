@@ -334,7 +334,7 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
           onFilter={(val, data: APP.TtsFileInfo) => TtsFileStatus[val as string] === data.status}
           render={(status: TtsFileStatus, row: APP.TtsFileInfo) => (
             <>
-              <Tooltip title={row.error} color="red">
+              <Tooltip title={row.error?.message} color="red">
                 <Tag
                   icon={
                     status === TtsFileStatus.PROCESS ? (

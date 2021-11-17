@@ -321,7 +321,7 @@ export const ttsTasksRun = async (
         downloadFile(_info.audioUrl, _info.savePath, {
           fileName: _info.saveName
         });
-      } else {
+      } else if (fs.existsSync(_info.audioUrl)) {
         fs.copyFileSync(
           _info.audioUrl,
           path.join(_info.savePath, _info.saveName)
@@ -389,7 +389,7 @@ export const ttsTasksRun = async (
     }
 
     if (ttsFiles.filter((v) => v.status === TtsFileStatus.PROCESS).length > 0) {
-      setTimeout(statusPull, 1000);
+      setTimeout(statusPull, 100);
     }
   };
 
