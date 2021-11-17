@@ -455,18 +455,14 @@ const Index = () => {
       appSetting,
       fileList.map((v) => ({ ...v, status: TtsFileStatus.READY })),
       (_current: APP.TtsFileInfo, _fileList: Array<APP.TtsFileInfo>) => {
-        core.logger(_current, _fileList);
-
-        setFileList(_fileList);
-
-        if (
+        core.logger('current=>', _current, 'list=>', _fileList);
+        setFileList([..._fileList]);
+        setProcessing(
           _fileList.filter(
-            (v) => v.status !== TtsFileStatus.PROCESS
-              && v.status !== TtsFileStatus.READY
-          ).length === 0
-        ) {
-          setProcessing(false);
-        }
+            (v) => v.status
+              && [TtsFileStatus.PROCESS, TtsFileStatus.READY].includes(v.status)
+          ).length > 0
+        );
       },
       true
     );
