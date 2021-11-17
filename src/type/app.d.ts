@@ -105,7 +105,7 @@ declare global {
       /**
        * 转换错误原因
        */
-      error?: string;
+      error?: Error;
       /**
        * 转换用时（秒）
        */
