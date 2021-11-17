@@ -205,6 +205,7 @@ class XfWsTTS {
   }
 
   private receive(): Promise<string> {
+    this.log('Receiving businessOption => ', this.businessOption);
     const fileCachePath = path.join(
       this.cachePath,
       `${(Math.random() + 1).toString(36).substring(7)}.${
@@ -229,22 +230,25 @@ class XfWsTTS {
         const res = JSON.parse(ev.data);
 
         if (res.code !== 0) {
+          // 错误慢参考解决： https://www.xfyun.cn/document/error-code
           this.log(`${res.code}: ${res.message}`);
           this.ws?.close();
           reject(new Error(res.message));
           return;
         }
 
-        const { audio } = res.data;
-        const audioBuf = Buffer.from(audio, 'base64');
+        const { audio, status } = res.data;
 
-        fs.writeFile(fileCachePath, audioBuf, { flag: 'a' }, (err) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          this.log('file append done.');
-        });
+        if (audio !== null) {
+          const audioBuf = Buffer.from(audio, 'base64');
+          fs.writeFile(fileCachePath, audioBuf, { flag: 'a' }, (err) => {
+            if (err) {
+              reject(err);
+              return;
+            }
+            this.log('file append done.');
+          });
+        }
 
         if (res.code === 0 && res.data.status === 2) {
           this.ws?.close();
@@ -262,6 +266,11 @@ class XfWsTTS {
   send(text: string, options?: XfTtsBusinessOption): Promise<string> {
     this.ws = new WebSocket(this.getWssUrl());
 
+    this.businessOption = {
+      ...this.defXfTtsBusinessOption,
+      ...options
+    };
+
     return new Promise<string>((resolve, reject) => {
       if (!this.ws) {
         reject(new Error('ws is null.'));
@@ -270,11 +279,6 @@ class XfWsTTS {
 
       this.ws.onopen = () => {
         this.log('ws opened.');
-
-        this.businessOption = {
-          ...this.defXfTtsBusinessOption,
-          ...options
-        };
 
         const frame = {
           common: {

@@ -150,7 +150,7 @@ class AliTTS {
               resolve(res.Token.Id);
             } else {
               this.log(res);
-              reject(res);
+              reject(new Error(res.ErrMsg));
             }
           })
           .catch((err) => {
@@ -229,7 +229,7 @@ class AliTTS {
           if (_rlt.data.task_id) {
             resolve(_rlt.data.task_id);
           } else {
-            reject(_rlt.data);
+            reject(new Error('Task id is null.'));
           }
         })
         .catch((_err) => {
@@ -266,7 +266,7 @@ class AliTTS {
         .then((rlt: any) => {
           this.log('task status:', rlt);
           if (rlt.error_code !== 20000000) {
-            reject(rlt.error_message);
+            reject(new Error(rlt.error_message));
           } else {
             resolve(rlt.data);
           }
