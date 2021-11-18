@@ -2,7 +2,12 @@ import {
   app, BrowserWindow, ipcMain, Menu, dialog, shell
 } from 'electron';
 
+import StaticHttpServer from '../config/static_server';
+
 const config = require('../app.config');
+
+const staticServer = new StaticHttpServer();
+staticServer.serve();
 
 let win: BrowserWindow;
 
