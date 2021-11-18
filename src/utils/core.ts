@@ -5,7 +5,8 @@ import AliTTS, { AliTtsComplete } from '@/utils/aliyun/AliyunTTS';
 import XfWsTTS from '@/utils/xunfei/XunfeiWsTTS';
 import { TtsFileStatus, TtsEngine } from '@/type/enums';
 import voiceData from '@/config/voice';
-import { EventEmitter, fileCachePath } from '@/config';
+import { EventEmitter, fileCachePath, cacheStaticServerPort } from '@/config';
+import StaticHttpServer from '../../modules/static_server';
 
 const { DownloaderHelper } = require('node-downloader-helper');
 
@@ -40,12 +41,20 @@ export const delDirPath = (_path) => {
   }
 };
 
+const staticServer = new StaticHttpServer({
+  port: cacheStaticServerPort,
+  root: fileCachePath
+});
+
 /**
- * 应用检查
+ * 应用检查、清理、初始化
  */
 export const appReset = () => {
   // 删除缓存文件夹
   delDirPath(fileCachePath);
+
+  // 启动缓存静态服务器
+  staticServer.serve();
 };
 
 export const checkDirExist = (
@@ -363,7 +372,7 @@ export const ttsTasksRun = async (
           speed: appSetting.ttsSetting.speedRate,
           pitch: appSetting.ttsSetting.pitchRate
         });
-        finfo.audioUrl = `file://${finfo.taskId}`;
+        // finfo.audioUrl = staticServer.get(req.ur);
         setSuccess(finfo);
       }
     } catch (error) {

@@ -13,6 +13,11 @@ export const appName = '智能语音合成助手';
  */
 export const fileCachePath = path.join(process.cwd(), '_cache');
 
+/**
+ * 缓存静态服务器端口
+ */
+export const cacheStaticServerPort = 20168;
+
 // ui配置
 export const uiConfig = {
   // 导出格式
