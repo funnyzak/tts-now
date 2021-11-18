@@ -2,7 +2,7 @@ import {
   app, BrowserWindow, ipcMain, Menu, dialog, shell
 } from 'electron';
 
-import StaticHttpServer from '../config/static_server';
+import StaticHttpServer from '../modules/static_server';
 
 const config = require('../app.config');
 

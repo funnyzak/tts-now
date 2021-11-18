@@ -8,6 +8,10 @@ const mime = require('mime');
 const stat = util.promisify(fs.stat);
 const readdir = util.promisify(fs.readdir);
 
+const warning = (message) => chalk`{yellow WARNING:} ${message}`;
+const info = (message) => chalk`{magenta INFO:} ${message}`;
+const error = (message) => chalk`{red ERROR:} ${message}`;
+
 /**
  * 静态服务器
  */
@@ -15,8 +19,10 @@ export default class StaticHttpServer {
   constructor(conf = {}) {
     this.config = {
       host: '127.0.0.1',
-      port: 16887,
+      port: 16808,
       root: process.cwd(),
+      cors: true,
+      compress: true,
       cache: {
         maxAge: 3600,
         expires: false,
@@ -28,13 +34,13 @@ export default class StaticHttpServer {
     };
 
     this.getUrl = this.getUrl.bind(this);
-    this.log = this.log.bind(this);
     this.getMime = this.getMime.bind(this);
     this.dispose = this.dispose.bind(this);
     this.serve = this.serve.bind(this);
-    this.route = this.route.bind(this);
+    this.handler = this.handler.bind(this);
     this.cache = this.cache.bind(this);
     this.setCache = this.setCache.bind(this);
+    this.log = this.log.bind(this);
   }
 
   getUrl(filePath, withHost = false) {
@@ -42,10 +48,9 @@ export default class StaticHttpServer {
       .replace(this.config.root, '')
       .replace(path.sep, '/');
     virtualPath = virtualPath.startWith('/') ? virtualPath : `/${virtualPath}`;
-    return (
-      `${withHost ? `http://${this.config.host}:${this.config.port}` : ''
-      }${virtualPath}`
-    );
+    return `${
+      withHost ? `http://${this.config.host}:${this.config.port}` : ''
+    }${virtualPath}`;
   }
 
   serve() {
@@ -53,16 +58,16 @@ export default class StaticHttpServer {
       {
         maxHeaderSize: 81920
       },
-      this.route
+      this.handler
     );
 
     this.server.listen(this.config.port, this.config.host, () => {
       const addr = `http://${this.config.host}:${this.config.port}`;
-      this.log(`serve started at ${addr}.`);
+      console.log(chalk`Serving at {blue ${addr}}.`);
     });
 
     this.server.on('close', () => {
-      this.log('server is closed.');
+      console.log('server is closed.');
     });
   }
 
@@ -70,23 +75,27 @@ export default class StaticHttpServer {
     if (!this.server) return;
     this.server.close((err) => {
       if (err) throw err;
-      this.log('server closed.');
+      console.log('server closed.');
     });
   }
 
-  async route(req, res) {
+  async handler(req, res) {
     const resPath = path.join(this.config.root, req.url);
     this.log(`Request Info:
 URL: ${chalk.blue(req.url)}
 Header: ${chalk.green(JSON.stringify(req.headers))}
 `);
 
+    if (this.config.cors) {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+    }
+
     try {
       const stats = await stat(resPath);
       if (stats.isFile()) {
         res.statusCode = 200;
         res.setHeader('content-type', this.getMime(resPath));
-        res.setHeader('Access-Control-Allow-Origin', '*');
+
         if (this.cache(req, res, stats)) {
           res.statusCode = 304;
           res.end();
@@ -164,12 +173,23 @@ Header: ${chalk.green(JSON.stringify(req.headers))}
     }
   }
 
-  log(...args) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('static server:', ...args);
+  log(level = 'info', ...args) {
+    switch (level) {
+      case 'warn':
+        console.warn(args);
+        break;
+      case 'error':
+        console.error(args);
+        break;
+      case 'info':
+        console.info(args);
+        break;
+      default:
+        console.info(level, args);
+        break;
     }
   }
 }
 
-const staticServer = new StaticHttpServer();
-staticServer.serve();
+// const staticServer = new StaticHttpServer();
+// staticServer.serve();
