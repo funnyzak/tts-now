@@ -12,6 +12,21 @@ const warning = (message) => chalk`{yellow WARNING:} ${message}`;
 const info = (message) => chalk`{magenta INFO:} ${message}`;
 const error = (message) => chalk`{red ERROR:} ${message}`;
 
+const registerShutdown = (fn) => {
+  let run = false;
+
+  const wrapper = () => {
+    if (!run) {
+      run = true;
+      fn();
+    }
+  };
+
+  process.on('SIGINT', wrapper);
+  process.on('SIGTERM', wrapper);
+  process.on('exit', wrapper);
+};
+
 /**
  * 静态服务器
  */
@@ -25,10 +40,10 @@ export default class StaticHttpServer {
       compress: true,
       cache: {
         maxAge: 3600,
-        expires: false,
-        cacheControl: false,
-        lastModified: false,
-        etag: false
+        expires: true,
+        cacheControl: true,
+        lastModified: true,
+        etag: true
       },
       ...conf
     };
@@ -69,6 +84,8 @@ export default class StaticHttpServer {
     this.server.on('close', () => {
       console.log('server is closed.');
     });
+
+    registerShutdown(() => this.server.close());
   }
 
   dispose() {
@@ -80,7 +97,7 @@ export default class StaticHttpServer {
   }
 
   async handler(req, res) {
-    const resPath = path.join(this.config.root, req.url);
+    const resPath = path.join(this.config.root, req.url.replace('/', path.sep));
     this.log(`Request Info:
 URL: ${chalk.blue(req.url)}
 Header: ${chalk.green(JSON.stringify(req.headers))}
@@ -190,6 +207,3 @@ Header: ${chalk.green(JSON.stringify(req.headers))}
     }
   }
 }
-
-// const staticServer = new StaticHttpServer();
-// staticServer.serve();
