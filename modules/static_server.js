@@ -59,10 +59,13 @@ export default class StaticHttpServer {
   }
 
   getUrl(filePath, withHost = false) {
-    let virtualPath = filePath
-      .replace(this.config.root, '')
-      .replace(path.sep, '/');
-    virtualPath = virtualPath.startWith('/') ? virtualPath : `/${virtualPath}`;
+    let virtualPath = !filePath || filePath === null
+      ? ''
+      : filePath.replace(this.config.root, '').replace(path.sep, '/');
+    this.log('get static url:', filePath, virtualPath);
+    if (virtualPath === '') return virtualPath;
+
+    virtualPath = virtualPath.startsWith('/') ? virtualPath : `/${virtualPath}`;
     return `${
       withHost ? `http://${this.config.host}:${this.config.port}` : ''
     }${virtualPath}`;
@@ -126,9 +129,14 @@ Header: ${chalk.green(JSON.stringify(req.headers))}
         res.end(files.join(' '));
       }
     } catch (err) {
+      this.log('error', 'handler', err);
       res.statusCode = 404;
       res.setHeader('content-type', 'text/plain');
-      res.end(`${req.url} is not a file.`);
+      res.end(
+        process.env.NODE_ENV === 'development'
+          ? `request ${req.url} error, message: ${err.message}`
+          : `request ${req.url} fail.`
+      );
     }
   }
 
@@ -148,7 +156,7 @@ Header: ${chalk.green(JSON.stringify(req.headers))}
   }
 
   cache(req, res, fileStats) {
-    this.setCache(res);
+    this.setCache(res, fileStats);
 
     const lastModified = req.headers['if-modified-since'];
     const etag = req.headers['if-none-match'];

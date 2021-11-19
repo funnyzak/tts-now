@@ -105,7 +105,7 @@ const Index = () => {
 
         setProcessing(false);
         if (current.status === TtsFileStatus.FAIL) {
-          message.error(current.error);
+          message.error(current.error?.message);
         }
       }
     );

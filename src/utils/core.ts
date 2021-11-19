@@ -41,6 +41,9 @@ export const delDirPath = (_path) => {
   }
 };
 
+/**
+ * 声明静态服务器
+ */
 const staticServer = new StaticHttpServer({
   port: cacheStaticServerPort,
   root: fileCachePath
@@ -56,6 +59,8 @@ export const appReset = () => {
   // 启动缓存静态服务器
   staticServer.serve();
 };
+
+export const staticUrl = (filePath: string) => staticServer.getUrl(filePath, true);
 
 export const checkDirExist = (
   _path?: string,
@@ -372,7 +377,7 @@ export const ttsTasksRun = async (
           speed: appSetting.ttsSetting.speedRate,
           pitch: appSetting.ttsSetting.pitchRate
         });
-        // finfo.audioUrl = staticServer.get(req.ur);
+        finfo.audioUrl = staticUrl(finfo.taskId ?? '');
         setSuccess(finfo);
       }
     } catch (error) {
