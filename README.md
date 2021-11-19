@@ -30,7 +30,7 @@
 
 ## 演示
 
-![演示](https://raw.githubusercontent.com/funnyzak/tts-now/master/public/_docs/assets/img/demo.gif)
+![演示](https://raw.githubusercontent.com/funnyzak/tts-now/master/public/_docs/assets/img/demo.png)
 
 ## 依赖
 
