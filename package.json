@@ -83,7 +83,7 @@
     "@ant-design/icons": "^4.7.0",
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
-    "@funnyzak/http-server": "^0.1.7",
+    "@funnyzak/http-server": "^0.2.2",
     "antd": "^4.16.13",
     "bufferutil": "^4.0.5",
     "core-js": "^3.19.1",
