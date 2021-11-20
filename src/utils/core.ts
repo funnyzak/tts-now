@@ -6,7 +6,8 @@ import XfWsTTS from '@/utils/xunfei/XunfeiWsTTS';
 import { TtsFileStatus, TtsEngine } from '@/type/enums';
 import voiceData from '@/config/voice';
 import { EventEmitter, fileCachePath, cacheStaticServerPort } from '@/config';
-import StaticHttpServer from '../../modules/static_server';
+
+const StaticHttpServer = require('@funnyzak/http-server');
 
 const { DownloaderHelper } = require('node-downloader-helper');
 
@@ -60,7 +61,7 @@ export const appReset = () => {
   staticServer.serve();
 };
 
-export const staticUrl = (filePath: string) => staticServer.getUrl(filePath, true);
+export const staticUrl = (filePath: string) => staticServer.parseVirtualPath(filePath, true);
 
 export const checkDirExist = (
   _path?: string,
