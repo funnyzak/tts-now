@@ -16,7 +16,6 @@ import {
 import useAppSetting from '@/hook/app';
 import * as core from '@/utils/core';
 import { TtsFileStatus } from '@/type/enums';
-import { AliTtsComplete } from '@/utils/aliyun/AliyunTTS';
 
 const Wrapper = styled.div`
   width: 100%;

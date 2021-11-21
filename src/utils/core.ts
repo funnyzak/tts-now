@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { ipcRenderer } from 'electron';
 import fs from 'fs';
-import AliTTS, { AliTtsComplete } from '@/utils/aliyun/AliyunTTS';
+import AliyunNLS from '@funnyzak/aliyun-nls';
 import XfWsTTS from '@/utils/xunfei/XunfeiWsTTS';
 import { TtsFileStatus, TtsEngine } from '@/type/enums';
 import voiceData from '@/config/voice';
@@ -162,15 +162,16 @@ export const checkXfSetting = (
  * @returns
  */
 export const createAliyunTTS = (aliSetting: APP.AliSetting): any => (checkAliSetting(aliSetting)
-  ? new AliTTS(
-    aliSetting.appKey || '',
+  ? new AliyunNLS(
     {
       accessKeyId: aliSetting.accessKeyId || '',
       accessKeySecret: aliSetting.accessKeySecret || '',
       endpoint: 'http://nls-meta.cn-shanghai.aliyuncs.com',
+      nlsUrl:
+            'https://nls-gateway.cn-shanghai.aliyuncs.com/rest/v1/tts/async',
       apiVersion: '2019-02-28'
     },
-    ENV === 'development'
+    aliSetting.appKey || ''
   )
   : null);
 
@@ -394,9 +395,7 @@ export const ttsTasksRun = async (
       }
       try {
         if (appSetting.ttsSetting.engine === TtsEngine.ALIYUN) {
-          const aliTtsComplete: AliTtsComplete = await aliTtsInstance.status(
-            finfo.taskId
-          );
+          const aliTtsComplete: AliyunNLS.AliNLSComplete = await aliTtsInstance.status(finfo.taskId);
 
           if (!isNullOrEmpty(aliTtsComplete.audio_address)) {
             finfo.audioUrl = aliTtsComplete.audio_address;
