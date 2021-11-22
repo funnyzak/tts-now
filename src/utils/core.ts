@@ -1,8 +1,8 @@
 import { message } from 'antd';
-import { ipcRenderer } from 'electron';
 import fs from 'fs';
-import AliyunNLS from '@funnyzak/aliyun-nls';
-import XfWsTTS from '@/utils/xunfei/XunfeiWsTTS';
+import { AliyunTTS } from 'aliyun-nls';
+import { XFYunTTS } from 'xfyun-nls';
+import { ipcRenderer } from 'electron';
 import { TtsFileStatus, TtsEngine } from '@/type/enums';
 import voiceData from '@/config/voice';
 import { EventEmitter, fileCachePath, cacheStaticServerPort } from '@/config';
@@ -56,6 +56,8 @@ const staticServer = new StaticHttpServer({
 export const appReset = () => {
   // 删除缓存文件夹
   delDirPath(fileCachePath);
+
+  fs.mkdirSync(fileCachePath);
 
   // 启动缓存静态服务器
   staticServer.serve();
@@ -162,7 +164,7 @@ export const checkXfSetting = (
  * @returns
  */
 export const createAliyunTTS = (aliSetting: APP.AliSetting): any => (checkAliSetting(aliSetting)
-  ? new AliyunNLS(
+  ? new AliyunTTS(
     {
       accessKeyId: aliSetting.accessKeyId || '',
       accessKeySecret: aliSetting.accessKeySecret || '',
@@ -176,16 +178,16 @@ export const createAliyunTTS = (aliSetting: APP.AliSetting): any => (checkAliSet
   : null);
 
 export const createXunFeiTTS = (xfSetting: APP.XfSetting): any => (checkXfSetting(xfSetting)
-  ? new XfWsTTS(
+  ? new XFYunTTS(
     {
       appId: xfSetting.appId || '',
       apiSecret: xfSetting.apiSecret || '',
       apiKey: xfSetting.apiKey || '',
       host: 'tts-api.xfyun.cn',
-      uri: '/v2/tts'
+      uri: '/v2/tts',
+      hostUrl: 'wss://tts-api.xfyun.cn/v2/tts'
     },
-    fileCachePath,
-    ENV === 'development'
+    fileCachePath
   )
   : null);
 
@@ -371,14 +373,16 @@ export const ttsTasksRun = async (
         });
         finfo.status = TtsFileStatus.PROCESS;
       } else if (appSetting.ttsSetting.engine === TtsEngine.XUNFEI) {
-        finfo.taskId = await xfTtsInstance.send(finfo.textContent, {
-          aue: appSetting.ttsSetting.format === 'mp3' ? 'lame' : 'raw',
-          auf: `audio/L16;rate=${appSetting.ttsSetting.simpleRate}`,
-          vcn: currentSpeaker(appSetting).code,
-          volume: appSetting.ttsSetting.volumn,
-          speed: appSetting.ttsSetting.speedRate,
-          pitch: appSetting.ttsSetting.pitchRate
-        });
+        finfo.taskId = (
+          await xfTtsInstance.send(finfo.textContent, {
+            aue: appSetting.ttsSetting.format === 'mp3' ? 'lame' : 'raw',
+            auf: `audio/L16;rate=${appSetting.ttsSetting.simpleRate}`,
+            vcn: currentSpeaker(appSetting).code,
+            volume: appSetting.ttsSetting.volumn,
+            speed: appSetting.ttsSetting.speedRate,
+            pitch: appSetting.ttsSetting.pitchRate
+          })
+        ).filePath;
         finfo.audioUrl = staticUrl(finfo.taskId ?? '');
         setSuccess(finfo);
       }
@@ -395,7 +399,7 @@ export const ttsTasksRun = async (
       }
       try {
         if (appSetting.ttsSetting.engine === TtsEngine.ALIYUN) {
-          const aliTtsComplete: AliyunNLS.AliNLSComplete = await aliTtsInstance.status(finfo.taskId);
+          const aliTtsComplete: AliyunTTS.TTSComplete = await aliTtsInstance.status(finfo.taskId);
 
           if (!isNullOrEmpty(aliTtsComplete.audio_address)) {
             finfo.audioUrl = aliTtsComplete.audio_address;
