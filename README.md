@@ -67,19 +67,42 @@
 
 ## 目录
 
-- `app.config.js`: app 基础配置
-- `electron.builder.js`: 打包配置
-- `public`：静态资源文件夹
-- `config`：webpack pack、node modules
-- `src/background.ts`：Electron Background Process
+    ├── app.config.js                      // 基础配置
+    ├── babel.config.js                    // babel 配置
+    ├── build                              // 打包输出文件夹
+    │   ├── binary                         // 二进制打包输出
+    │   └── bundle                         // renderer main打包源输出
+    ├── config                             // 打包配置
+    │   ├── dev.js                         // 开发监听启动
+    │   ├── dist.js                        // 发布打包源
+    │   ├── webpack.main.js                // background 编译
+    │   └── webpack.renderer.js            // renderer 编译
+    ├── electron.builder.js                // electron.builder 二进制打包配置
+    ├── global.d.ts                        // typescript 全局声明
+    ├── lint-staged.config.js              // git commit 钩子
+    ├── public                             // 静态文件
+    ├── src                                // 页面源
+    │   ├── App.less                       // 入口样式
+    │   ├── assets                         // 资源文件
+    │   ├── background.ts                  // electron background
+    │   ├── config                         // 应用配置
+    │   ├── hook                           // hook
+    │   ├── index.tsx                      // entry file
+    │   ├── layout                         // 布局
+    │   ├── type                           // 声明文件
+    │   └── utils                          // 工具
+    └── tsconfig.json                      // typescript 配置
+    └── tslint.json                        // tslint 配置
 
-## 命令
+## 使用
 
 ### 安装
 
 `yarn install` or `npm install`
 
 ### 脚本
+
+如下脚本命令，也可以把 **npm run** 改为 **yarn** 执行：
 
 - 开发服务启动 - `npm run serve`
 - Lint 格式化 - `npm run lint`
@@ -89,11 +112,6 @@
 - 构建 Windows 二进制 - `npm run build:windows`
 - 构建 Mac 二进制 - `npm run build:mac`
 - 构建 Linux 二进制 - `npm run build:linux`
-
-### 输出
-
-- bundle 构建输出 - `./build/bundle`
-- 二进制构建输出 - `./build/binary`
 
 ## 赞赏
 
