@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/funnyzak/tts-now/master/public/icon/256x256.png" width="45" align="center" alt="云语音合成助手"> 云语音合成助手
+# 云语音合成助手
 
 [![action][ci-image]][ci-url]
 [![Release Date][rle-image]][rle-url]
@@ -16,11 +16,24 @@
 [license-image]: https://img.shields.io/github/license/funnyzak/tts-now.svg?style=flat-square
 [repository-url]: https://github.com/funnyzak/tts-now
 
-基于大厂语音合成 API 的文字转语音助手。支持单文本快速合成和批量合成。
+基于云平台语音合成 API 的文字转语音助手。支持单文本快速合成和批量合成。
 
 目前支持阿里云、讯飞，其他平台陆续加入。
 
-好用请 _Star_ 🌞。
+好用请 **Star** 🌞。
+
+- [云语音合成助手](#云语音合成助手)
+  - [发布](#发布)
+  - [平台](#平台)
+    - [阿里云](#阿里云)
+    - [讯飞](#讯飞)
+  - [演示](#演示)
+  - [依赖](#依赖)
+  - [目录](#目录)
+  - [使用](#使用)
+  - [赞赏](#赞赏)
+  - [Author](#author)
+  - [License](#license)
 
 ## 发布
 
