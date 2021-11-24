@@ -96,22 +96,44 @@
 
 ## 使用
 
-### 安装
+安装依赖先
 
-`yarn install` or `npm install`
+```bash
+$ yarn install
 
-### 脚本
+# or
 
-如下脚本命令，也可以把 **npm run** 改为 **yarn** 执行：
+$ npm install
+```
 
-- 开发服务启动 - `npm run serve`
-- Lint 格式化 - `npm run lint`
-- 源构建输出 - `npm run dist`
-- 根据当前系统构建 - `npm run build`
-- 基于 dist 输出，根据当前系统构建 - `npm run build:now`
-- 构建 Windows 二进制 - `npm run build:windows`
-- 构建 Mac 二进制 - `npm run build:mac`
-- 构建 Linux 二进制 - `npm run build:linux`
+然后可执行如下脚本命令，也可把前缀 **npm run** 改为 **yarn** 执行
+
+```bash
+# 开发服务启动
+$ npm run serve
+
+# Lint 格式化
+$ npm run lint
+
+# 源构建输出
+$ npm run dist
+
+# 根据当前系统构建
+$ npm run build
+
+# 基于 dist 输出，根据当前系统构建
+$ npm run build:now
+
+# 构建 Windows 二进制
+$ npm run build:windows
+
+# 构建 Mac 二进制
+$ npm run build:mac
+
+# 构建 Linux 二进制
+$ npm run build:linux
+
+```
 
 ## 赞赏
 
