@@ -170,7 +170,7 @@ const menuTemplate: any = [
         label: '帮助',
         click: async () => {
           await shell.openExternal(
-            'https://github.com/funnyzak/tts-now/blob/master/README.md'
+            'https://github.com/funnyzak/tts-now#readme'
           );
         }
       },
@@ -178,7 +178,7 @@ const menuTemplate: any = [
         label: '检查更新',
         click: async () => {
           await shell.openExternal(
-            'https://github.com/funnyzak/tts-now/releases'
+            'https://github.com/funnyzak/tts-now/releases/latest'
           );
         }
       }
