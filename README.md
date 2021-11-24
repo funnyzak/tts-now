@@ -1,6 +1,20 @@
 # <img src="https://raw.githubusercontent.com/funnyzak/tts-now/master/public/icon/256x256.png" width="45" align="center" alt="云语音合成助手"> 云语音合成助手
 
-[![Release Date](https://img.shields.io/github/release-date/funnyzak/tts-now.svg)](https://github.com/funnyzak/tts-now/releases/latest) [![Release Version](https://img.shields.io/github/release/funnyzak/tts-now.svg)](https://github.com/funnyzak/tts-now/releases/latest) [![Latest Release Download](https://img.shields.io/github/downloads/funnyzak/tts-now/latest/total.svg)](https://github.com/funnyzak/tts-now/releases/latest) [![Total Download](https://img.shields.io/github/downloads/funnyzak/tts-now/total.svg)](https://github.com/funnyzak/tts-now/releases)
+[![action][ci-image]][ci-url]
+[![Release Date][rle-image]][rle-url]
+[![Latest Release Download][down-latest-image]][rle-url]
+[![Total Download][down-total-image]][rle-all-url]
+[![license][license-image]][repository-url]
+
+[down-latest-image]: https://img.shields.io/github/downloads/funnyzak/tts-now/latest/total.svg
+[down-total-image]: https://img.shields.io/github/downloads/funnyzak/tts-now/total.svg
+[rle-image]: https://img.shields.io/github/release-date/funnyzak/tts-now.svg
+[rle-url]: https://github.com/funnyzak/tts-now/releases/latest
+[rle-all-url]: https://github.com/funnyzak/tts-now/releases
+[ci-image]: https://img.shields.io/github/workflow/status/funnyzak/tts-now/release
+[ci-url]: https://github.com/funnyzak/tts-now/actions
+[license-image]: https://img.shields.io/github/license/funnyzak/tts-now.svg?style=flat-square
+[repository-url]: https://github.com/funnyzak/tts-now
 
 基于大厂语音合成 API 的文字转语音助手。支持单文本快速合成和批量合成。
 
