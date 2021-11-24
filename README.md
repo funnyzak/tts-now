@@ -133,6 +133,9 @@ $ npm run build:mac
 # 构建 Linux 二进制
 $ npm run build:linux
 
+# 构建三平台
+$ npm run build:all
+
 ```
 
 ## 赞赏
