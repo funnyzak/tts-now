@@ -15,6 +15,7 @@
     "build:windows": "npm run dist && electron-builder build --config electron.builder.js --win",
     "build:mac": "npm run dist && electron-builder build --config electron.builder.js --mac",
     "build:linux": "npm run dist && electron-builder build --config electron.builder.js --linux",
+    "build:all": "npm run dist && electron-builder build --config electron.builder.js --linux --mac --win",
     "lint": "eslint --fix .",
     "prepare": "husky install"
   },
