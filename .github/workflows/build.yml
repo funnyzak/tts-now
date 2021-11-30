@@ -11,7 +11,7 @@ jobs:
   release:
 
     # job's name
-    name: build and release electron app
+    name: build and release app
 
     # the type of machine to run the job on
     runs-on: ${{ matrix.os }}
@@ -50,8 +50,8 @@ jobs:
         run: |
           npm install
 
-      # setp5: build electron app
-      - name: Build Electron app
+      # setp5: build app
+      - name: Build app
         uses: samuelmeuli/action-electron-builder@v1
         with:
           build_script_name: dist
