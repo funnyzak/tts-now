@@ -33,7 +33,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14.2.0'
+          node-version: '14.17.5'
 
       # step3: restore npm cache
       - name: Restore Npm Cache
