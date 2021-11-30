@@ -42,8 +42,8 @@ module.exports = {
     ]
   },
   linux: {
-    target: 'zip',
+    target: 'AppImage',
     category: 'Utility',
-    icon: 'public/icon/256x256.ico'
+    icon: 'public/icon/256x256.png'
   }
 };
