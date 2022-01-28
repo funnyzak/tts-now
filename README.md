@@ -26,8 +26,7 @@
 
 **下一步：**
 
-- [ ] 交互细节/Bug 优化
-- [ ] 场景选择增加关键字搜索
+- [ ] 增加检测更新
 - [ ] 接入百度云
 - [ ] 接入腾讯云
 
@@ -170,8 +169,8 @@ $ npm run build:all
 ## Author
 
 | [![twitter/funnyzak](https://s.gravatar.com/avatar/c2437e240644b1317a4a356c6d6253ee?s=70)](https://twitter.com/funnyzak 'Follow @funnyzak on Twitter') [![Join the chat at https://gitter.im/tts-now/community](https://badges.gitter.im/tts-now/community.svg)](https://gitter.im/tts-now/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [funnyzak](https://yycc.me/)                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [funnyzak](https://yycc.me/)                                                                                                                                                                                                                                                                                                                                                    |
 
 ## License
 
