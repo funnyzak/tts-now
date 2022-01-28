@@ -1,46 +1,46 @@
-import { message } from 'antd';
-import fs from 'fs';
-import { AliyunTTS } from 'aliyun-nls';
-import { XFYunTTS } from 'xfyun-nls';
-import { ipcRenderer } from 'electron';
-import { TtsFileStatus, TtsEngine } from '@/type/enums';
-import voiceData from '@/config/voice';
-import { EventEmitter, fileCachePath, cacheStaticServerPort } from '@/config';
+import { message } from 'antd'
+import fs from 'fs'
+import { AliyunTTS } from 'aliyun-nls'
+import { XFYunTTS } from 'xfyun-nls'
+import { ipcRenderer } from 'electron'
+import { TtsFileStatus, TtsEngine } from '@/type/enums'
+import voiceData from '@/config/voice'
+import { EventEmitter, fileCachePath, cacheStaticServerPort } from '@/config'
 
-const StaticHttpServer = require('@funnyzak/http-server');
+const StaticHttpServer = require('@funnyzak/http-server')
 
-const { DownloaderHelper } = require('node-downloader-helper');
+const { DownloaderHelper } = require('node-downloader-helper')
 
-const path = require('path');
+const path = require('path')
 
-const ENV = process.env.NODE_ENV;
+const ENV = process.env.NODE_ENV
 
 export const isNullOrEmpty = (val: any): boolean => {
   if (!val || val === null) {
-    return true;
+    return true
   }
   if (typeof val === 'string' && val.length === 0) {
-    return true;
+    return true
   }
-  return false;
-};
+  return false
+}
 
 export const delDirPath = (_path) => {
   if (fs.existsSync(_path)) {
-    const files = fs.readdirSync(_path);
+    const files = fs.readdirSync(_path)
     files.forEach((file) => {
-      const curPath = `${_path}/${file}`;
+      const curPath = `${_path}/${file}`
       if (fs.statSync(curPath).isDirectory()) {
         // recurse
-        delDirPath(curPath);
+        delDirPath(curPath)
       } else {
         // delete file
-        fs.unlinkSync(curPath);
+        fs.unlinkSync(curPath)
       }
-    });
-    fs.rmdirSync(_path);
+    })
+    fs.rmdirSync(_path)
   }
-};
+}
 
 /**
  * 声明静态服务器
@@ -48,22 +48,22 @@ export const delDirPath = (_path) => {
 const staticServer = new StaticHttpServer({
   port: cacheStaticServerPort,
   root: fileCachePath
-});
+})
 
 /**
  * 应用检查、清理、初始化
  */
 export const appReset = () => {
   // 删除缓存文件夹
-  delDirPath(fileCachePath);
+  delDirPath(fileCachePath)
 
-  fs.mkdirSync(fileCachePath);
+  fs.mkdirSync(fileCachePath)
 
   // 启动缓存静态服务器
-  staticServer.serve();
-};
+  staticServer.serve()
+}
 
-export const staticUrl = (filePath: string) => staticServer.parseVirtualPath(filePath, true);
+export const staticUrl = (filePath: string) => staticServer.parseVirtualPath(filePath, true)
 
 export const checkDirExist = (
   _path?: string,
@@ -71,12 +71,12 @@ export const checkDirExist = (
 ): boolean => {
   if (!fs.existsSync(_path || '')) {
     if (_tipIfNoExists) {
-      message.warn(_tipIfNoExists);
+      message.warn(_tipIfNoExists)
     }
-    return false;
+    return false
   }
-  return true;
-};
+  return true
+}
 
 export const selectDirection = (
   actionName: string,
@@ -84,9 +84,9 @@ export const selectDirection = (
 ) => {
   ipcRenderer.once(EventEmitter.SELECTED_FILES, (_event, arg) => {
     if (arg.action === actionName && !arg.data.canceled) {
-      callback(arg.data.filePaths[0]);
+      callback(arg.data.filePaths[0])
     }
-  });
+  })
 
   ipcRenderer.send(EventEmitter.SELECT_FILES, {
     action: actionName,
@@ -94,8 +94,8 @@ export const selectDirection = (
       title: '选择路径',
       properties: ['openDirectory', 'noResolveAliases', 'createDirectory']
     }
-  });
-};
+  })
+}
 
 /**
  * 通过URL下载文件
@@ -121,10 +121,10 @@ export const downloadFile = (
   savePath?: string,
   options?: any
 ): Promise<boolean> => new Promise<boolean>((resolve) => {
-  const dl = new DownloaderHelper(url, savePath || __dirname, options);
-  dl.on('end', () => resolve(true));
-  dl.start();
-});
+  const dl = new DownloaderHelper(url, savePath || __dirname, options)
+  dl.on('end', () => resolve(true))
+  dl.start()
+})
 
 export const checkAliSetting = (
   aliSetting?: APP.AliSetting,
@@ -136,11 +136,11 @@ export const checkAliSetting = (
     || isNullOrEmpty(aliSetting?.accessKeyId)
     || isNullOrEmpty(aliSetting?.accessKeySecret)
   ) {
-    if (warn) message.error('请先配置阿里云密钥');
-    return false;
+    if (warn) message.error('请先配置阿里云密钥')
+    return false
   }
-  return true;
-};
+  return true
+}
 
 export const checkXfSetting = (
   xfSetting?: APP.XfSetting,
@@ -152,11 +152,11 @@ export const checkXfSetting = (
     || isNullOrEmpty(xfSetting?.apiSecret)
     || isNullOrEmpty(xfSetting?.appId)
   ) {
-    if (warn) message.error('请先配置讯飞密钥');
-    return false;
+    if (warn) message.error('请先配置讯飞密钥')
+    return false
   }
-  return true;
-};
+  return true
+}
 
 /**
  *创建阿里云音频合成class
@@ -175,7 +175,7 @@ export const createAliyunTTS = (aliSetting: APP.AliSetting): any => (checkAliSet
     },
     aliSetting.appKey || ''
   )
-  : null);
+  : null)
 
 export const createXunFeiTTS = (xfSetting: APP.XfSetting): any => (checkXfSetting(xfSetting)
   ? new XFYunTTS(
@@ -189,33 +189,33 @@ export const createXunFeiTTS = (xfSetting: APP.XfSetting): any => (checkXfSettin
     },
     fileCachePath
   )
-  : null);
+  : null)
 
 export const checkAliSettingNetwork = async (
   aliSetting: APP.AliSetting,
   warn?: boolean
 ) => {
-  if (!checkAliSetting(aliSetting, warn)) return false;
+  if (!checkAliSetting(aliSetting, warn)) return false
 
   if (!(await createAliyunTTS(aliSetting).checkConfig())) {
-    message.error('密钥、AppKey貌似不可用哦。');
-    return false;
+    message.error('密钥、AppKey貌似不可用哦。')
+    return false
   }
-  return true;
-};
+  return true
+}
 
 export const checkXfSettingNetwork = async (
   xfSetting: APP.XfSetting,
   warn?: boolean
 ) => {
-  if (!checkXfSetting(xfSetting, warn)) return false;
+  if (!checkXfSetting(xfSetting, warn)) return false
 
   if (!(await createXunFeiTTS(xfSetting).checkConfig())) {
-    message.error('讯飞配置貌似不可用哦。');
-    return false;
+    message.error('讯飞配置貌似不可用哦。')
+    return false
   }
-  return true;
-};
+  return true
+}
 
 export const ttsUseEffectDeps = (ttsSetting: APP.TTSSetting) => [
   ttsSetting.speakerId,
@@ -224,13 +224,13 @@ export const ttsUseEffectDeps = (ttsSetting: APP.TTSSetting) => [
   ttsSetting.speedRate,
   ttsSetting.volumn,
   ttsSetting.format
-];
+]
 
 export const aliUseEffectDeps = (aliSetting: APP.AliSetting) => [
   aliSetting.accessKeyId,
   aliSetting.appKey,
   aliSetting.accessKeySecret
-];
+]
 
 export const settingUseEffectDeps = (appSetting: APP.AppSetting) => [
   appSetting.ttsSetting.speakerId,
@@ -240,38 +240,38 @@ export const settingUseEffectDeps = (appSetting: APP.AppSetting) => [
   appSetting.aliSetting.accessKeyId,
   appSetting.aliSetting.appKey,
   appSetting.aliSetting.accessKeySecret
-];
+]
 
 export const logger = (...args): void => {
   if (process.env.NODE_ENV === 'development') {
     if (args.length > 1 && args[0] === 'error') {
-      console.error('PError:', ...args.slice(1));
+      console.error('PError:', ...args.slice(1))
     } else {
-      console.log('PConsole:', ...args);
+      console.log('PConsole:', ...args)
     }
   }
-};
+}
 
 export const getVoiceTypeList = (_appSetting: APP.AppSetting) => {
-  const { ttsSetting } = _appSetting;
+  const { ttsSetting } = _appSetting
   return voiceData[
     ttsSetting?.engine
       ? ttsSetting?.engine.toString()
       : TtsEngine.ALIYUN.toString()
-  ];
-};
+  ]
+}
 
 export const currentSpeaker = (_appSetting: APP.AppSetting) => {
-  const { speakerId } = _appSetting.ttsSetting;
+  const { speakerId } = _appSetting.ttsSetting
 
-  const voiceTypeList = getVoiceTypeList(_appSetting);
+  const voiceTypeList = getVoiceTypeList(_appSetting)
 
   if (speakerId && speakerId.length === 0) {
-    return voiceTypeList[0];
+    return voiceTypeList[0]
   }
-  const _findSpeakers = voiceTypeList.filter((v) => v.speakerId === speakerId);
-  return _findSpeakers.length > 0 ? _findSpeakers[0] : voiceTypeList[0];
-};
+  const _findSpeakers = voiceTypeList.filter((v) => v.speakerId === speakerId)
+  return _findSpeakers.length > 0 ? _findSpeakers[0] : voiceTypeList[0]
+}
 
 /**
  * 运行转换任务时检查
@@ -279,30 +279,30 @@ export const currentSpeaker = (_appSetting: APP.AppSetting) => {
  * @returns
  */
 export const ttsRunCheck = (appSetting: APP.AppSetting) => {
-  let checkRlt = true;
+  let checkRlt = true
   if (appSetting.ttsSetting.engine === TtsEngine.ALIYUN) {
-    checkRlt = checkAliSetting(appSetting.aliSetting, true);
+    checkRlt = checkAliSetting(appSetting.aliSetting, true)
   } else if (appSetting.ttsSetting.engine === TtsEngine.XUNFEI) {
-    checkRlt = checkXfSetting(appSetting.xfSetting, true);
+    checkRlt = checkXfSetting(appSetting.xfSetting, true)
   }
-  return checkRlt;
-};
+  return checkRlt
+}
 
 export const exportAudioFile = (_info: APP.TtsFileInfo) => {
-  logger('export audio file =>', _info);
+  logger('export audio file =>', _info)
   if (_info.audioUrl) {
     if (_info.audioUrl.startsWith('http')) {
       downloadFile(_info.audioUrl, _info.savePath, {
         fileName: _info.saveName
-      });
+      })
     } else {
-      const _path = _info.audioUrl.replace('file://', '');
+      const _path = _info.audioUrl.replace('file://', '')
       if (fs.existsSync(_path)) {
-        fs.copyFileSync(_path, path.join(_info.savePath, _info.saveName));
+        fs.copyFileSync(_path, path.join(_info.savePath, _info.saveName))
       }
     }
   }
-};
+}
 
 /**
  * 开始批量转换任务
@@ -320,46 +320,46 @@ export const ttsTasksRun = async (
   ) => void,
   download: boolean = false
 ) => {
-  if (!ttsRunCheck(appSetting)) return;
+  if (!ttsRunCheck(appSetting)) return
 
-  const aliTtsInstance = createAliyunTTS(appSetting.aliSetting);
-  const xfTtsInstance = createXunFeiTTS(appSetting.xfSetting);
+  const aliTtsInstance = createAliyunTTS(appSetting.aliSetting)
+  const xfTtsInstance = createXunFeiTTS(appSetting.xfSetting)
 
   const setStart = (_info: APP.TtsFileInfo): APP.TtsFileInfo => {
-    _info.ttsSetting = appSetting.ttsSetting;
-    _info.status = TtsFileStatus.PROCESS;
-    _info.wordCount = _info.textContent.length;
-    _info.ttsStart = new Date().getTime();
-    _info.savePath = appSetting.customSetting.savePath;
+    _info.ttsSetting = appSetting.ttsSetting
+    _info.status = TtsFileStatus.PROCESS
+    _info.wordCount = _info.textContent.length
+    _info.ttsStart = new Date().getTime()
+    _info.savePath = appSetting.customSetting.savePath
     _info.saveName = `${
       _info.fileName?.split('.')[0]
-    }_${new Date().getTime()}.${_info.ttsSetting.format}`;
-    return _info;
-  };
+    }_${new Date().getTime()}.${_info.ttsSetting.format}`
+    return _info
+  }
 
   const setError = (_info: APP.TtsFileInfo, _error): APP.TtsFileInfo => {
-    _info.taskId = '';
-    _info.status = TtsFileStatus.FAIL;
-    _info.error = _error;
-    logger(_info, _error);
-    return _info;
-  };
+    _info.taskId = ''
+    _info.status = TtsFileStatus.FAIL
+    _info.error = _error
+    logger(_info, _error)
+    return _info
+  }
 
   const setSuccess = (_info: APP.TtsFileInfo): APP.TtsFileInfo => {
-    _info.status = TtsFileStatus.SUCCESS;
-    _info.ttsEnd = new Date().getTime();
-    _info.elapsed = _info.ttsStart ? _info.ttsEnd - _info.ttsStart : undefined;
+    _info.status = TtsFileStatus.SUCCESS
+    _info.ttsEnd = new Date().getTime()
+    _info.elapsed = _info.ttsStart ? _info.ttsEnd - _info.ttsStart : undefined
 
     if (download) {
-      exportAudioFile(_info);
+      exportAudioFile(_info)
     }
-    return _info;
-  };
+    return _info
+  }
 
   // 开始所有转换任务
   for (let finfo of ttsFiles) {
-    finfo = setStart(finfo);
-    callback(finfo, ttsFiles);
+    finfo = setStart(finfo)
+    callback(finfo, ttsFiles)
 
     try {
       if (appSetting.ttsSetting.engine === TtsEngine.ALIYUN) {
@@ -370,8 +370,8 @@ export const ttsTasksRun = async (
           volume: appSetting.ttsSetting.volumn,
           speech_rate: appSetting.ttsSetting.speedRate,
           pitchRate: appSetting.ttsSetting.pitchRate
-        });
-        finfo.status = TtsFileStatus.PROCESS;
+        })
+        finfo.status = TtsFileStatus.PROCESS
       } else if (appSetting.ttsSetting.engine === TtsEngine.XUNFEI) {
         finfo.taskId = (
           await xfTtsInstance.send(finfo.textContent, {
@@ -382,41 +382,41 @@ export const ttsTasksRun = async (
             speed: appSetting.ttsSetting.speedRate,
             pitch: appSetting.ttsSetting.pitchRate
           })
-        ).filePath;
-        finfo.audioUrl = staticUrl(finfo.taskId ?? '');
-        setSuccess(finfo);
+        ).filePath
+        finfo.audioUrl = staticUrl(finfo.taskId ?? '')
+        setSuccess(finfo)
       }
     } catch (error) {
-      setError(finfo, error);
+      setError(finfo, error)
     }
-    callback(finfo, ttsFiles);
+    callback(finfo, ttsFiles)
   }
 
   const statusPull = async () => {
     for (const finfo of ttsFiles) {
       if (finfo.status !== TtsFileStatus.PROCESS) {
-        continue;
+        continue
       }
       try {
         if (appSetting.ttsSetting.engine === TtsEngine.ALIYUN) {
-          const aliTtsComplete: AliyunTTS.TTSComplete = await aliTtsInstance.status(finfo.taskId);
+          const aliTtsComplete: AliyunTTS.TTSComplete = await aliTtsInstance.status(finfo.taskId)
 
           if (!isNullOrEmpty(aliTtsComplete.audio_address)) {
-            finfo.audioUrl = aliTtsComplete.audio_address;
-            setSuccess(finfo);
+            finfo.audioUrl = aliTtsComplete.audio_address
+            setSuccess(finfo)
           }
         }
 
-        callback(finfo, ttsFiles);
+        callback(finfo, ttsFiles)
       } catch (error) {
-        setError(finfo, error);
+        setError(finfo, error)
       }
     }
 
     if (ttsFiles.filter((v) => v.status === TtsFileStatus.PROCESS).length > 0) {
-      setTimeout(statusPull, 100);
+      setTimeout(statusPull, 100)
     }
-  };
+  }
 
-  if ([TtsEngine.ALIYUN].includes(appSetting.ttsSetting.engine)) statusPull();
-};
+  if ([TtsEngine.ALIYUN].includes(appSetting.ttsSetting.engine)) statusPull()
+}

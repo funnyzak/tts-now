@@ -1,6 +1,8 @@
-import styled from '@emotion/styled';
-import AppMain from './AppMain';
-import SiderBar from './SiderBar';
+import styled from '@emotion/styled'
+import AppMain from './AppMain'
+import SiderBar from './SiderBar'
+
+import { CheckUpdateDialog } from '../layout/Dialog'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -10,13 +12,14 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-`;
+`
 
 const Index = () => (
   <Wrapper>
     <SiderBar />
     <AppMain />
+    <CheckUpdateDialog />
   </Wrapper>
-);
+)
 
-export default Index;
+export default Index
