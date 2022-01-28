@@ -6,7 +6,7 @@ const appConfig = require('./app.config');
 module.exports = {
   appId: 'github.funnyzak.tts-now',
   productName: appConfig.appName,
-  copyright: 'copyright © 2021 eric',
+  copyright: 'copyright © 2022 funnyzak',
   asar: true,
   // 要打包进的资源  glob Patterns
   files: ['build/bundle/**/*'],
@@ -30,7 +30,8 @@ module.exports = {
     installerHeaderIcon: 'public/icon/256x256.ico',
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
-    shortcutName: appConfig.appName
+    shortcutName: appConfig.appName,
+    include: 'public/build/installer.nsh'
   },
   win: {
     icon: 'public/icon/256x256.ico',
