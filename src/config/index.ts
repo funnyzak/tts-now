@@ -1,5 +1,6 @@
 import React from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
+import Store from 'electron-store';
 import { TtsEngine } from '@/type/enums';
 import voiceData from './voice';
 
@@ -58,33 +59,38 @@ export const defaultAppSetting: APP.AppSetting = {
 // App配置缓存Key
 export const appSettingCacheKey = 'AppSetting';
 
+const store = new Store<APP.AppSetting>();
+
 // 读取缓存配置
-export const cacheAppSetting = localStorage.getItem(appSettingCacheKey);
+export const cacheAppSetting: APP.AppSetting = store.get(appSettingCacheKey);
 
 // 读取当前配置
 const appSetting: APP.AppSetting = {
-  ...(cacheAppSetting && JSON.parse(cacheAppSetting).customSetting
-    ? JSON.parse(cacheAppSetting)
-    : defaultAppSetting)
+  ...defaultAppSetting,
+  ...cacheAppSetting
 };
 
-if (!appSetting.ttsSetting.engine) {
-  appSetting.ttsSetting.engine = TtsEngine.ALIYUN;
-}
+const checkConfig = (_appSetting: APP.AppSetting) => {
+  if (!_appSetting.ttsSetting.engine) {
+    _appSetting.ttsSetting.engine = TtsEngine.ALIYUN;
+  }
 
-if (!appSetting.ttsSetting.speakerId) {
-  appSetting.ttsSetting.speakerId = voiceData[appSetting.ttsSetting.engine.toString()][0].speakerId;
-}
+  if (!_appSetting.ttsSetting.speakerId) {
+    _appSetting.ttsSetting.speakerId = voiceData[_appSetting.ttsSetting.engine.toString()][0].speakerId;
+  }
 
-if (!appSetting.xfSetting) {
-  appSetting.xfSetting = {
-    apiKey: '',
-    apiSecret: '',
-    appId: ''
-  };
-}
+  if (!_appSetting.xfSetting) {
+    _appSetting.xfSetting = {
+      apiKey: '',
+      apiSecret: '',
+      appId: ''
+    };
+  }
+};
 
-export { appSetting };
+checkConfig(appSetting);
+
+export { checkConfig, appSetting, store };
 
 // 创建App Context
 export const AppContext = React.createContext({

@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 import Index from './layout';
-import { AppContext, appSetting, appSettingCacheKey } from '@/config';
+import {
+  AppContext, appSetting, appSettingCacheKey, store
+} from '@/config';
 import { appReset } from '@/utils/core';
 
 appReset();
@@ -17,7 +19,7 @@ export default () => {
   };
 
   useEffect(() => {
-    localStorage.setItem(appSettingCacheKey, JSON.stringify(setting));
+    store.set(appSettingCacheKey, setting);
   }, [setting]);
 
   return (

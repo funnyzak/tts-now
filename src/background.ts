@@ -2,12 +2,16 @@ import {
   app, BrowserWindow, ipcMain, Menu, dialog, shell
 } from 'electron';
 
+const Store = require('electron-store');
+
 const config = require('../app.config');
 
 let win: BrowserWindow;
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 const isMac = process.platform === 'darwin';
+
+Store.initRenderer();
 
 /**
  * 禁止刷新和调试
