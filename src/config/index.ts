@@ -1,23 +1,23 @@
-import React from 'react';
-import { createFromIconfontCN } from '@ant-design/icons';
-import Store from 'electron-store';
-import { TtsEngine } from '@/type/enums';
-import voiceData from './voice';
+import React from 'react'
+import { createFromIconfontCN } from '@ant-design/icons'
+import Store from 'electron-store'
+import { TtsEngine } from '@/type/enums'
+import voiceData from './voice'
 
-const path = require('path');
+const path = require('path')
 
 // App 名称
-export const appName = '智能语音合成助手';
+export const appName = '智能语音合成助手'
 
 /**
  * 缓存路径
  */
-export const fileCachePath = path.join(process.cwd(), '_cache');
+export const fileCachePath = path.join(process.cwd(), '_cache')
 
 /**
  * 缓存静态服务器端口
  */
-export const cacheStaticServerPort = 20168;
+export const cacheStaticServerPort = 20168
 
 // ui配置
 export const uiConfig = {
@@ -28,7 +28,7 @@ export const uiConfig = {
   ].concat(
     _engine === TtsEngine.ALIYUN ? [{ label: 'wav', value: 'wav' }] : []
   )
-};
+}
 
 // 默认APP配置
 export const defaultAppSetting: APP.AppSetting = {
@@ -54,29 +54,29 @@ export const defaultAppSetting: APP.AppSetting = {
     actionMode: 'SINGLE',
     singleTxt: ''
   }
-};
+}
 
 // App配置缓存Key
-export const appSettingCacheKey = 'AppSetting';
+export const appSettingCacheKey = 'AppSetting'
 
-const store = new Store<APP.AppSetting>();
+const store = new Store<APP.AppSetting>()
 
 // 读取缓存配置
-export const cacheAppSetting: APP.AppSetting = store.get(appSettingCacheKey);
+export const cacheAppSetting: APP.AppSetting = store.get(appSettingCacheKey)
 
 // 读取当前配置
 const appSetting: APP.AppSetting = {
   ...defaultAppSetting,
   ...cacheAppSetting
-};
+}
 
 const checkConfig = (_appSetting: APP.AppSetting) => {
   if (!_appSetting.ttsSetting.engine) {
-    _appSetting.ttsSetting.engine = TtsEngine.ALIYUN;
+    _appSetting.ttsSetting.engine = TtsEngine.ALIYUN
   }
 
   if (!_appSetting.ttsSetting.speakerId) {
-    _appSetting.ttsSetting.speakerId = voiceData[_appSetting.ttsSetting.engine.toString()][0].speakerId;
+    _appSetting.ttsSetting.speakerId = voiceData[_appSetting.ttsSetting.engine.toString()][0].speakerId
   }
 
   if (!_appSetting.xfSetting) {
@@ -84,37 +84,46 @@ const checkConfig = (_appSetting: APP.AppSetting) => {
       apiKey: '',
       apiSecret: '',
       appId: ''
-    };
+    }
   }
-};
+}
 
-checkConfig(appSetting);
+checkConfig(appSetting)
 
-export { checkConfig, appSetting, store };
+function resetConfig() {
+  const newSetting = { ...defaultAppSetting }
+  checkConfig(newSetting)
+  store.set(appSettingCacheKey, newSetting)
+  return newSetting
+}
+
+export {
+  resetConfig, checkConfig, appSetting, store
+}
 
 // 创建App Context
 export const AppContext = React.createContext({
   appSetting,
   setAppSetting: (_settings: {
-    [T in keyof APP.AppSetting]?: APP.AppSetting[T];
+    [T in keyof APP.AppSetting]?: APP.AppSetting[T]
   }) => {
     // console.log(appSetting)
   }
-});
+})
 
 // 事件发射器名称
 export const EventEmitter = {
   SELECT_FILES: 'select_files',
   SELECTED_FILES: 'selected_files'
-};
+}
 
 // 读取当前配置
-export default appName;
+export default appName
 
 // iconfont icon
 const IFIcon = createFromIconfontCN({
   extraCommonProps: { type: 'custom_icon' },
   scriptUrl: `//at.alicdn.com/t/font_2904715_u3pj13pvo9l.js?=${new Date().getTime()}`
-});
+})
 
-export { IFIcon };
+export { IFIcon }

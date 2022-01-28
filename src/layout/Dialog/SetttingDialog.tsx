@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import {
-  Modal, Form, Input, Spin, Tabs, Radio
+  Modal, Button, Form, Input, Spin, Tabs, Radio
 } from 'antd'
+import { css } from '@emotion/react'
 import useAppSetting from '@/hook/app'
 import * as core from '@/utils/core'
 import { TtsEngine } from '@/type/enums'
+import { resetConfig } from '@/config'
 
 interface IDialogProp {
   closeCallBack: () => void
@@ -48,6 +50,11 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
 
   const engineChange = (e) => {
     setEngine(e.target.value)
+  }
+
+  const resetConfigHandler = () => {
+    setAppSetting(resetConfig())
+    closeCallBack()
   }
 
   const formPlatformSetting = (_engine: TtsEngine, _allFormValues) => {
@@ -105,9 +112,24 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
         okText="保存配置"
         cancelText="取消"
         visible
-        onOk={submitChange}
-        onCancel={() => closeCallBack()}
         width={500}
+        footer={[
+          <Button
+            key="clear"
+            css={{ float: 'left' }}
+            onClick={resetConfigHandler}
+            type="dashed"
+            danger
+          >
+            清除配置
+          </Button>,
+          <Button key="cancel" onClick={() => closeCallBack()}>
+            取消
+          </Button>,
+          <Button key="ok" type="primary" onClick={submitChange}>
+            保存配置
+          </Button>
+        ]}
       >
         <Spin tip="验证中..." spinning={spinning}>
           <Form

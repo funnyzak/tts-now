@@ -5,13 +5,13 @@ import * as core from '@/utils/core'
 import { compareVersion } from '@/utils'
 import packageInfo from '../../../package.json'
 
-const releasePageUrl = 'https://api.github.com/repos/funnyzak/tts-now/releases/latest'
+const releaseApiUrl = 'https://api.github.com/repos/funnyzak/tts-now/releases/latest'
 const RP = require('request-promise')
 
 async function requestRelease() {
   try {
     return await RP({
-      uri: releasePageUrl,
+      uri: releaseApiUrl,
       headers: {
         'User-Agent': 'hello world'
       },

@@ -1,17 +1,16 @@
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import { Slider, Radio } from 'antd';
-import React, { useState, useEffect } from 'react';
-import useAppSetting from '@/hook/app';
-import { uiConfig } from '@/config';
-import { TtsEngine } from '@/type/enums';
-import * as core from '@/utils/core';
+import styled from '@emotion/styled'
+import { css } from '@emotion/react'
+import { Slider, Radio } from 'antd'
+import React, { useState, useEffect } from 'react'
+import useAppSetting from '@/hook/app'
+import { uiConfig } from '@/config'
+import * as core from '@/utils/core'
 
 interface RadioGroupInterface {
-  options: Array<any>;
-  value: string;
-  name: string;
-  title: string;
+  options: Array<any>
+  value: string
+  name: string
+  title: string
 }
 
 const RadioGroupComponent: React.FC<RadioGroupInterface> = (
@@ -19,19 +18,19 @@ const RadioGroupComponent: React.FC<RadioGroupInterface> = (
 ) => {
   const {
     options, value, name, title
-  } = props;
+  } = props
 
-  const [val, setVal] = useState(value);
-  const { appSetting, setAppSetting } = useAppSetting();
+  const [val, setVal] = useState(value)
+  const { appSetting, setAppSetting } = useAppSetting()
 
   const changeValue = (e: any) => {
-    setVal(e.target.value);
-  };
+    setVal(e.target.value)
+  }
 
   useEffect(() => {
-    appSetting.ttsSetting[name] = val;
-    setAppSetting(appSetting);
-  }, [val]);
+    appSetting.ttsSetting[name] = val
+    setAppSetting(appSetting)
+  }, [val])
 
   return (
     <div
@@ -50,34 +49,34 @@ const RadioGroupComponent: React.FC<RadioGroupInterface> = (
         </Radio.Group>
       </div>
     </div>
-  );
-};
+  )
+}
 
 interface SilderInterface {
-  value: number;
-  name: string;
-  title: string;
-  min: number;
-  max: number;
+  value: number
+  name: string
+  title: string
+  min: number
+  max: number
 }
 
 const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
   const {
     value, name, title, max, min
-  } = props;
-  const [val, setVal] = useState(value);
-  const { appSetting, setAppSetting } = useAppSetting();
+  } = props
+  const [val, setVal] = useState(value)
+  const { appSetting, setAppSetting } = useAppSetting()
 
-  const formatter = (_value) => `${_value}`;
+  const formatter = (_value) => `${_value}`
 
   const changeValue = (_value: number) => {
-    setVal(_value);
-  };
+    setVal(_value)
+  }
 
   useEffect(() => {
-    appSetting.ttsSetting[name] = val;
-    setAppSetting(appSetting);
-  }, [val]);
+    appSetting.ttsSetting[name] = val
+    setAppSetting(appSetting)
+  }, [val])
 
   return (
     <div
@@ -112,26 +111,26 @@ const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
         {value}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
+`
 
-const parsePitchRateOptions = (list) => list.map((v) => ({ label: `${v / 1000}k`, value: v }));
+const parsePitchRateOptions = (list) => list.map((v) => ({ label: `${v / 1000}k`, value: v }))
 
 const Index = () => {
-  const { appSetting } = useAppSetting();
+  const { appSetting } = useAppSetting()
   const [pitchRateList, setPitchRateList] = useState<Array<number>>([
     8000, 16000
-  ]);
+  ])
 
   useEffect(() => {
-    setPitchRateList(core.currentSpeaker(appSetting).sampleRate);
-  }, [appSetting.ttsSetting.speakerId]);
+    setPitchRateList(core.currentSpeaker(appSetting).sampleRate)
+  }, [appSetting.ttsSetting.speakerId])
   return (
     <Wrapper>
       <div css={{ paddingBottom: '30px', borderBottom: '1px solid #f2f9f2' }}>
@@ -172,7 +171,7 @@ const Index = () => {
         />
       </div>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index
