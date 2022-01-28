@@ -1,7 +1,7 @@
 .DS_Store
 
 dist/
-build/
+/build
 .temp/
 node_modules/
 .eslintcache
