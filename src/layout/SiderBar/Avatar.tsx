@@ -44,7 +44,9 @@ const VoiceSelectComponent = (props: any) => {
             )}
           >
             <Tooltip
-              title={`${voiceType.scene}|${voiceType.language}`}
+              title={`${voiceType.scene}${
+                voiceType.language ? `|${voiceType.language}` : ''
+              }`}
               placement="right"
               color="gold"
             >
