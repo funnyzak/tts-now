@@ -32,18 +32,23 @@ const Index: React.FC = () => {
   )
   const [changelog, setChangelog] = useState<String>('细节优化，BUG修复')
 
+  const [init, setInit] = useState<boolean>(false)
+
   const okHandler = () => {
     ipcRenderer.send('open-external', downloadUrl)
   }
 
-  requestRelease().then((releaseInfo) => {
-    if (releaseInfo !== null) {
-      setNewVersion(releaseInfo.tag_name)
-      setChangelog(releaseInfo.body)
-      setDownloadUrl(releaseInfo.html_url)
-      setShowUpdate(compareVersion(releaseInfo.tag_name, oldVersion) > 0)
-    }
-  })
+  if (!init) {
+    setInit(true)
+    requestRelease().then((releaseInfo) => {
+      if (releaseInfo !== null) {
+        setNewVersion(releaseInfo.tag_name)
+        setChangelog(releaseInfo.body)
+        setDownloadUrl(releaseInfo.html_url)
+        setShowUpdate(compareVersion(releaseInfo.tag_name, oldVersion) > 0)
+      }
+    })
+  }
 
   return (
     <>
