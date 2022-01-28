@@ -57,6 +57,8 @@ const Index: React.FC = () => {
         centered
         okText="更新"
         cancelText="暂不更新"
+        maskClosable={false}
+        closable={false}
         visible={showUpdate}
         onOk={okHandler}
         onCancel={() => setShowUpdate(false)}
