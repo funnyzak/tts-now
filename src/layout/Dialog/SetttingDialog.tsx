@@ -1,101 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Modal, Form, Input, Spin, Tabs, Radio
-} from 'antd';
-import useAppSetting from '@/hook/app';
-import * as core from '@/utils/core';
-import { TtsEngine } from '@/type/enums';
+} from 'antd'
+import useAppSetting from '@/hook/app'
+import * as core from '@/utils/core'
+import { TtsEngine } from '@/type/enums'
 
 interface IDialogProp {
-  closeCallBack: () => void;
+  closeCallBack: () => void
 }
 
 const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
 
-  const { appSetting, setAppSetting } = useAppSetting();
-  const [spinning, setSpinning] = useState<boolean>(false);
+  const { appSetting, setAppSetting } = useAppSetting()
+  const [spinning, setSpinning] = useState<boolean>(false)
   const [engine, setEngine] = useState<string>(
     appSetting.ttsSetting.engine
       ? appSetting.ttsSetting.engine.toString()
       : TtsEngine.ALIYUN.toString()
-  );
-  const [aliSetting, setAliSetting] = useState(appSetting.aliSetting);
-  const [xfSetting, setXfSetting] = useState(appSetting.xfSetting);
+  )
   const [engineOptions] = useState([
     { label: '阿里云', value: TtsEngine.ALIYUN.toString() },
     { label: '讯飞', value: TtsEngine.XUNFEI.toString() }
-  ]);
+  ])
 
   const platformFormData = (_engine: TtsEngine, _platformObj) => {
-    const platformFormObj = {};
+    const platformFormObj = {}
 
     if (_platformObj) {
       Object.keys(_platformObj).forEach((v) => {
-        platformFormObj[`${_engine.toString()}_${v}`] = _platformObj[v];
-      });
+        platformFormObj[`${_engine.toString()}_${v}`] = _platformObj[v]
+      })
     }
-    return platformFormObj;
-  };
+    return platformFormObj
+  }
 
   const formInialValues = {
     engine,
     ...platformFormData(TtsEngine.ALIYUN, appSetting.aliSetting),
     ...platformFormData(TtsEngine.XUNFEI, appSetting.xfSetting)
-  };
+  }
 
   const valuesChange = (_formValues, _allFormValues) => {
-    core.logger('_formValues', _formValues, '_allFormValues', _allFormValues);
-  };
+    core.logger('_formValues', _formValues, '_allFormValues', _allFormValues)
+  }
 
   const engineChange = (e) => {
-    setEngine(e.target.value);
-  };
+    setEngine(e.target.value)
+  }
 
   const formPlatformSetting = (_engine: TtsEngine, _allFormValues) => {
-    const platformObj = {};
+    const platformObj = {}
     Object.keys(_allFormValues)
       .filter((v) => v.startsWith(_engine.toString()))
       .forEach((v) => {
-        platformObj[v.replace(`${_engine}_`, '')] = _allFormValues[v];
-      });
-    return platformObj;
-  };
+        platformObj[v.replace(`${_engine}_`, '')] = _allFormValues[v]
+      })
+    return platformObj
+  }
 
   const submitChange = async () => {
-    if (spinning) return;
+    if (spinning) return
 
-    const formValues = form.getFieldsValue();
-    setAliSetting(
-      formPlatformSetting(TtsEngine.ALIYUN, formValues) as APP.AliSetting
-    );
-    setXfSetting(
-      formPlatformSetting(TtsEngine.XUNFEI, formValues) as APP.XfSetting
-    );
+    const formValues = form.getFieldsValue()
+    const _aliSetting = formPlatformSetting(
+      TtsEngine.ALIYUN,
+      formValues
+    ) as APP.AliSetting
+    const _xfSetting = formPlatformSetting(
+      TtsEngine.XUNFEI,
+      formValues
+    ) as APP.XfSetting
 
-    core.logger('ali setting:', aliSetting, 'xf setting:', xfSetting);
+    core.logger('ali setting:', _aliSetting, 'xf setting:', _xfSetting)
 
-    setSpinning(true);
+    setSpinning(true)
     if (
       (formValues.engine === TtsEngine.ALIYUN.toString()
-        && !(await core.checkAliSettingNetwork(aliSetting, true)))
+        && !(await core.checkAliSettingNetwork(_aliSetting, true)))
       || (formValues.engine === TtsEngine.XUNFEI.toString()
-        && !(await core.checkXfSettingNetwork(xfSetting, true)))
+        && !(await core.checkXfSettingNetwork(_xfSetting, true)))
     ) {
-      setSpinning(false);
-      return;
+      setSpinning(false)
+      return
     }
 
     setAppSetting({
-      aliSetting,
-      xfSetting,
+      aliSetting: _aliSetting,
+      xfSetting: _xfSetting,
       ttsSetting: {
         ...appSetting.ttsSetting,
         engine: formValues.engine as TtsEngine
       }
-    });
-    closeCallBack();
-  };
+    })
+    closeCallBack()
+  }
 
   return (
     <>
@@ -198,7 +198,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
         </Spin>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index
