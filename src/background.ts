@@ -1,8 +1,16 @@
 import {
-  app, BrowserWindow, ipcMain, Menu, dialog, shell
+  app,
+  protocol,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  dialog,
+  shell
 } from 'electron'
 
 const Store = require('electron-store')
+
+const PackgeInfo = require('../package.json')
 
 const config = require('../app.config')
 
@@ -12,6 +20,11 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 const isMac = process.platform === 'darwin'
 
 Store.initRenderer()
+
+// Scheme must be registered before the app is ready
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'app', privileges: { secure: true, standard: true } }
+])
 
 /**
  * 禁止刷新和调试
@@ -33,9 +46,26 @@ function stopKey(_win: BrowserWindow) {
   })
 }
 
+function registerLocalResourceProtocol() {
+  protocol.registerFileProtocol('local-resource', (request, callback): void => {
+    const url = request.url.replace(/^local-resource:\/\//, '')
+    // Decode URL to prevent errors when loading filenames with UTF-8 chars or chars like "#"
+    const decodedUrl = decodeURI(url) // Needed in case URL contains spaces
+    try {
+      callback(decodedUrl)
+    } catch (error) {
+      console.error(
+        'ERROR: registerLocalResourceProtocol: Could not get file path:',
+        error
+      )
+    }
+  })
+}
+
 function createWindow() {
   // https://www.electronjs.org/zh/docs/latest/api/browser-window
   win = new BrowserWindow({
+    title: PackgeInfo.name,
     show: isDevelopment,
     width: 1024,
     height: 745,
@@ -46,8 +76,13 @@ function createWindow() {
     movable: true,
     titleBarStyle: 'hiddenInset', // 无边框
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      // Use pluginOptions.nodeIntegration, leave this alone
+      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
+      nodeIntegration:
+        (process.env.ELECTRON_NODE_INTEGRATION || 'true').toUpperCase()
+        === 'TRUE',
+      contextIsolation: false,
+      webSecurity: false
     }
   })
 
@@ -76,6 +111,11 @@ function createWindow() {
 app.on('ready', () => {
   createWindow()
 
+  // 注册自定义协议
+  registerLocalResourceProtocol()
+
+  console.log('app temp path:', app.getPath('temp'))
+
   // 选择要转换的文件或其他选择
   ipcMain.on('select_files', (event, arg) => {
     console.log(event, arg)
@@ -100,6 +140,32 @@ app.on('ready', () => {
 
   ipcMain.on('open-external', (_event, arg) => {
     shell.openExternal(arg)
+  })
+
+  ipcMain.on('getpath', (_event, arg) => {
+    console.log(_event, arg)
+    _event.reply('getpath', {
+      path: app.getPath(
+        arg.pathName as
+          | 'home'
+          | 'appData'
+          | 'userData'
+          | 'cache'
+          | 'temp'
+          | 'exe'
+          | 'module'
+          | 'desktop'
+          | 'documents'
+          | 'downloads'
+          | 'music'
+          | 'pictures'
+          | 'videos'
+          | 'recent'
+          | 'logs'
+          | 'crashDumps'
+      ),
+      arg
+    })
   })
 
   ipcMain.on('open-close-dialog', (_event, _arg) => {
@@ -232,7 +298,4 @@ const menuTemplate: any = [
   }
 ]
 const menu = Menu.buildFromTemplate(menuTemplate)
-
-if (!isDevelopment) {
-  Menu.setApplicationMenu(menu)
-}
+Menu.setApplicationMenu(menu)

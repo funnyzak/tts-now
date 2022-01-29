@@ -22,6 +22,7 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-_cache/
+/_cache
+/tmp
 
 /package-lock.json

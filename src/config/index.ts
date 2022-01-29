@@ -10,11 +10,6 @@ const path = require('path')
 export const appName = '智能语音合成助手'
 
 /**
- * 缓存路径
- */
-export const fileCachePath = path.join(process.cwd(), '_cache')
-
-/**
  * 缓存静态服务器端口
  */
 export const cacheStaticServerPort = 20168
@@ -121,7 +116,8 @@ export const AppContext = React.createContext({
 // 事件发射器名称
 export const EventEmitter = {
   SELECT_FILES: 'select_files',
-  SELECTED_FILES: 'selected_files'
+  SELECTED_FILES: 'selected_files',
+  GET_PATH: 'getpath'
 }
 
 // 读取当前配置

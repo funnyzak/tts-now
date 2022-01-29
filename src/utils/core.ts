@@ -5,7 +5,7 @@ import { XFYunTTS } from 'xfyun-nls'
 import { ipcRenderer } from 'electron'
 import { TtsFileStatus, TtsEngine } from '@/type/enums'
 import voiceData from '@/config/voice'
-import { EventEmitter, fileCachePath, cacheStaticServerPort } from '@/config'
+import { EventEmitter, cacheStaticServerPort } from '@/config'
 
 const StaticHttpServer = require('@funnyzak/http-server')
 
@@ -13,7 +13,19 @@ const { DownloaderHelper } = require('node-downloader-helper')
 
 const path = require('path')
 
+let fileCachePath: string
+
 const ENV = process.env.NODE_ENV
+
+export const logger = (...args): void => {
+  if (process.env.NODE_ENV === 'development') {
+    if (args.length > 1 && args[0] === 'error') {
+      console.error('PError:', ...args.slice(1))
+    } else {
+      console.log('PConsole:', ...args)
+    }
+  }
+}
 
 export const isNullOrEmpty = (val: any): boolean => {
   if (!val || val === null) {
@@ -27,40 +39,54 @@ export const isNullOrEmpty = (val: any): boolean => {
 
 export const delDirPath = (_path) => {
   if (fs.existsSync(_path)) {
-    const files = fs.readdirSync(_path)
-    files.forEach((file) => {
-      const curPath = `${_path}/${file}`
-      if (fs.statSync(curPath).isDirectory()) {
-        // recurse
-        delDirPath(curPath)
-      } else {
-        // delete file
-        fs.unlinkSync(curPath)
-      }
-    })
-    fs.rmdirSync(_path)
+    try {
+      const files = fs.readdirSync(_path)
+      files.forEach((file) => {
+        const curPath = `${_path}/${file}`
+        if (fs.statSync(curPath).isDirectory()) {
+          // recurse
+          delDirPath(curPath)
+        } else {
+          // delete file
+          fs.unlinkSync(curPath)
+        }
+      })
+      fs.rmdirSync(_path)
+    } catch (error) {
+      logger('error', 'delDirPath', error)
+    }
   }
 }
 
-/**
- * 声明静态服务器
- */
-const staticServer = new StaticHttpServer({
-  port: cacheStaticServerPort,
-  root: fileCachePath
-})
+export const getAppPath = (_pathName, callback) => {
+  ipcRenderer.once(EventEmitter.GET_PATH, (_event, arg) => {
+    callback(arg)
+  })
 
+  ipcRenderer.send(EventEmitter.GET_PATH, {
+    pathName: _pathName
+  })
+}
+
+let staticServer
 /**
  * 应用检查、清理、初始化
  */
 export const appReset = () => {
-  // 删除缓存文件夹
-  delDirPath(fileCachePath)
+  getAppPath('cache', (path_info) => {
+    fileCachePath = path_info.path
 
-  fs.mkdirSync(fileCachePath)
+    /**
+     * 声明静态服务器
+     */
+    staticServer = new StaticHttpServer({
+      port: cacheStaticServerPort,
+      root: fileCachePath
+    })
 
-  // 启动缓存静态服务器
-  staticServer.serve()
+    // 启动缓存静态服务器
+    staticServer.serve()
+  })
 }
 
 export const staticUrl = (filePath: string) => staticServer.parseVirtualPath(filePath, true)
@@ -241,16 +267,6 @@ export const settingUseEffectDeps = (appSetting: APP.AppSetting) => [
   appSetting.aliSetting.appKey,
   appSetting.aliSetting.accessKeySecret
 ]
-
-export const logger = (...args): void => {
-  if (process.env.NODE_ENV === 'development') {
-    if (args.length > 1 && args[0] === 'error') {
-      console.error('PError:', ...args.slice(1))
-    } else {
-      console.log('PConsole:', ...args)
-    }
-  }
-}
 
 export const getVoiceTypeList = (_appSetting: APP.AppSetting) => {
   const { ttsSetting } = _appSetting
