@@ -35,6 +35,10 @@
     "url": "https://github.com/funnyzak/tts-now/issues"
   },
   "homepage": "https://github.com/funnyzak/tts-now#readme",
+  "engines": {
+    "node": ">= 14.7.5",
+    "npm": ">= 6.14.14"
+  },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
