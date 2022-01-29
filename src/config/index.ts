@@ -91,8 +91,15 @@ const checkConfig = (_appSetting: APP.AppSetting) => {
 checkConfig(appSetting)
 
 function resetConfig() {
-  const newSetting = { ...defaultAppSetting }
+  const currentAppSetting: APP.AppSetting = store.get(appSettingCacheKey)
+  const newSetting = {
+    ...currentAppSetting,
+    aliSetting: defaultAppSetting.aliSetting,
+    xfSetting: defaultAppSetting.xfSetting
+  }
+
   checkConfig(newSetting)
+
   store.set(appSettingCacheKey, newSetting)
   return newSetting
 }

@@ -127,7 +127,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
             取消
           </Button>,
           <Button key="ok" type="primary" onClick={submitChange}>
-            保存配置
+            验证并应用配置
           </Button>
         ]}
       >
