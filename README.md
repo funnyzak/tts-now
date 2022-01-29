@@ -16,7 +16,7 @@
 [license-image]: https://img.shields.io/github/license/funnyzak/tts-now.svg?style=flat-square
 [repository-url]: https://github.com/funnyzak/tts-now
 
-基于云平台语音合成 API 的文字转语音助手。支持单文本快速合成和批量合成。
+跨平台基于云平台的语音合成 API 的文字转语音助手。支持单文本快速合成和批量合成。支持 windows、macOS、Linux。
 
 目前支持阿里云、讯飞，其他平台陆续加入。
 
