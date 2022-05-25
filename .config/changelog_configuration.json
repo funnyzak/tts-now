@@ -1,0 +1,59 @@
+{
+  "categories": [
+    {
+      "title": "## 🚀 Features",
+      "labels": [
+        "feature",
+        "feat"
+      ]
+    },
+    {
+      "title": "## 🐛 Fixes",
+      "labels": [
+        "fix",
+        "bug",
+        "fixed"
+      ]
+    },
+    {
+      "title": "## 🧪 Tests",
+      "labels": [
+        "test"
+      ]
+    },
+    {
+      "title": "## 💬 Other",
+      "labels": [
+        "other"
+      ]
+    },
+    {
+      "title": "## ✨ Refactors",
+      "labels": [
+        "refactor"
+      ]
+    },
+    {
+      "title": "## 📦 Dependencies",
+      "labels": [
+        "dependencies"
+      ]
+    }
+  ],
+  "sort": "ASC",
+  "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>",
+  "pr_template": "- ${{TITLE}}\n   - PR: #${{NUMBER}}",
+  "empty_template": "- no changes",
+  "transformers": [
+    {
+      "pattern": "[\\-\\*] (\\[(...|TEST|CI|SKIP)\\])( )?(.+?)\n(.+?[\\-\\*] )(.+)",
+      "target": "- $4\n  - $6"
+    }
+  ],
+  "max_tags_to_fetch": 500,
+  "max_pull_requests": 500,
+  "max_back_track_time_days": 500,
+  "exclude_merge_branches": [
+    "Owner/qa"
+  ]
+}

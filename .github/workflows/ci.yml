@@ -77,11 +77,22 @@ jobs:
         run: |
           npx rimraf "build/binary/!(*.AppImage)"
 
+      - name: build changelog
+        id: build_changelog
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: mikepenz/release-changelog-builder-action@v2.9.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          configuration: ".config/changelog_configuration.json"
+          ignorePreReleases: "false"
+
       # step7: create release
       - name: release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          body: ${{steps.build_changelog.outputs.changelog}}
           files: "build/binary/**"
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
