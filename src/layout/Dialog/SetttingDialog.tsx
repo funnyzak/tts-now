@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
 import {
-  Modal, Button, Form, Input, Spin, Tabs, Radio
+  Button, Form, Input, Modal, Radio, Spin, Tabs
 } from 'antd'
-import { css } from '@emotion/react'
-import useAppSetting from '@/hook/app'
-import * as core from '@/utils/core'
-import { TtsEngine } from '@/type/enums'
+import React, { useState } from 'react'
 import { resetConfig } from '@/config'
+import useAppSetting from '@/hook/app'
+import { TtsEngine } from '@/type/enums'
+import * as core from '@/utils/core'
 
 interface IDialogProp {
   closeCallBack: () => void
@@ -113,6 +112,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
         cancelText="取消"
         visible
         width={500}
+        onCancel={closeCallBack}
         footer={[
           <Button
             key="clear"
