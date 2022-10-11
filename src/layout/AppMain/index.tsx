@@ -41,8 +41,8 @@ const Index = () => {
             )
           },
           {
-            label: '单句',
-            key: '批量',
+            label: '批量',
+            key: 'Batch',
             children: (
               <PanelWrapper>
                 <BatchTTS />
