@@ -20,11 +20,11 @@
 
 目前支持阿里云、讯飞，其他平台陆续加入。
 
-**如果觉得不错，来个 star 支持下作者吧！你的 Star 是我更新代码的动力！：）**
+** 如果觉得不错，来个 star 支持下作者吧！你的 Star 是我更新代码的动力！：）**
 
-想任何想吐槽或者建议的都可以直接飞个[issue](https://github.com/funnyzak/tts-now/issues).
+想任何想吐槽或者建议的都可以直接飞个 [issue](https://github.com/funnyzak/tts-now/issues).
 
-**下一步：**
+** 下一步：**
 
 - [ ] 接入百度云
 - [ ] 接入腾讯云
@@ -42,9 +42,8 @@
   - [演示](#演示)
   - [依赖](#依赖)
   - [目录](#目录-1)
-  - [使用](#使用)
-  - [赞赏](#赞赏)
-  - [Author](#author)
+  - [开发](#开发)
+  - [Contribution](#contribution)
   - [License](#license)
 
 ## 发布
@@ -61,7 +60,7 @@
 
 ### 讯飞
 
-到[讯飞云](https://www.xfyun.cn/services/online_tts)注册即可。
+到 [讯飞云](https://www.xfyun.cn/services/online_tts) 注册即可。
 
 目前助手已经内置讯飞 100 多种场景语音合成。
 
@@ -119,59 +118,53 @@
     └── tsconfig.json                      // typescript 配置
     └── tslint.json                        // tslint 配置
 
-## 使用
+## 开发
 
 安装依赖先
 
 ```bash
-$ yarn install
-
-# or
-
-$ npm install
+$ yarn
 ```
 
-然后可执行如下脚本命令，也可把前缀 **npm run** 改为 **yarn** 执行
+然后可执行如下脚本命令：
 
 ```bash
 # 开发服务启动
-$ npm run serve
+$ yarn serve
 
 # Lint 格式化
-$ npm run lint
+$ yarn lint
 
 # 源构建输出
-$ npm run dist
+$ yarn dist
 
 # 根据当前系统构建
-$ npm run build
+$ yarn build
 
 # 基于 dist 输出，根据当前系统构建
-$ npm run build:now
+$ yarn build:now
 
 # 构建 Windows 二进制
-$ npm run build:windows
+$ yarn build:windows
 
 # 构建 Mac 二进制
-$ npm run build:mac
+$ yarn build:mac
 
 # 构建 Linux 二进制
-$ npm run build:linux
+$ yarn build:linux
 
 # 构建三平台
-$ npm run build:all
+$ yarn build:all
 
 ```
 
-## 赞赏
+## Contribution
 
-![赞赏](https://raw.githubusercontent.com/funnyzak/tts-now/master/public/_docs/assets/img/coffee.png)
+如果你有任何的想法或者意见，欢迎提 Issue 或者 PR。
 
-## Author
-
-| [![twitter/funnyzak](https://s.gravatar.com/avatar/c2437e240644b1317a4a356c6d6253ee?s=70)](https://twitter.com/funnyzak 'Follow @funnyzak on Twitter') [![Join the chat at https://gitter.im/tts-now/community](https://badges.gitter.im/tts-now/community.svg)](https://gitter.im/tts-now/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [funnyzak](https://yycc.me/)                                                                                                                                                                                                                                                                                                                                                    |
+<a href="https://github.com/funnyzak/react-native-v2ex/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=funnyzak/react-native-v2ex" />
+</a>
 
 ## License
 
