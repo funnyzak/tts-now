@@ -122,7 +122,7 @@ const Wrapper = styled.div`
 
 const parsePitchRateOptions = (list) => list.map((v) => ({ label: `${v / 1000}k`, value: v }))
 
-const Index = () => {
+function Index() {
   const { appSetting } = useAppSetting()
   const [pitchRateList, setPitchRateList] = useState<Array<number>>([
     8000, 16000

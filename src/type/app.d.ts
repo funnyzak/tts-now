@@ -1,7 +1,7 @@
-import { TtsFileStatus, TtsEngine } from './enums';
+import { TtsFileStatus, TtsEngine } from './enums'
 
 // https://stackoverflow.com/questions/57132428/augmentations-for-the-global-scope-can-only-be-directly-nested-in-external-modul
-export {};
+export {}
 declare global {
   namespace APP {
     export function SetAppSetting(_settings: {

@@ -1,3 +1,3 @@
 export default (timeountMS) => new Promise((resolve) => {
-  setTimeout(resolve, timeountMS);
-});
+  setTimeout(resolve, timeountMS)
+})

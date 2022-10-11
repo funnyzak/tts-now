@@ -1,27 +1,27 @@
-import { Tabs } from 'antd';
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import SingleTTS from './Single';
-import BatchTTS from './Batch';
-import useAppSetting from '@/hook/app';
+import { Tabs } from 'antd'
+import styled from '@emotion/styled'
+import { css } from '@emotion/react'
+import SingleTTS from './Single'
+import BatchTTS from './Batch'
+import useAppSetting from '@/hook/app'
 
-import './index.scss';
+import './index.scss'
 
 const PanelWrapper = styled.div`
   height: calc(100vh - 80px);
   padding-left: 37px;
   padding-right: 20px;
   background-color: #fff;
-`;
+`
 
-const Index = () => {
-  const { appSetting, setAppSetting } = useAppSetting();
+function Index() {
+  const { appSetting, setAppSetting } = useAppSetting()
 
   const changeTagHandle = (actionMode: string) => {
     setAppSetting({
       customSetting: Object.assign(appSetting.customSetting, { actionMode })
-    });
-  };
+    })
+  }
 
   return (
     <div className="main-wrapper">
@@ -43,7 +43,7 @@ const Index = () => {
         </Tabs.TabPane>
       </Tabs>
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

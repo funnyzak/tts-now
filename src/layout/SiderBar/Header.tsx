@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
-import { appName } from '@/config';
+import styled from '@emotion/styled'
+import { appName } from '@/config'
 
 const Header = styled.div`
   width: 280px;
@@ -12,15 +12,17 @@ const Header = styled.div`
   font-size: 24px;
   color: #fff;
   padding-top: 20px;
-`;
+`
 
-const Index = () => (
-  <Header>
-    {/* <img src="./icon/256x256.png" height="30px" css={css`margin-right:10px;`}/> */}
-    {' '}
-    {appName}
-    {' '}
-  </Header>
-);
+function Index() {
+  return (
+    <Header>
+      {/* <img src="./icon/256x256.png" height="30px" css={css`margin-right:10px;`}/> */}
+      {' '}
+      {appName}
+      {' '}
+    </Header>
+  )
+}
 
-export default Index;
+export default Index

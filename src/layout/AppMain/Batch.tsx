@@ -1,10 +1,10 @@
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import React, { useState } from 'react';
-import { ipcRenderer, shell } from 'electron';
-import fs from 'fs';
-import path from 'path';
-import ReactAudioPlayer from 'react-audio-player';
+import styled from '@emotion/styled'
+import { css } from '@emotion/react'
+import React, { useState } from 'react'
+import { ipcRenderer, shell } from 'electron'
+import fs from 'fs'
+import path from 'path'
+import ReactAudioPlayer from 'react-audio-player'
 
 import {
   RedoOutlined,
@@ -16,7 +16,7 @@ import {
   SmileOutlined,
   ExclamationCircleOutlined,
   SyncOutlined
-} from '@ant-design/icons';
+} from '@ant-design/icons'
 import {
   Button,
   Table,
@@ -28,11 +28,11 @@ import {
   message,
   Row,
   Col
-} from 'antd';
-import * as core from '@/utils/core';
-import { TtsFileStatus } from '@/type/enums';
-import { EventEmitter } from '@/config';
-import useAppSetting from '@/hook/app';
+} from 'antd'
+import * as core from '@/utils/core'
+import { TtsFileStatus } from '@/type/enums'
+import { EventEmitter } from '@/config'
+import useAppSetting from '@/hook/app'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -41,7 +41,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
+`
 
 const MainWrapper = styled.div`
   height: calc(100vh - 80px - 115px - 15px) !important;
@@ -50,16 +50,16 @@ const MainWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 15px;
-`;
+`
 
 const tableStyle = css`
   width: 100%;
   height: calc(100vh - 80px - 115px - 30px - 60px) !important;
   overflow-y: auto;
-`;
+`
 
 interface FileListProp {
-  fileList?: Array<APP.TtsFileInfo>;
+  fileList?: Array<APP.TtsFileInfo>
 }
 
 /**
@@ -68,46 +68,46 @@ interface FileListProp {
  * @returns
  */
 const readFileList = (files: Array<string>): Array<APP.TtsFileInfo> => {
-  if (files.length === 0) return [];
+  if (files.length === 0) return []
 
-  core.logger('read files:', files);
+  core.logger('read files:', files)
 
-  const ttsFiles: Array<APP.TtsFileInfo> = [];
+  const ttsFiles: Array<APP.TtsFileInfo> = []
   files.forEach((v) => {
     try {
-      const textContent = fs.readFileSync(v, 'utf-8');
+      const textContent = fs.readFileSync(v, 'utf-8')
       ttsFiles.push({
         filePath: v,
         fileName: path.basename(v),
         textContent,
         status: TtsFileStatus.READY,
         wordCount: textContent.length
-      });
+      })
     } catch (err) {
-      core.logger(`读取文件【${v}】失败`, err);
+      core.logger(`读取文件【${v}】失败`, err)
     }
-  });
-  core.logger('read tts file after:', ttsFiles);
-  return ttsFiles;
-};
+  })
+  core.logger('read tts file after:', ttsFiles)
+  return ttsFiles
+}
 
 interface ICallBackFileListProp {
-  callback: (res: Array<APP.TtsFileInfo>) => void;
+  callback: (res: Array<APP.TtsFileInfo>) => void
 }
 
 const SelectFilesComponent: React.FC<ICallBackFileListProp> = ({
   callback
 }) => {
   const selectFiles = () => {
-    const actionName = 'select_tts_files';
+    const actionName = 'select_tts_files'
 
     ipcRenderer.once(EventEmitter.SELECTED_FILES, (_event, arg) => {
-      core.logger('selected files:', arg, _event);
+      core.logger('selected files:', arg, _event)
 
       if (arg.action === actionName && !arg.data.canceled) {
-        callback(readFileList(arg.data.filePaths));
+        callback(readFileList(arg.data.filePaths))
       }
-    });
+    })
 
     ipcRenderer.send(EventEmitter.SELECT_FILES, {
       action: actionName,
@@ -115,8 +115,8 @@ const SelectFilesComponent: React.FC<ICallBackFileListProp> = ({
         properties: ['openFile', 'multiSelections'],
         filters: [{ name: '文件', extensions: ['txt', 'text'] }]
       }
-    });
-  };
+    })
+  }
 
   return (
     <MainWrapper
@@ -137,18 +137,18 @@ const SelectFilesComponent: React.FC<ICallBackFileListProp> = ({
         选择文本文件
       </Button>
     </MainWrapper>
-  );
-};
+  )
+}
 
 const OutPutPathSelectComponent: React.FC<{
-  savePath: string;
-  savePathCallBack: (path: string) => void;
+  savePath: string
+  savePathCallBack: (path: string) => void
 }> = ({ savePath, savePathCallBack }) => {
   const selectPath = () => {
     core.selectDirection('select_tts_path', (outPath) => {
-      savePathCallBack(outPath);
-    });
-  };
+      savePathCallBack(outPath)
+    })
+  }
   return (
     <div>
       <Input
@@ -184,7 +184,7 @@ const OutPutPathSelectComponent: React.FC<{
             size="large"
             onClick={() => {
               if (core.checkDirExist(savePath, '输出文件夹不存在哦')) {
-                core.logger(shell.openPath(savePath));
+                core.logger(shell.openPath(savePath))
               }
             }}
           >
@@ -193,13 +193,13 @@ const OutPutPathSelectComponent: React.FC<{
         )}
       />
     </div>
-  );
-};
+  )
+}
 
 interface ConvertFilesComponentProp {
-  fileList: Array<APP.TtsFileInfo>;
-  savePathCallBack: (path: string) => void;
-  savePath: string;
+  fileList: Array<APP.TtsFileInfo>
+  savePathCallBack: (path: string) => void
+  savePath: string
 }
 
 const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
@@ -207,8 +207,8 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
   savePath,
   savePathCallBack
 }) => {
-  const [currentRow, setCurrentRow] = useState<APP.TtsFileInfo>();
-  const [audioPlayer, setAudioPlayer] = useState<any>();
+  const [currentRow, setCurrentRow] = useState<APP.TtsFileInfo>()
+  const [audioPlayer, setAudioPlayer] = useState<any>()
 
   const showTxtDialog = (data: APP.TtsFileInfo) => {
     Modal.info({
@@ -226,47 +226,47 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
           }}
         />
       )
-    });
-  };
+    })
+  }
 
   const actionHandler = (action: string, data: APP.TtsFileInfo) => {
-    setCurrentRow(data);
+    setCurrentRow(data)
 
     if (action === 'play') {
-      core.logger(audioPlayer);
+      core.logger(audioPlayer)
       // 继续播放
-      audioPlayer.audioEl.current.load();
+      audioPlayer.audioEl.current.load()
       setTimeout(() => {
-        audioPlayer.audioEl.current.play();
-      }, 500);
+        audioPlayer.audioEl.current.play()
+      }, 500)
     } else if (action === 'open') {
       if (data.status !== TtsFileStatus.SUCCESS) {
-        return;
+        return
       }
       shell.showItemInFolder(
         path.join(data?.savePath || '', data?.saveName || '')
-      );
+      )
     } else if (action === 'txt') {
-      showTxtDialog(data);
+      showTxtDialog(data)
     }
-  };
+  }
 
   const tableChange = (_pagination, _filters, _sorter, _extra: any) => {
     // 重新设置row => key
     _extra.currentDataSource.map((_v, _i) => {
-      _v.key = _i + 1;
-      return _v;
-    });
-  };
+      _v.key = _i + 1
+      return _v
+    })
+  }
 
   fileList?.forEach((value, index) => {
-    value.key = index + 1;
-  });
+    value.key = index + 1
+  })
 
   const statusFilterConfig = Object.keys(TtsFileStatus).map((v) => ({
     text: TtsFileStatus[v].toString(),
     value: v
-  }));
+  }))
 
   return (
     <MainWrapper>
@@ -292,7 +292,7 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
             <div css={{ cursor: 'pointer' }}>
               <FileTextOutlined
                 onClick={() => {
-                  shell.showItemInFolder(_row?.filePath || '');
+                  shell.showItemInFolder(_row?.filePath || '')
                 }}
               />
               <span
@@ -332,30 +332,28 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
           filters={statusFilterConfig}
           onFilter={(val, data: APP.TtsFileInfo) => TtsFileStatus[val as string] === data.status}
           render={(status: TtsFileStatus, row: APP.TtsFileInfo) => (
-            <>
-              <Tooltip title={row.error?.message} color="red">
-                <Tag
-                  icon={
-                    status === TtsFileStatus.PROCESS ? (
-                      <SyncOutlined spin />
-                    ) : (
-                      <span />
-                    )
-                  }
-                  color={
-                    status === TtsFileStatus.PROCESS
-                      ? 'cyan'
-                      : status === TtsFileStatus.SUCCESS
-                        ? 'success'
-                        : status === TtsFileStatus.FAIL
-                          ? 'error'
-                          : 'blue'
-                  }
-                >
-                  {status.toString()}
-                </Tag>
-              </Tooltip>
-            </>
+            <Tooltip title={row.error?.message} color="red">
+              <Tag
+                icon={
+                  status === TtsFileStatus.PROCESS ? (
+                    <SyncOutlined spin />
+                  ) : (
+                    <span />
+                  )
+                }
+                color={
+                  status === TtsFileStatus.PROCESS
+                    ? 'cyan'
+                    : status === TtsFileStatus.SUCCESS
+                      ? 'success'
+                      : status === TtsFileStatus.FAIL
+                        ? 'error'
+                        : 'blue'
+                }
+              >
+                {status.toString()}
+              </Tag>
+            </Tooltip>
           )}
         />
         <Table.Column
@@ -389,14 +387,14 @@ const ConvertFilesComponent: React.FC<ConvertFilesComponentProp> = ({
         savePathCallBack={savePathCallBack}
       />
     </MainWrapper>
-  );
-};
+  )
+}
 
 interface MangageFilesComponentProp {
-  fileList?: Array<APP.TtsFileInfo>;
-  callback: (res: Array<APP.TtsFileInfo>) => void;
-  savePath: string;
-  savePathCallBack: (res: string) => void;
+  fileList?: Array<APP.TtsFileInfo>
+  callback: (res: Array<APP.TtsFileInfo>) => void
+  savePath: string
+  savePathCallBack: (res: string) => void
 }
 
 const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
@@ -416,23 +414,23 @@ const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
       <SelectFilesComponent callback={callback} />
     )}
   </>
-);
+)
 
-const Index = () => {
-  const { appSetting, setAppSetting } = useAppSetting();
-  const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>();
-  const [processing, setProcessing] = useState<boolean>(false);
+function Index() {
+  const { appSetting, setAppSetting } = useAppSetting()
+  const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>()
+  const [processing, setProcessing] = useState<boolean>(false)
 
   const runTask = async () => {
-    if (!core.ttsRunCheck(appSetting)) return;
+    if (!core.ttsRunCheck(appSetting)) return
 
     if (core.isNullOrEmpty(appSetting.customSetting.savePath)) {
-      message.warn('请选择输出文件夹');
-      return;
+      message.warn('请选择输出文件夹')
+      return
     }
     if (!fileList || fileList.length === 0) {
-      message.warn('请选择要转换的文件');
-      return;
+      message.warn('请选择要转换的文件')
+      return
     }
 
     if (
@@ -441,31 +439,31 @@ const Index = () => {
         '输出文件夹不存在哦'
       )
     ) {
-      return;
+      return
     }
 
     if (processing) {
-      message.info('已经在处理了');
+      message.info('已经在处理了')
     }
 
-    setProcessing(true);
+    setProcessing(true)
 
     core.ttsTasksRun(
       appSetting,
       fileList.map((v) => ({ ...v, status: TtsFileStatus.READY })),
       (_current: APP.TtsFileInfo, _fileList: Array<APP.TtsFileInfo>) => {
-        core.logger('current=>', _current, 'list=>', _fileList);
-        setFileList([..._fileList]);
+        core.logger('current=>', _current, 'list=>', _fileList)
+        setFileList([..._fileList])
         setProcessing(
           _fileList.filter(
             (v) => v.status
               && [TtsFileStatus.PROCESS, TtsFileStatus.READY].includes(v.status)
           ).length > 0
-        );
+        )
       },
       true
-    );
-  };
+    )
+  }
 
   return (
     <Wrapper>
@@ -500,9 +498,9 @@ const Index = () => {
                     cancelText: '取消',
                     centered: true,
                     onOk: () => {
-                      setFileList([]);
+                      setFileList([])
                     }
-                  });
+                  })
                 }}
               >
                 清空
@@ -524,12 +522,12 @@ const Index = () => {
         callback={(files) => setFileList(files)}
         savePath={appSetting.customSetting.savePath || ''}
         savePathCallBack={(_path) => {
-          appSetting.customSetting.savePath = _path;
-          setAppSetting(appSetting);
+          appSetting.customSetting.savePath = _path
+          setAppSetting(appSetting)
         }}
       />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

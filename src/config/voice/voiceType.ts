@@ -1286,4 +1286,4 @@ export default [
     speechFrom: '官方',
     text: 'Mag bake lang ng isang bunch ng cupcakes at dekurasyunan ito ayon sa gusto.'
   }
-];
+]

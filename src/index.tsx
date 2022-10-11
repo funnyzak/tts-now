@@ -1,10 +1,10 @@
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom'
 
-import App from './App';
+import App from './App'
 
 // 引入normalize.css
-import 'normalize.css';
+import 'normalize.css'
 
-import './App.less';
+import './App.less'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'))
