@@ -1,21 +1,21 @@
-const fs = require('fs');
+const fs = require('fs')
 
 function delDirPath(path) {
-  let files = [];
+  let files = []
   if (fs.existsSync(path)) {
-    files = fs.readdirSync(path);
+    files = fs.readdirSync(path)
     files.forEach((file) => {
-      const curPath = `${path}/${file}`;
+      const curPath = `${path}/${file}`
       if (fs.statSync(curPath).isDirectory()) {
         // recurse
-        delDirPath(curPath);
+        delDirPath(curPath)
       } else {
         // delete file
-        fs.unlinkSync(curPath);
+        fs.unlinkSync(curPath)
       }
-    });
-    fs.rmdirSync(path);
+    })
+    fs.rmdirSync(path)
   }
 }
 
-module.exports.delDirPath = delDirPath;
+module.exports.delDirPath = delDirPath

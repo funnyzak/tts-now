@@ -1,47 +1,47 @@
-const Webpack = require('webpack');
-const path = require('path');
-const { delDirPath } = require('./utils');
+const Webpack = require('webpack')
+const path = require('path')
+const { delDirPath } = require('./utils')
 
-const mainWebpackConfig = require('./webpack.main');
-const rendererWebpackConfig = require('./webpack.renderer');
+const mainWebpackConfig = require('./webpack.main')
+const rendererWebpackConfig = require('./webpack.renderer')
 
-const config = require('../app.config');
+const config = require('../app.config')
 
 // 不输出调试map
-delete rendererWebpackConfig.devtool;
+delete rendererWebpackConfig.devtool
 
 function buildMain() {
   return new Promise((resolve, reject) => {
-    const compiler = Webpack(mainWebpackConfig);
+    const compiler = Webpack(mainWebpackConfig)
     compiler.watch({}, (err, stats) => {
       if (err) {
-        reject(err);
+        reject(err)
       }
-      console.log('main process:', stats);
-      resolve();
-    });
-  });
+      console.log('main process:', stats)
+      resolve()
+    })
+  })
 }
 function buildRenderer() {
   return new Promise((resolve, reject) => {
-    const compiler = Webpack(rendererWebpackConfig);
+    const compiler = Webpack(rendererWebpackConfig)
     compiler.watch({}, (err, stats) => {
       if (err) {
-        reject(err);
+        reject(err)
       }
-      console.log('renderer process:', stats);
-      resolve();
-    });
-  });
+      console.log('renderer process:', stats)
+      resolve()
+    })
+  })
 }
 
 function main() {
-  delDirPath(path.resolve(__dirname, `../${config.distOutPut}`));
+  delDirPath(path.resolve(__dirname, `../${config.distOutPut}`))
 
   Promise.all([buildMain(), buildRenderer()]).then(() => {
-    console.log('build app done.');
-    process.exit();
-  });
+    console.log('build app done.')
+    process.exit()
+  })
 }
 
-main();
+main()
