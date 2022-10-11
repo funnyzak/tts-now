@@ -85,7 +85,9 @@ jobs:
         with:
           body: ${{steps.build_changelog.outputs.changelog}}
           files: |
-            'build/binary/*.{exe,dmg,AppImage}'
+            build/binary/*.exe
+            build/binary/*.dmg
+            build/binary/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
 
