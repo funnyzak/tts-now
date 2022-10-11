@@ -1,57 +1,64 @@
-name: release
+name: Release
 
 on:
   push:
     tags:
       - '*'
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+env:
+  DIST_ARCHIVE_PREFIX_NAME: ${{ github.event.repository.name }}
+
 jobs:
-  # job's id
-  release:
-
-    # job's name
-    name: build and release app
-
-    # the type of machine to run the job on
+  release-binaries:
+    name: Release Binaries
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ${{ matrix.os }}
-
-    # create a build matrix for jobs
     strategy:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-
-    # create steps
+        node-version: [16.x]
     steps:
-
-      # step1: check out repository
-      - name: Check out Git repository
+      - name: Checkout
         uses: actions/checkout@v2
-
-      # step2: install node env
-      - name: Install Node.js
+      - name: Get the version
+        id: get_version
+        run: |
+          echo ::set-output name=PACKAGE_VERSION_NAME::$(node -p "require('./package.json').version")
+          echo ::set-output name=PACKAGE_NAME::$(node -p "require('./package.json').name")
+          echo ::set-output name=COMMIT_ID::$(echo ${{ github.sha }} | cut -c1-7)
+      - name: Set name
+        id: set_name
+        run: |
+          echo ::set-output name=BINARY_NAME::$(echo "${{ steps.get_version.outputs.PACKAGE_NAME}}-${{ matrix.os }}-${{ steps.get_version.outputs.PACKAGE_VERSION_NAME }}-${{ steps.get_version.outputs.COMMIT_ID }}")
+      - name: Build changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v2.9.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          configuration: '.github/config/changelog_configuration.json'
+          ignorePreReleases: 'false'
+      - name: Use Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14.17.5'
-
-      # step3: restore npm cache
-      - name: Restore Npm Cache
-        uses: actions/cache@v2
+          node-version: ${{ matrix.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-
-
-      # step4: install dependencies     
+            ${{ runner.os }}-yarn-
       - name: Install Dependencies
         working-directory: ./
         run: |
-          npm install
-
-      # setp5: build app
-      - name: Build app
+          yarn
+      - name: Build Binary
         uses: samuelmeuli/action-electron-builder@v1
         with:
           build_script_name: dist
@@ -62,49 +69,49 @@ jobs:
           # If the commit is tagged with a version (e.g. "v1.0.0"),
           # release the app after building
           release: false
-
-      # step6: cleanup artifacts in binary
-      - name:  cleanup artifacts for macos
+      - name: Clean and move for mac
         if: startsWith(matrix.os, 'macos')
         run: |
           npx rimraf "build/binary/!(*.dmg)"
-      - name: leanup artifacts for windows
+          mv build/binary/*.dmg build/binary/${{ steps.set_name.outputs.BINARY_NAME }}.dmg
+      - name: Clean and move for windows
         if: startsWith(matrix.os, 'windows')
         run: |
           npx rimraf "build/binary/!(*.exe)"
-      - name:  cleanup artifacts for linux
+          mv build/binary/*.exe build/binary/${{ steps.set_name.outputs.BINARY_NAME }}.exe
+      - name: Clean and move for linux
         if: startsWith(matrix.os, 'ubuntu')
         run: |
           npx rimraf "build/binary/!(*.AppImage)"
-
-      - name: build changelog
-        id: build_changelog
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: mikepenz/release-changelog-builder-action@v2.9.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          configuration: ".config/changelog_configuration.json"
-          ignorePreReleases: "false"
-
-      # step7: create release
-      - name: release
+          mv build/binary/*.AppImage build/binary/${{ steps.set_name.outputs.BINARY_NAME }}.AppImage
+      - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           body: ${{steps.build_changelog.outputs.changelog}}
-          files: "build/binary/**"
+          files: 'build/binary/**'
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
 
-  jishida-push:
+  push-release-message:
+    name: Push release message
     runs-on: ubuntu-latest
-    needs: [release]
-    if: startsWith(github.ref, 'refs/tags/')
+    needs: [release-binaries]
     steps:
-      - name: JiShiDa Push
-        uses: funnyzak/jishida-action@master
+      - name: Push message
+        uses: funnyzak/pushoo-action@main
         with:
-          key: ${{secrets.JPUSH_KEY}}
-          head: ${{github.repository}}已完成发布
-          body: 来自GithubAction：${{github.repository}} 发布已完成，下载地址：https://github.com/funnyzak/tts-now/releases。
+          platforms: ifttt,wecombot,bark
+          tokens: ${{ secrets.PUSH_TOKEN }}
+          content: |
+            # ${{ github.event.repository.name }} Released
+            ## trigger: ${{ github.event_name }} at ${{ github.event.head_commit.timestamp }}
+            ## commit message: ${{ github.event.head_commit.message }}
+            ## commit url: ${{ github.event.head_commit.url }}
+            ## commit author: ${{ github.event.head_commit.author.name }}
+            ## commit email: ${{ github.event.head_commit.author.email }}
+            ## commit id: ${{ github.event.head_commit.id }}
+          title: |
+            ${{ github.repository }} ${{ github.event_name }} Message
+          options: '{"bark": { "url": "https://github.com/${{github.repository}}" }}'
+          debug: false

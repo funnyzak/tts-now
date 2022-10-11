@@ -51,35 +51,33 @@ const Index: React.FC = () => {
   }
 
   return (
-    <>
-      <Modal
-        title="有新版本了"
-        centered
-        okText="更新"
-        cancelText="暂不更新"
-        maskClosable={false}
-        closable={false}
-        visible={showUpdate}
-        onOk={okHandler}
-        onCancel={() => setShowUpdate(false)}
-        width={350}
-      >
-        <p>
-          检查到新版本
-          {' '}
-          {newVersion}
-          ，当前版本
-          {' '}
-          {oldVersion}
-          ，请及时更新。安装新版本前请先卸载旧版本！
-        </p>
+    <Modal
+      title="有新版本了"
+      centered
+      okText="更新"
+      cancelText="暂不更新"
+      maskClosable={false}
+      closable={false}
+      open={showUpdate}
+      onOk={okHandler}
+      onCancel={() => setShowUpdate(false)}
+      width={350}
+    >
+      <p>
+        检查到新版本
+        {' '}
+        {newVersion}
+        ，当前版本
+        {' '}
+        {oldVersion}
+        ，请及时更新。安装新版本前请先卸载旧版本！
+      </p>
 
-        <p>
-          更新内容：
-          {changelog}
-        </p>
-      </Modal>
-    </>
+      <p>
+        更新内容：
+        {changelog}
+      </p>
+    </Modal>
   )
 }
 

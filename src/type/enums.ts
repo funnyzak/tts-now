@@ -16,4 +16,4 @@ export enum TtsEngine {
   XUNFEI = 'xf'
 }
 
-export default {};
+export default {}

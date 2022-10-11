@@ -1,5 +1,5 @@
-import styled from '@emotion/styled';
-import { appName } from '@/config';
+import styled from '@emotion/styled'
+import { appName } from '@/config'
 
 const Header = styled.div`
   width: 280px;
@@ -12,7 +12,7 @@ const Header = styled.div`
   font-size: 24px;
   color: #fff;
   padding-top: 20px;
-`;
+`
 
 const Index = () => (
   <Header>
@@ -21,6 +21,6 @@ const Index = () => (
     {appName}
     {' '}
   </Header>
-);
+)
 
-export default Index;
+export default Index

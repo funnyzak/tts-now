@@ -2,42 +2,27 @@
   "categories": [
     {
       "title": "## 🚀 Features",
-      "labels": [
-        "feature",
-        "feat"
-      ]
+      "labels": ["feature", "feat"]
     },
     {
       "title": "## 🐛 Fixes",
-      "labels": [
-        "fix",
-        "bug",
-        "fixed"
-      ]
+      "labels": ["fix", "bug", "fixed"]
     },
     {
       "title": "## 🧪 Tests",
-      "labels": [
-        "test"
-      ]
+      "labels": ["test"]
     },
     {
       "title": "## 💬 Other",
-      "labels": [
-        "other"
-      ]
+      "labels": ["other"]
     },
     {
       "title": "## ✨ Refactors",
-      "labels": [
-        "refactor"
-      ]
+      "labels": ["refactor"]
     },
     {
       "title": "## 📦 Dependencies",
-      "labels": [
-        "dependencies"
-      ]
+      "labels": ["dependencies"]
     }
   ],
   "sort": "ASC",
@@ -53,7 +38,5 @@
   "max_tags_to_fetch": 500,
   "max_pull_requests": 500,
   "max_back_track_time_days": 500,
-  "exclude_merge_branches": [
-    "Owner/qa"
-  ]
+  "exclude_merge_branches": ["Owner/qa"]
 }

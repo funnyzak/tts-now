@@ -1,6 +1,6 @@
-const path = require('path');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const config = require('../app.config');
+const path = require('path')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const config = require('../app.config')
 
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
@@ -29,4 +29,4 @@ module.exports = {
     filename: 'main.js'
   },
   target: 'electron-main'
-};
+}

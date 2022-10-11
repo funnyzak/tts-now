@@ -1,10 +1,13 @@
 # 云语音合成助手
 
-[![action][ci-image]][ci-url]
-[![Release Date][rle-image]][rle-url]
+[![Build Status][build-status-image]][build-status]
+[![tag][tag-image]][rle-url]
 [![Latest Release Download][down-latest-image]][rle-url]
 [![Total Download][down-total-image]][rle-all-url]
+[![Release Date][rle-image]][rle-url]
 [![license][license-image]][repository-url]
+
+<!-- [![action][ci-image]][ci-url] -->
 
 [down-latest-image]: https://img.shields.io/github/downloads/funnyzak/tts-now/latest/total.svg
 [down-total-image]: https://img.shields.io/github/downloads/funnyzak/tts-now/total.svg
@@ -15,6 +18,9 @@
 [ci-url]: https://github.com/funnyzak/tts-now/actions
 [license-image]: https://img.shields.io/github/license/funnyzak/tts-now.svg?style=flat-square
 [repository-url]: https://github.com/funnyzak/tts-now
+[build-status-image]: https://github.com/funnyzak/tts-now/actions/workflows/ci.yml/badge.svg
+[build-status]: https://github.com/funnyzak/tts-now/actions
+[tag-image]: https://img.shields.io/github/tag/funnyzak/tts-now.svg
 
 跨平台基于云平台的语音合成 API 的文字转语音助手。支持单文本快速合成和批量合成。支持 windows、macOS、Linux。
 
@@ -22,12 +28,15 @@
 
 **如果觉得不错，来个 star 支持下作者吧！你的 Star 是我更新代码的动力！：）**
 
-想任何想吐槽或者建议的都可以直接飞个[issue](https://github.com/funnyzak/tts-now/issues).
+想任何想吐槽或者建议的都可以直接飞个 [issue](https://github.com/funnyzak/tts-now/issues).
 
-**下一步：**
+**下一步**
 
 - [ ] 接入百度云
 - [ ] 接入腾讯云
+
+**已完成**
+
 - [x] 增加升级更新提示
 - [x] 配置框增加清除配置按钮
 
@@ -42,9 +51,8 @@
   - [演示](#演示)
   - [依赖](#依赖)
   - [目录](#目录-1)
-  - [使用](#使用)
-  - [赞赏](#赞赏)
-  - [Author](#author)
+  - [开发](#开发)
+  - [Contribution](#contribution)
   - [License](#license)
 
 ## 发布
@@ -61,7 +69,7 @@
 
 ### 讯飞
 
-到[讯飞云](https://www.xfyun.cn/services/online_tts)注册即可。
+到 [讯飞云](https://www.xfyun.cn/services/online_tts) 注册即可。
 
 目前助手已经内置讯飞 100 多种场景语音合成。
 
@@ -73,22 +81,17 @@
 
 ## 依赖
 
-助手基于 Electron 构建开发。
-
-> 开发构建使用 Node 版本为 **^14.17.5**，为避免冲突，建议使用此版本。可以使用 **_nvm_** 管理 Node 版本。
-
 主要依赖库：
 
-- electron: ^15.3.0
-- electron-builder: ^22.13.15
-- eslint: ^7.32.0
-- babel: ^7.15.8
-- css-loader: ^6.4.0
-- less: ^4.1.2
-- sass: ^6.0.1
-- typescript: ^4.4.4
-- webpack: ^5.59.1
-- prettier: 2.4.1
+- electron-builder
+- eslint
+- babel
+- css-loader
+- less
+- sass
+- typescript
+- webpack
+- prettier
 
 ## 目录
 
@@ -119,59 +122,53 @@
     └── tsconfig.json                      // typescript 配置
     └── tslint.json                        // tslint 配置
 
-## 使用
+## 开发
 
 安装依赖先
 
 ```bash
-$ yarn install
-
-# or
-
-$ npm install
+$ yarn
 ```
 
-然后可执行如下脚本命令，也可把前缀 **npm run** 改为 **yarn** 执行
+然后可执行如下脚本命令：
 
 ```bash
 # 开发服务启动
-$ npm run serve
+$ yarn serve
 
 # Lint 格式化
-$ npm run lint
+$ yarn lint
 
 # 源构建输出
-$ npm run dist
+$ yarn dist
 
 # 根据当前系统构建
-$ npm run build
+$ yarn build
 
 # 基于 dist 输出，根据当前系统构建
-$ npm run build:now
+$ yarn build:now
 
 # 构建 Windows 二进制
-$ npm run build:windows
+$ yarn build:windows
 
 # 构建 Mac 二进制
-$ npm run build:mac
+$ yarn build:mac
 
 # 构建 Linux 二进制
-$ npm run build:linux
+$ yarn build:linux
 
 # 构建三平台
-$ npm run build:all
+$ yarn build:all
 
 ```
 
-## 赞赏
+## Contribution
 
-![赞赏](https://raw.githubusercontent.com/funnyzak/tts-now/master/public/_docs/assets/img/coffee.png)
+如果你有任何的想法或者意见，欢迎提 Issue 或者 PR。
 
-## Author
-
-| [![twitter/funnyzak](https://s.gravatar.com/avatar/c2437e240644b1317a4a356c6d6253ee?s=70)](https://twitter.com/funnyzak 'Follow @funnyzak on Twitter') [![Join the chat at https://gitter.im/tts-now/community](https://badges.gitter.im/tts-now/community.svg)](https://gitter.im/tts-now/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [funnyzak](https://yycc.me/)                                                                                                                                                                                                                                                                                                                                                    |
+<a href="https://github.com/funnyzak/tts-now/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=funnyzak/tts-now" />
+</a>
 
 ## License
 

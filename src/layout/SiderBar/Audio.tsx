@@ -95,7 +95,7 @@ const SliderComponent: React.FC<SilderInterface> = (props: SilderInterface) => {
         {title}
       </div>
       <Slider
-        tipFormatter={formatter}
+        tooltip={{ formatter }}
         value={val}
         disabled={false}
         min={min}

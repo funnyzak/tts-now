@@ -2,24 +2,24 @@
 // https://www.npmjs.com/package/lint-staged
 // https://github.com/DavidAnson/markdownlint
 // https://github.com/micromatch/micromatch
-const micromatch = require('micromatch');
+const micromatch = require('micromatch')
 
 module.exports = (allStagedFiles) => {
-  const shFiles = micromatch(allStagedFiles, ['**/src/**/*.sh']);
+  const shFiles = micromatch(allStagedFiles, ['**/src/**/*.sh'])
   if (shFiles.length) {
-    return "printf '%s\n' \"Script files aren't allowed in src directory\" >&2";
+    return "printf '%s\n' \"Script files aren't allowed in src directory\" >&2"
   }
 
-  const runScripts = [];
+  const runScripts = []
   const codeFiles = micromatch(allStagedFiles, [
     '**/*.js',
     '**/*.jsx',
     '**/*.ts',
     '**/*.tsx'
-  ]);
+  ])
   if (codeFiles.length > 0) {
-    runScripts.push(`prettier --write ${codeFiles.join(' ')}`);
-    runScripts.push(`eslint --fix --cache ${codeFiles.join(' ')}`);
+    runScripts.push(`prettier --write ${codeFiles.join(' ')}`)
+    runScripts.push(`eslint --fix --cache ${codeFiles.join(' ')}`)
   }
 
   const docFiles = micromatch(allStagedFiles, [
@@ -30,10 +30,10 @@ module.exports = (allStagedFiles) => {
     '**/*.less',
     '**/*.scss',
     '**/*.sass'
-  ]);
+  ])
   if (docFiles.length > 0) {
-    runScripts.push(`prettier --write ${docFiles.join(' ')}`);
+    runScripts.push(`prettier --write ${docFiles.join(' ')}`)
   }
 
-  return runScripts;
-};
+  return runScripts
+}

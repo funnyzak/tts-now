@@ -1,6 +1,6 @@
-import { useContext } from 'react';
-import { AppContext } from '@/config';
+import { useContext } from 'react'
+import { AppContext } from '@/config'
 
-const SettingContext = () => useContext(AppContext);
+const SettingContext = () => useContext(AppContext)
 
-export default SettingContext;
+export default SettingContext

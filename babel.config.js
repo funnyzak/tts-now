@@ -1,6 +1,6 @@
 // document https://babel.docschina.org/docs/en/7.0.0/configuration/
 module.exports = function (api) {
-  api.cache(true);
+  api.cache(true)
 
   const presets = [
     [
@@ -12,11 +12,11 @@ module.exports = function (api) {
         corejs: '3'
       }
     ]
-  ];
-  const plugins = [];
+  ]
+  const plugins = []
 
   return {
     presets,
     plugins
-  };
-};
+  }
+}

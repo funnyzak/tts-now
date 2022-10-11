@@ -1,6 +1,6 @@
-import aliyunData from './voiceType';
-import xfData from './xf';
-import { TtsEngine } from '@/type/enums';
+import aliyunData from './voiceType'
+import xfData from './xf'
+import { TtsEngine } from '@/type/enums'
 
 const xf = xfData.map((v) => ({
   speakerId: `${TtsEngine.XUNFEI.toString()}_${v.code}`,
@@ -22,16 +22,16 @@ const xf = xfData.map((v) => ({
   speechFrom: '官方',
   text: v.text,
   origin: v
-}));
+}))
 
 const aliyun = aliyunData.map((v) => ({
   ...v,
   speakerId: `${TtsEngine.ALIYUN.toString()}_${v.speakerId}`,
   code: v.speakerId,
   origin: v
-}));
+}))
 
 export default {
   xf,
   aliyun
-};
+}
