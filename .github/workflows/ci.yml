@@ -74,10 +74,6 @@ jobs:
         run: |
           npx rimraf "build/binary/!(*.dmg)"
           mv build/binary/*.dmg build/binary/${{ steps.set_name.outputs.BINARY_NAME }}.dmg
-      - name: Clean and move for windows
-        if: startsWith(matrix.os, 'windows')
-        run: |
-          npx rimraf "build/binary/!(*.exe)"
       - name: Clean and move for linux
         if: startsWith(matrix.os, 'ubuntu')
         run: |
@@ -88,7 +84,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           body: ${{steps.build_changelog.outputs.changelog}}
-          files: 'build/binary/**'
+          files: |
+            build/binary/*.{exe,dmg,AppImage}
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
 
