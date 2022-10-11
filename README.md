@@ -78,22 +78,17 @@
 
 ## 依赖
 
-助手基于 Electron 构建开发。
-
-> 开发构建使用 Node 版本为 **^14.17.5**，为避免冲突，建议使用此版本。可以使用 **_nvm_** 管理 Node 版本。
-
 主要依赖库：
 
-- electron: ^15.3.0
-- electron-builder: ^22.13.15
-- eslint: ^7.32.0
-- babel: ^7.15.8
-- css-loader: ^6.4.0
-- less: ^4.1.2
-- sass: ^6.0.1
-- typescript: ^4.4.4
-- webpack: ^5.59.1
-- prettier: 2.4.1
+- electron-builder
+- eslint
+- babel
+- css-loader
+- less
+- sass
+- typescript
+- webpack
+- prettier
 
 ## 目录
 
