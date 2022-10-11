@@ -11,4 +11,4 @@ module.exports = {
   quoteProps: 'consistent',
   bracketSpacing: true,
   bracketSameLine: true
-};
+}

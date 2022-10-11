@@ -14,15 +14,13 @@ const Header = styled.div`
   padding-top: 20px;
 `
 
-function Index() {
-  return (
-    <Header>
-      {/* <img src="./icon/256x256.png" height="30px" css={css`margin-right:10px;`}/> */}
-      {' '}
-      {appName}
-      {' '}
-    </Header>
-  )
-}
+const Index = () => (
+  <Header>
+    {/* <img src="./icon/256x256.png" height="30px" css={css`margin-right:10px;`}/> */}
+    {' '}
+    {appName}
+    {' '}
+  </Header>
+)
 
 export default Index

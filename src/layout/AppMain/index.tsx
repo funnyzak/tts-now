@@ -14,7 +14,7 @@ const PanelWrapper = styled.div`
   background-color: #fff;
 `
 
-function Index() {
+const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting()
 
   const changeTagHandle = (actionMode: string) => {

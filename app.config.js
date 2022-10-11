@@ -20,6 +20,6 @@ const appConfig = {
       // '/api2': 'http://localhost:3001',
     }
   }
-};
+}
 
-module.exports = appConfig;
+module.exports = appConfig

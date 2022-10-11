@@ -8,7 +8,7 @@ import useAppSetting from '@/hook/app'
 import styles from './index.module.scss'
 import * as core from '@/utils/core'
 
-function VoiceSelectComponent(props: any) {
+const VoiceSelectComponent = (props: any) => {
   const { voiceIndex, voiceSetCallBack } = props
   const { appSetting } = useAppSetting()
 
@@ -63,7 +63,7 @@ function VoiceSelectComponent(props: any) {
   )
 }
 
-function Index() {
+const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting()
   const [menuShow, setMenuShow] = useState<boolean>(false)
 
@@ -82,7 +82,7 @@ function Index() {
           voiceIndex={appSetting.ttsSetting.speakerId}
           voiceSetCallBack={changeVoice}
         />
-        )}
+      )}
       trigger={['hover']}
     >
       <div className={styles.avatarWrapper}>
@@ -97,20 +97,20 @@ function Index() {
         <div>
           <div
             css={css`
-                margin: 5px 0 0 0;
-                width: 130px;
-                font-size: 13.5px;
-                color: #000;
-              `}
+              margin: 5px 0 0 0;
+              width: 130px;
+              font-size: 13.5px;
+              color: #000;
+            `}
           >
             {core.currentSpeaker(appSetting).speaker}
           </div>
           <div
             css={css`
-                font-size: 13px;
-                margin-top: 5px;
-                color: #666;
-              `}
+              font-size: 13px;
+              margin-top: 5px;
+              color: #666;
+            `}
           >
             {core.currentSpeaker(appSetting).speechType}
           </div>

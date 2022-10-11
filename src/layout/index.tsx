@@ -14,14 +14,12 @@ const Wrapper = styled.div`
   align-items: flex-start;
 `
 
-function Index() {
-  return (
-    <Wrapper>
-      <SiderBar />
-      <AppMain />
-      <CheckUpdateDialog />
-    </Wrapper>
-  )
-}
+const Index = () => (
+  <Wrapper>
+    <SiderBar />
+    <AppMain />
+    <CheckUpdateDialog />
+  </Wrapper>
+)
 
 export default Index

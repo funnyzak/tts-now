@@ -416,7 +416,7 @@ const MangageFilesComponent: React.FC<MangageFilesComponentProp> = ({
   </>
 )
 
-function Index() {
+const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting()
   const [fileList, setFileList] = useState<Array<APP.TtsFileInfo>>()
   const [processing, setProcessing] = useState<boolean>(false)

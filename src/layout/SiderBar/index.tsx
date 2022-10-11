@@ -8,7 +8,7 @@ import AudioSet from './Audio'
 import { SetttingDialog } from '../Dialog'
 import styles from './index.module.scss'
 
-function Index() {
+const Index = () => {
   const [btnBottom] = useState(0)
   const [showSetting, setShowSetting] = useState(false)
   return (

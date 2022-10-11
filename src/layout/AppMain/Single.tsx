@@ -42,7 +42,7 @@ const singleTxtStyle = {
   lineHeight: '22px !important'
 }
 
-function Index() {
+const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting()
 
   const getSingleTxt = () => (appSetting.customSetting.singleTxt

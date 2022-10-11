@@ -9,7 +9,7 @@ import { appReset } from '@/utils/core'
 
 appReset()
 
-export default function () {
+export default () => {
   const [setting, setSetting] = useState(appSetting)
 
   const updateConfig = (newSetting: {
