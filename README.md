@@ -1,10 +1,13 @@
 # 云语音合成助手
 
-[![action][ci-image]][ci-url]
-[![Release Date][rle-image]][rle-url]
+[![Build Status][build-status-image]][build-status]
+[![tag][tag-image]][rle-url]
 [![Latest Release Download][down-latest-image]][rle-url]
 [![Total Download][down-total-image]][rle-all-url]
+[![Release Date][rle-image]][rle-url]
 [![license][license-image]][repository-url]
+
+<!-- [![action][ci-image]][ci-url] -->
 
 [down-latest-image]: https://img.shields.io/github/downloads/funnyzak/tts-now/latest/total.svg
 [down-total-image]: https://img.shields.io/github/downloads/funnyzak/tts-now/total.svg
@@ -15,6 +18,9 @@
 [ci-url]: https://github.com/funnyzak/tts-now/actions
 [license-image]: https://img.shields.io/github/license/funnyzak/tts-now.svg?style=flat-square
 [repository-url]: https://github.com/funnyzak/tts-now
+[build-status-image]: https://github.com/funnyzak/tts-now/actions/workflows/ci.yml/badge.svg
+[build-status]: https://github.com/funnyzak/tts-now/actions
+[tag-image]: https://img.shields.io/github/tag/funnyzak/tts-now.svg
 
 跨平台基于云平台的语音合成 API 的文字转语音助手。支持单文本快速合成和批量合成。支持 windows、macOS、Linux。
 
@@ -162,8 +168,8 @@ $ yarn build:all
 
 如果你有任何的想法或者意见，欢迎提 Issue 或者 PR。
 
-<a href="https://github.com/funnyzak/react-native-v2ex/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=funnyzak/react-native-v2ex" />
+<a href="https://github.com/funnyzak/tts-now/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=funnyzak/tts-now" />
 </a>
 
 ## License
