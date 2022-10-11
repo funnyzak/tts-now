@@ -78,7 +78,6 @@ jobs:
         if: startsWith(matrix.os, 'windows')
         run: |
           npx rimraf "build/binary/!(*.exe)"
-          mv build/binary/*.exe build/binary/${{ steps.set_name.outputs.BINARY_NAME }}.exe
       - name: Clean and move for linux
         if: startsWith(matrix.os, 'ubuntu')
         run: |
