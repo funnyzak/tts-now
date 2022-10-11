@@ -1,34 +1,40 @@
-import { useState, useEffect } from 'react';
-import { ConfigProvider } from 'antd';
-import zhCN from 'antd/lib/locale/zh_CN';
-import Index from './layout';
+import { useState, useEffect, useMemo } from 'react'
+import { ConfigProvider } from 'antd'
+import zhCN from 'antd/lib/locale/zh_CN'
+import Index from './layout'
 import {
   AppContext, appSetting, appSettingCacheKey, store
-} from '@/config';
-import { appReset } from '@/utils/core';
+} from '@/config'
+import { appReset } from '@/utils/core'
 
-appReset();
+appReset()
 
-export default () => {
-  const [setting, setSetting] = useState(appSetting);
+export default function () {
+  const [setting, setSetting] = useState(appSetting)
 
   const updateConfig = (newSetting: {
-    [T in keyof APP.AppSetting]?: APP.AppSetting[T];
+    [T in keyof APP.AppSetting]?: APP.AppSetting[T]
   }) => {
-    setSetting({ ...setting, ...newSetting });
-  };
+    setSetting({ ...setting, ...newSetting })
+  }
 
   useEffect(() => {
-    store.set(appSettingCacheKey, setting);
-  }, [setting]);
+    store.set(appSettingCacheKey, setting)
+  }, [setting])
+
+  const appConextValue = useMemo(
+    () => ({
+      appSetting: setting,
+      setAppSetting: updateConfig
+    }),
+    [setting, updateConfig]
+  )
 
   return (
     <ConfigProvider direction="ltr" locale={zhCN}>
-      <AppContext.Provider
-        value={{ appSetting: setting, setAppSetting: updateConfig }}
-      >
+      <AppContext.Provider value={appConextValue}>
         <Index />
       </AppContext.Provider>
     </ConfigProvider>
-  );
-};
+  )
+}
