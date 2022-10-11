@@ -26,22 +26,31 @@ const Index = () => {
   return (
     <div className="main-wrapper">
       <Tabs
-        onChange={changeTagHandle}
-        defaultActiveKey={appSetting.customSetting.actionMode}
         type="card"
         size="large"
-      >
-        <Tabs.TabPane tab="文字" key="SINGLE">
-          <PanelWrapper>
-            <SingleTTS />
-          </PanelWrapper>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="批量" key="BATCH">
-          <PanelWrapper>
-            <BatchTTS />
-          </PanelWrapper>
-        </Tabs.TabPane>
-      </Tabs>
+        onChange={changeTagHandle}
+        defaultActiveKey={appSetting.customSetting.actionMode}
+        items={[
+          {
+            label: '文字',
+            key: 'SINGLE',
+            children: (
+              <PanelWrapper>
+                <SingleTTS />
+              </PanelWrapper>
+            )
+          },
+          {
+            label: '单句',
+            key: '批量',
+            children: (
+              <PanelWrapper>
+                <BatchTTS />
+              </PanelWrapper>
+            )
+          }
+        ]}
+      />
     </div>
   )
 }

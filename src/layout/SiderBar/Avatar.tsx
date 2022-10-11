@@ -27,22 +27,14 @@ const VoiceSelectComponent = (props: any) => {
         className={styles.menus}
         onClick={voiceSetCallBack}
         selectedKeys={[voiceIndex]}
-      >
-        {core.getVoiceTypeList(appSetting).map((voiceType, index) => (
-          <Menu.Item
-            key={voiceType.speakerId}
-            css={{
-              borderBottom: '1px solid #eee',
-              height: '45px !important',
-              margin: '0 auto !important'
-            }}
-            icon={(
-              <img
-                src={voiceType.img}
-                css={{ height: '30px', width: 'auto' }}
-              />
-            )}
-          >
+        items={core.getVoiceTypeList(appSetting).map((voiceType, index) => ({
+          key: voiceType.speakerId,
+          css: {
+            borderBottom: '1px solid #eee',
+            height: '45px !important',
+            margin: '0 auto !important'
+          },
+          label: (
             <Tooltip
               title={`${voiceType.scene}${
                 voiceType.language ? `|${voiceType.language}` : ''
@@ -56,9 +48,12 @@ const VoiceSelectComponent = (props: any) => {
               ，
               {voiceType.speechType}
             </Tooltip>
-          </Menu.Item>
-        ))}
-      </Menu>
+          ),
+          icon: (
+            <img src={voiceType.img} css={{ height: '30px', width: 'auto' }} />
+          )
+        }))}
+      />
     </div>
   )
 }
@@ -74,7 +69,7 @@ const Index = () => {
 
   return (
     <Dropdown
-      onVisibleChange={(show) => {
+      onOpenChange={(show) => {
         setMenuShow(show)
       }}
       overlay={(
