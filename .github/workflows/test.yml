@@ -36,3 +36,4 @@ jobs:
         name: Lint
         run: |
           yarn install
+          yarn lint:check
