@@ -93,7 +93,7 @@
     "@emotion/styled": "^11.10.4",
     "@funnyzak/http-server": "^0.2.3",
     "aliyun-nls": "^0.3.8",
-    "antd": "^4.23.5",
+    "antd": "^4.23.6",
     "bufferutil": "^4.0.6",
     "core-js": "^3.25.5",
     "crypto-js": "^4.1.1",
