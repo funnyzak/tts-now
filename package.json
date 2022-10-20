@@ -94,7 +94,7 @@
     "@funnyzak/http-server": "^0.2.3",
     "aliyun-nls": "^0.3.8",
     "antd": "^4.23.6",
-    "bufferutil": "^4.0.6",
+    "bufferutil": "^4.0.7",
     "core-js": "^3.25.5",
     "crypto-js": "^4.1.1",
     "electron-store": "^8.1.0",
