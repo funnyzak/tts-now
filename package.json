@@ -57,7 +57,7 @@
     "css-loader": "^6.7.1",
     "electron": "^21.2.0",
     "electron-builder": "^23.6.0",
-    "eslint": "^8.25.0",
+    "eslint": "8.26.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-html": "^7.1.0",
     "eslint-plugin-import": "^2.26.0",
