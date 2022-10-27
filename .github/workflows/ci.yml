@@ -41,7 +41,7 @@ jobs:
           configuration: '.github/config/changelog_configuration.json'
           ignorePreReleases: 'false'
       - name: Use Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Get yarn cache directory path
