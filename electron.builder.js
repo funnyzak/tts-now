@@ -1,5 +1,5 @@
-const packageInfo = require('./package.json');
-const appConfig = require('./app.config');
+const packageInfo = require('./package.json')
+const appConfig = require('./app.config')
 
 // 和electron-builder保持一致
 // 更多请看这里：https://www.electron.build/configuration/configuration
@@ -47,4 +47,4 @@ module.exports = {
     category: 'Utility',
     icon: 'public/icon/256x256.png'
   }
-};
+}
