@@ -75,7 +75,7 @@
     "micromatch": "^4.0.5",
     "node-sass": "^7.0.3",
     "npm-check-updates": "16.4.1",
-    "prettier": "2.7.1",
+    "prettier": "2.8.1",
     "sass-loader": "^13.1.0",
     "source-map-loader": "^4.0.1",
     "style-loader": "^3.3.1",
