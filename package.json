@@ -1,6 +1,6 @@
 {
   "name": "tts-now",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "tts assastant",
   "main": "build/bundle/main.js",
   "scripts": {
