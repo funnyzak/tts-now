@@ -97,7 +97,7 @@ export const checkDirExist = (
 ): boolean => {
   if (!fs.existsSync(_path || '')) {
     if (_tipIfNoExists) {
-     message.warning(_tipIfNoExists)
+      message.warning(_tipIfNoExists)
     }
     return false
   }
@@ -347,7 +347,9 @@ export const ttsTasksRun = async (
     _info.wordCount = _info.textContent.length
     _info.ttsStart = new Date().getTime()
     _info.savePath = appSetting.customSetting.savePath
-    _info.saveName = `${
+    _info.saveName = `${appSetting.ttsSetting.engine.toString()}_${
+      currentSpeaker(appSetting).speaker
+    }_${
       _info.fileName?.split('.')[0]
     }_${new Date().getTime()}.${_info.ttsSetting.format}`
     return _info
