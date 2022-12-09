@@ -36,10 +36,11 @@ export default () => {
       locale={zhCN}
       theme={{
         token: {
-          colorPrimary: '#414e62',
-          colorLink: '#1890ff'
+          'colorPrimary': '#414e62',
+          'colorLink': '#1890ff',
+          'borderRadius': 5,
+          'wireframe': true
         }
-
       }}
     >
       <AppContext.Provider value={appConextValue}>

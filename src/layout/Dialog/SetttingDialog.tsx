@@ -155,66 +155,73 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
             defaultActiveKey={engine}
             activeKey={engine}
             tabPosition="top"
-          >
-            <Tabs.TabPane
-              tab={<span>阿里云</span>}
-              key={TtsEngine.ALIYUN.toString()}
-            >
-              <Form.Item
-                name={`${TtsEngine.ALIYUN.toString()}_appKey`}
-                label="AppKey"
-                required
-                tooltip="需要阿里云后台创建项目获取"
-              >
-                <Input placeholder="请输入AppKey" />
-              </Form.Item>
-              <Form.Item
-                required
-                name={`${TtsEngine.ALIYUN.toString()}_accessKeyId`}
-                label="AccessKeyId"
-                tooltip={{ title: '阿里云账号API密钥' }}
-              >
-                <Input.Password placeholder="请输入AccessKeyId" />
-              </Form.Item>
-              <Form.Item
-                name={`${TtsEngine.ALIYUN.toString()}_accessKeySecret`}
-                required
-                label="AccessKeySecret"
-                tooltip={{ title: '阿里云账号API密钥' }}
-              >
-                <Input.Password placeholder="请输入AccessKeySecret" />
-              </Form.Item>
-            </Tabs.TabPane>
-            <Tabs.TabPane
-              tab={<span>讯飞语音</span>}
-              key={TtsEngine.XUNFEI.toString()}
-            >
-              <Form.Item
-                name={`${TtsEngine.XUNFEI.toString()}_appId`}
-                label="APPID"
-                required
-                tooltip="需要讯飞后台创建项目获取"
-              >
-                <Input placeholder="请输入APPID" />
-              </Form.Item>
-              <Form.Item
-                name={`${TtsEngine.XUNFEI.toString()}_apiKey`}
-                required
-                label="APIKey"
-                tooltip={{ title: '讯飞账号API Key' }}
-              >
-                <Input.Password placeholder="请输入APIKey" />
-              </Form.Item>
-              <Form.Item
-                required
-                name={`${TtsEngine.XUNFEI.toString()}_apiSecret`}
-                label="APISecret"
-                tooltip={{ title: '讯飞账号API密钥' }}
-              >
-                <Input.Password placeholder="请输入APISecret" />
-              </Form.Item>
-            </Tabs.TabPane>
-          </Tabs>
+            items={[
+              {
+                label: '阿里云',
+                key: TtsEngine.ALIYUN.toString(),
+                children: (
+                  <>
+                    <Form.Item
+                      name={`${TtsEngine.ALIYUN.toString()}_appKey`}
+                      label="AppKey"
+                      required
+                      tooltip="需要阿里云后台创建项目获取"
+                    >
+                      <Input placeholder="请输入AppKey" />
+                    </Form.Item>
+                    <Form.Item
+                      required
+                      name={`${TtsEngine.ALIYUN.toString()}_accessKeyId`}
+                      label="AccessKeyId"
+                      tooltip={{ title: '阿里云账号API密钥' }}
+                    >
+                      <Input.Password placeholder="请输入AccessKeyId" />
+                    </Form.Item>
+                    <Form.Item
+                      name={`${TtsEngine.ALIYUN.toString()}_accessKeySecret`}
+                      required
+                      label="AccessKeySecret"
+                      tooltip={{ title: '阿里云账号API密钥' }}
+                    >
+                      <Input.Password placeholder="请输入AccessKeySecret" />
+                    </Form.Item>
+                  </>
+                )
+              },
+              {
+                label: '讯飞语音',
+                key: TtsEngine.XUNFEI.toString(),
+                children: (
+                  <>
+                    <Form.Item
+                      name={`${TtsEngine.XUNFEI.toString()}_appId`}
+                      label="APPID"
+                      required
+                      tooltip="需要讯飞后台创建项目获取"
+                    >
+                      <Input placeholder="请输入APPID" />
+                    </Form.Item>
+                    <Form.Item
+                      name={`${TtsEngine.XUNFEI.toString()}_apiKey`}
+                      required
+                      label="APIKey"
+                      tooltip={{ title: '讯飞账号API Key' }}
+                    >
+                      <Input.Password placeholder="请输入APIKey" />
+                    </Form.Item>
+                    <Form.Item
+                      required
+                      name={`${TtsEngine.XUNFEI.toString()}_apiSecret`}
+                      label="APISecret"
+                      tooltip={{ title: '讯飞账号API密钥' }}
+                    >
+                      <Input.Password placeholder="请输入APISecret" />
+                    </Form.Item>
+                  </>
+                )
+              }
+            ]}
+          />
         </Form>
       </Spin>
     </Modal>

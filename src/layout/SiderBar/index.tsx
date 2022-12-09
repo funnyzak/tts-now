@@ -1,11 +1,10 @@
-import { Button, Affix } from 'antd'
 import { SettingOutlined } from '@ant-design/icons'
-import { css } from '@emotion/react'
+import { Affix, Button } from 'antd'
 import { useState } from 'react'
-import Header from './Header'
-import Avatar from './Avatar'
-import AudioSet from './Audio'
 import { SetttingDialog } from '../Dialog'
+import AudioSet from './Audio'
+import Avatar from './Avatar'
+import Header from './Header'
 import styles from './index.module.scss'
 
 const Index = () => {

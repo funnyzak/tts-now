@@ -55,7 +55,7 @@ const Index = () => {
         <div className={styles.scenePanel}>
           <Typography.Title
             css={css`
-              padding: 10px 0 10px 10px;
+              padding: 0 0 10px 10px;
               border-bottom: 1px solid #eee;
             `}
             level={4}
