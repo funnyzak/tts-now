@@ -73,7 +73,7 @@
     "less-loader": "^11.1.0",
     "lint-staged": "^13.0.3",
     "micromatch": "^4.0.5",
-    "node-sass": "^7.0.3",
+    "node-sass": "^8.0.0",
     "npm-check-updates": "16.4.1",
     "prettier": "2.7.1",
     "sass-loader": "^13.1.0",
