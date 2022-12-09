@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { ConfigProvider } from 'antd'
-import zhCN from 'antd/lib/locale/zh_CN'
+import zhCN from 'antd/locale/zh_CN'
 import Index from './layout'
 import {
   AppContext, appSetting, appSettingCacheKey, store
@@ -31,7 +31,17 @@ export default () => {
   )
 
   return (
-    <ConfigProvider direction="ltr" locale={zhCN}>
+    <ConfigProvider
+      direction="ltr"
+      locale={zhCN}
+      theme={{
+        token: {
+          colorPrimary: '#414e62',
+          colorLink: '#1890ff'
+        }
+
+      }}
+    >
       <AppContext.Provider value={appConextValue}>
         <Index />
       </AppContext.Provider>

@@ -109,7 +109,7 @@ const Index: React.FC<IDialogProp> = ({ closeCallBack }) => {
       centered
       okText="保存配置"
       cancelText="取消"
-      visible
+      open
       width={500}
       onCancel={closeCallBack}
       footer={[

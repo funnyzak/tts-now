@@ -97,7 +97,7 @@ export const checkDirExist = (
 ): boolean => {
   if (!fs.existsSync(_path || '')) {
     if (_tipIfNoExists) {
-      message.warn(_tipIfNoExists)
+     message.warning(_tipIfNoExists)
     }
     return false
   }

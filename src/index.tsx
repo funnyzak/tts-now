@@ -5,7 +5,10 @@ import App from './App'
 // 引入normalize.css
 import 'normalize.css'
 
-import './App.less'
+// 引入antd样式
+import 'antd/dist/reset.css'
+
+import './App.css'
 
 const container = document.getElementById('root')
 const root = createRoot(container!)

@@ -1,21 +1,17 @@
-import styled from '@emotion/styled'
 import { css } from '@emotion/react'
-import { useState, useEffect, useRef } from 'react'
-import { shell } from 'electron'
-import path from 'path'
+import styled from '@emotion/styled'
+import { useEffect, useRef, useState } from 'react'
 // https://github.com/justinmc/react-audio-player
-import ReactAudioPlayer from 'react-audio-player'
-import {
-  Input, Button, Form, Space, message
-} from 'antd'
 import {
   ExportOutlined,
-  PlayCircleOutlined,
-  LoadingOutlined
+  LoadingOutlined,
+  PlayCircleOutlined
 } from '@ant-design/icons'
+import { Button, Form, Input, message, Space } from 'antd'
+import ReactAudioPlayer from 'react-audio-player'
 import useAppSetting from '@/hook/app'
-import * as core from '@/utils/core'
 import { TtsFileStatus } from '@/type/enums'
+import * as core from '@/utils/core'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -45,12 +41,13 @@ const singleTxtStyle = {
 const Index = () => {
   const { appSetting, setAppSetting } = useAppSetting()
 
-  const getSingleTxt = () => (appSetting.customSetting.singleTxt
-    && appSetting.customSetting.singleTxt !== null
-    && appSetting.customSetting.singleTxt.length > 0
-    && core.currentSpeaker(appSetting).text !== appSetting.customSetting.singleTxt
-    ? appSetting.customSetting.singleTxt
-    : core.currentSpeaker(appSetting).text)
+  const getSingleTxt = () =>
+    appSetting.customSetting.singleTxt &&
+    appSetting.customSetting.singleTxt !== null &&
+    appSetting.customSetting.singleTxt.length > 0 &&
+    core.currentSpeaker(appSetting).text !== appSetting.customSetting.singleTxt
+      ? appSetting.customSetting.singleTxt
+      : core.currentSpeaker(appSetting).text
 
   const [singleTxt] = useState(getSingleTxt())
   const singleFormRef: any = useRef(null)
@@ -87,10 +84,10 @@ const Index = () => {
       message.error('请设置合成内容')
     }
     if (
-      singleTtsFile?.status
-      && singleTtsFile?.status === TtsFileStatus.PROCESS
+      singleTtsFile?.status &&
+      singleTtsFile?.status === TtsFileStatus.PROCESS
     ) {
-      message.warn('正在准备播放..')
+      message.warning('正在准备播放..')
     }
 
     setProcessing(true)
@@ -112,9 +109,9 @@ const Index = () => {
 
   const exportHandle = () => {
     if (
-      !singleTtsFile
-      || core.isNullOrEmpty(singleTtsFile)
-      || core.isNullOrEmpty(singleTtsFile.audioUrl)
+      !singleTtsFile ||
+      core.isNullOrEmpty(singleTtsFile) ||
+      core.isNullOrEmpty(singleTtsFile.audioUrl)
     ) {
       message.error('没有可导出的内容')
       return
@@ -133,9 +130,9 @@ const Index = () => {
 
   useEffect(() => {
     if (
-      singleFormRef
-      && singleFormRef.current !== null
-      && singleFormRef.current !== undefined
+      singleFormRef &&
+      singleFormRef.current !== null &&
+      singleFormRef.current !== undefined
     ) {
       singleFormRef.current.setFieldsValue({ singleTxt: getSingleTxt() })
       setSingleTtsFile({
@@ -160,20 +157,18 @@ const Index = () => {
               }}
               size="large"
               icon={processing ? <LoadingOutlined /> : <PlayCircleOutlined />}
-              onClick={playHandle}
-            >
+              onClick={playHandle}>
               立即播放
             </Button>
-            {!singleTtsFile
-            || core.isNullOrEmpty(singleTtsFile)
-            || core.isNullOrEmpty(singleTtsFile.audioUrl) ? null : (
+            {!singleTtsFile ||
+            core.isNullOrEmpty(singleTtsFile) ||
+            core.isNullOrEmpty(singleTtsFile.audioUrl) ? null : (
               <>
                 <Button
                   type="primary"
                   size="large"
                   icon={<ExportOutlined />}
-                  onClick={exportHandle}
-                >
+                  onClick={exportHandle}>
                   导出
                 </Button>
                 <ReactAudioPlayer
@@ -185,7 +180,7 @@ const Index = () => {
                   ref={(el) => setAudioPlayer(el)}
                 />
               </>
-              )}
+            )}
           </Space>
         </div>
       </div>
