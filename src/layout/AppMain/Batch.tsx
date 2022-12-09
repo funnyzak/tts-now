@@ -425,11 +425,11 @@ const Index = () => {
     if (!core.ttsRunCheck(appSetting)) return
 
     if (core.isNullOrEmpty(appSetting.customSetting.savePath)) {
-      message.warn('请选择输出文件夹')
+      message.warning('请选择输出文件夹')
       return
     }
     if (!fileList || fileList.length === 0) {
-      message.warn('请选择要转换的文件')
+      message.warning('请选择要转换的文件')
       return
     }
 

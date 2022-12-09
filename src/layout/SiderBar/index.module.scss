@@ -6,7 +6,7 @@
 }
 
 .settingWrapper {
-  width: 280px;
+  width: 100%;
   height: calc(100vh - 80px - 80px - 60px);
   padding: 0 20px;
   overflow-y: auto;
@@ -14,11 +14,10 @@
 }
 
 .settingButton {
-  width: 280px;
+  width: 100%;
   height: 60px;
+  box-sizing: border-box;
   padding: 7px 20px 0;
-  border-right: 1px solid #f4f6fa;
-  background-color: #fff;
 }
 
 .avatarWrapper {
@@ -36,11 +35,11 @@
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid #eee;
+  padding: 0 !important;
   background: #fff;
-  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   .menus {
     border: 0;
     overflow-y: auto;

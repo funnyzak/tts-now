@@ -4,6 +4,7 @@ import { appName } from '@/config'
 const Header = styled.div`
   width: 280px;
   height: 80px;
+  box-sizing: border-box;
   background-color: #748bad;
   display: flex;
   align-items: center;

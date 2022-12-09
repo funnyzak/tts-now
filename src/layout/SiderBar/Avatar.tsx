@@ -1,38 +1,35 @@
-import { css } from '@emotion/react'
-import { useState } from 'react'
-import {
-  Menu, Dropdown, Typography, Tooltip
-} from 'antd'
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons'
+import { css } from '@emotion/react'
+import { Dropdown, Tooltip, Typography } from 'antd'
+import { useState } from 'react'
+import * as core from '@/utils/core'
 import useAppSetting from '@/hook/app'
 import styles from './index.module.scss'
-import * as core from '@/utils/core'
 
-const VoiceSelectComponent = (props: any) => {
-  const { voiceIndex, voiceSetCallBack } = props
-  const { appSetting } = useAppSetting()
+const Index = () => {
+  const { appSetting, setAppSetting } = useAppSetting()
+  const [menuShow, setMenuShow] = useState<boolean>(false)
+
+  const changeVoice = ({ key: voiceSetIndex }) => {
+    appSetting.ttsSetting.speakerId = voiceSetIndex
+    setAppSetting(appSetting)
+  }
 
   return (
-    <div className={styles.scenePanel}>
-      <Typography.Title
-        css={css`
-          padding: 10px 0 10px 10px;
-          border-bottom: 1px solid #eee;
-        `}
-        level={4}
-      >
-        场景选择
-      </Typography.Title>
-      <Menu
-        className={styles.menus}
-        onClick={voiceSetCallBack}
-        selectedKeys={[voiceIndex]}
-        items={core.getVoiceTypeList(appSetting).map((voiceType, index) => ({
+    <Dropdown
+      onOpenChange={(show) => {
+        setMenuShow(show)
+      }}
+      menu={{
+        className: styles.menus,
+        onClick: changeVoice,
+        selectedKeys: [appSetting.ttsSetting.speakerId!],
+        items: core.getVoiceTypeList(appSetting).map((voiceType, index) => ({
           key: voiceType.speakerId,
           css: {
             borderBottom: '1px solid #eee',
-            height: '45px !important',
-            margin: '0 auto !important'
+            height: '45px',
+            margin: '0 auto'
           },
           label: (
             <Tooltip
@@ -52,31 +49,21 @@ const VoiceSelectComponent = (props: any) => {
           icon: (
             <img src={voiceType.img} css={{ height: '30px', width: 'auto' }} />
           )
-        }))}
-      />
-    </div>
-  )
-}
-
-const Index = () => {
-  const { appSetting, setAppSetting } = useAppSetting()
-  const [menuShow, setMenuShow] = useState<boolean>(false)
-
-  const changeVoice = ({ key: voiceSetIndex }) => {
-    appSetting.ttsSetting.speakerId = voiceSetIndex
-    setAppSetting(appSetting)
-  }
-
-  return (
-    <Dropdown
-      onOpenChange={(show) => {
-        setMenuShow(show)
+        }))
       }}
-      overlay={(
-        <VoiceSelectComponent
-          voiceIndex={appSetting.ttsSetting.speakerId}
-          voiceSetCallBack={changeVoice}
-        />
+      dropdownRender={(menu) => (
+        <div className={styles.scenePanel}>
+          <Typography.Title
+            css={css`
+              padding: 0 0 10px 10px;
+              border-bottom: 1px solid #eee;
+            `}
+            level={4}
+          >
+            场景选择
+          </Typography.Title>
+          {menu}
+        </div>
       )}
       trigger={['hover']}
     >

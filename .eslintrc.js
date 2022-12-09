@@ -83,6 +83,7 @@ module.exports = {
     'no-duplicate-case': 2, // switch中的case标签不能重复
     'no-else-return': 2, // 如果if语句里面有return,后面不能跟else语句
     'quote-props': ['warn', 'consistent'],
+    'react/no-unstable-nested-components': 'off',
     // 定义未使用
     'no-unused-vars': 'off',
     // 禁止标识符下划线
