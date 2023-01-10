@@ -34,7 +34,7 @@ jobs:
           echo ::set-output name=BINARY_NAME::$(echo "${{ steps.get_version.outputs.PACKAGE_NAME}}-${{ matrix.os }}-${{ steps.get_version.outputs.PACKAGE_VERSION_NAME }}-${{ steps.get_version.outputs.COMMIT_ID }}")
       - name: Build changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v3.4.0
+        uses: mikepenz/release-changelog-builder-action@v3.5.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
