@@ -18,16 +18,16 @@
     kitx "^1.2.1"
     xml2js "^0.4.17"
 
-"@alicloud/pop-core@^1.7.12":
-  version "1.7.12"
-  resolved "https://registry.yarnpkg.com/@alicloud/pop-core/-/pop-core-1.7.12.tgz#007d21aacc926c231c02e4c903deb1b5a188f418"
-  integrity sha512-02w3IpR8NPyjGwlDeYbFhG26HyIeUhC8/SJ1rz3DHLLQ4ktvXmw86BBIa+TgnyX/+/98/iaQpCzrfIRZNNYHwA==
+"@alicloud/pop-core@^1.7.13":
+  version "1.7.13"
+  resolved "https://registry.yarnpkg.com/@alicloud/pop-core/-/pop-core-1.7.13.tgz#913f15d4a59c099e7f4e0d0481288ef0c0ed2425"
+  integrity sha512-agzr4DU+aAGW7/2mp2hP1JcNJkn/zBS0jUGQt5etIASN0MVq1tMdudVqvWbExUG0mUouo/n2VgdnjOHjswvrlA==
   dependencies:
     debug "^3.1.0"
     httpx "^2.1.2"
     json-bigint "^1.0.0"
     kitx "^1.2.1"
-    xml2js "^0.4.17"
+    xml2js "^0.5.0"
 
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
@@ -9541,6 +9541,14 @@ xml2js@^0.4.17:
   version "0.4.23"
   resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.23.tgz#a0c69516752421eb2ac758ee4d4ccf58843eac66"
   integrity sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==
+  dependencies:
+    sax ">=0.6.0"
+    xmlbuilder "~11.0.0"
+
+xml2js@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.5.0.tgz#d9440631fbb2ed800203fad106f2724f62c493b7"
+  integrity sha512-drPFnkQJik/O+uPKpqSgr22mpuFHqKdbS835iAQrUC73L2F5WkboIRd63ai/2Yg6I1jzifPFKH2NTK+cfglkIA==
   dependencies:
     sax ">=0.6.0"
     xmlbuilder "~11.0.0"
