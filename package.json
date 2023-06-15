@@ -69,7 +69,7 @@
     "html-webpack-plugin": "^5.5.0",
     "husky": "^8.0.1",
     "less": "^4.1.3",
-    "less-loader": "^11.1.0",
+    "less-loader": "^11.1.3",
     "lint-staged": "^13.1.0",
     "micromatch": "^4.0.5",
     "node-sass": "^8.0.0",
