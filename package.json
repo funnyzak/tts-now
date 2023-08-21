@@ -88,7 +88,7 @@
   "dependencies": {
     "@alicloud/pop-core": "^1.7.12",
     "@ant-design/icons": "^4.7.0",
-    "@emotion/react": "^11.10.4",
+    "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.10.5",
     "@funnyzak/http-server": "^0.2.3",
     "aliyun-nls": "^0.3.8",
