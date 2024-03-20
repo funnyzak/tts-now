@@ -81,7 +81,7 @@
     "stylelint": "^14.14.0",
     "ts-loader": "^9.4.1",
     "tsconfig-paths-webpack-plugin": "^4.0.0",
-    "webpack": "^5.74.0",
+    "webpack": "^5.91.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
   },
