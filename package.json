@@ -97,7 +97,7 @@
     "core-js": "^3.26.0",
     "crypto-js": "^4.1.1",
     "electron-store": "^8.1.0",
-    "nanoid": "^4.0.0",
+    "nanoid": "^6.0.1",
     "node-downloader-helper": "^2.1.4",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
